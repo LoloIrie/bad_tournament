@@ -13,7 +13,7 @@ require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
 $nom_table = $wpdb->prefix . 'bvg_matches';
 $sql = "CREATE TABLE $nom_table (
-  id bigint(20) unsigned NOT NULL,
+  id bigint(20) unsigned NOT NULL auto_increment,
   player1_id bigint(20) unsigned NOT NULL,
   player2_id bigint(20) unsigned NOT NULL,
   player1_id_bis bigint(20) unsigned NOT NULL,
@@ -70,7 +70,7 @@ dbDelta( $sql );
 
 $nom_table = $wpdb->prefix . 'bvg_tournaments';
 $sql = "CREATE TABLE $nom_table (
-  id bigint(20) unsigned NOT NULL,
+  id bigint(20) unsigned NOT NULL auto_increment,
   parent_id int(11) unsigned NOT NULL,
   name varchar(150) NOT NULL,
   round int(11) NOT NULL,
