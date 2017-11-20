@@ -32,8 +32,8 @@ $html_shortcode .= '<h3>Matches '.$tournament[0]->name.' / ' .'Round: '.( $round
 
 
 $html = '';
-define( 'ROUND', $round );
-define( 'ROUND_MAX', $tournament[0]->round );
+$ROUND = $round;
+$ROUND_MAX = $tournament[0]->round;
 include plugin_dir_path(__FILE__). 'sc_html/matches-view.php';
 
 $html_shortcode .= $html;

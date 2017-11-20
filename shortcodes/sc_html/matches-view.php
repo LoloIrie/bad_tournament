@@ -13,11 +13,11 @@
 //$html .= '<div class="admin_block_label">Spiele</div>';
 $html .= '<div class="admin_block nav_match" id="block_spiele">';
 
-if( !ROUND && (ROUND_MAX - ROUND) > 2 ){
+if( !$ROUND && ($ROUND_MAX - $ROUND) > 2 ){
     $html .= '<div class="round_select_div">';
         $html .= 'Round: <select id="round_select">';
         $html .= '<option value="0">Alles</option>';
-        for( $i=1; $i<=ROUND_MAX; $i++){
+        for( $i=1; $i<=$ROUND_MAX; $i++){
                 $html .= '<option value="'.$i.'">'.$i.'</option>';
             }
         $html .= '</select>';
