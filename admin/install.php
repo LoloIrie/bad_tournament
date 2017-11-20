@@ -41,7 +41,7 @@ $sql = "CREATE TABLE $nom_table (
   id bigint(20) unsigned NOT NULL auto_increment,
   firstname varchar(150) NOT NULL,
   lastname varchar(150) NOT NULL,
-  player_level_init int(6) unsigned NOT NULL,
+  player_level int(6) unsigned NOT NULL,
   status int(6) unsigned NOT NULL,
   PRIMARY KEY (id)
 );";

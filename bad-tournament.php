@@ -43,6 +43,11 @@ class bad_tournament
             plugin_dir_url( __FILE__ ).'icons/bad-tournament-icon.png',
             20
         );
+
+        add_submenu_page( 'bad_tournament', 'Players', 'Players', 'manage_options', 'admin.php?page=bad_tournament&view=players');
+        add_submenu_page( 'bad_tournament', 'Table', 'Table', 'manage_options', 'admin.php?page=bad_tournament&view=table');
+        add_submenu_page( 'bad_tournament', 'Matches', 'Matches', 'manage_options', 'admin.php?page=bad_tournament&view=matches');
+
     }
 
     function bad_tournament_admin(){
