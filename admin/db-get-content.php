@@ -94,7 +94,7 @@ function db_get_players( $tournament_id = false ){
     //$wpdb->show_errors();
     //echo $query;
     $players = $wpdb->get_results( $query, OBJECT_K  );
-
+    //var_dump( $players );
     return $players;
 }
 

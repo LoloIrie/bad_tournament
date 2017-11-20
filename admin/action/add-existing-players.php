@@ -60,7 +60,12 @@ if( isset( $_POST['player_tournament_remove'] ) ){
         foreach( $player_tournaments as $pl_t ){
             $pl_t_ids[] = $pl_t->id;
         }
-        $pl_t_ids_sql = implode( $pl_t_ids, ',' );
+        if( is_array( $pl_t_ids ) ){
+            $pl_t_ids_sql = implode( $pl_t_ids, ',' );
+        }else{
+            $pl_t_ids_sql = -25;
+        }
+
         //var_dump( $pl_t_ids_sql );
 
         $query = $query = "UPDATE
@@ -109,7 +114,10 @@ if( isset( $_POST['player_tournament_remove'] ) ){
     pl.player_level as player_level_init
     
     FROM
-    ".$wpdb->prefix."bvg_players as pl";
+    ".$wpdb->prefix."bvg_players as pl
+
+    WHERE
+    pl.status=1";
     $all_players = $wpdb->get_results( $query, OBJECT_K  );
 
     foreach( $all_players as $pl ){

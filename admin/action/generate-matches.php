@@ -22,11 +22,34 @@ function get_free_opponent( $players_match, $k_pl1, $opponents ){
     return $key;
 }
 
-if( isset( $_POST['generate_matchs_now'] ) ){
+if( isset( $_POST['regenerate_matchs_now'] ) ){
+    /* Remove current matchs... */
+    $matches = array();
+    $query = "DELETE FROM
+                    ".$wpdb->prefix . 'bvg_matches'."
+
+                    WHERE
+                    tournament_id=".$_SESSION['t_id']."
+                    AND
+                    round=".$_SESSION['round']."
+                    AND
+                    winner=0";
+    $wpdb->query( $query );
+
+    /* Create new matches */
+    $generate_matchs_now = true;
+
+    $bvg_admin_msg .= '<br />Matches gelöscht...<br />'.$query.'<br />';
+}
+
+
+
+if( isset( $_POST['generate_matchs_now'] ) || $generate_matchs_now === true ){
 
     $nb_players = count( $players );
     //echo 'NB Players: '.$nb_players.'<br />';;
     $players_match = $players;
+
 
     /*
     if( $nb_players%2 == 1 ){

@@ -35,9 +35,10 @@ $matches = db_get_matches( $_SESSION['t_id'], $_SESSION['round'] );
 
 
 /* Generate matches if required */
-if( empty($matches) ){
+if( empty($matches) || isset( $_POST['regenerate_matchs_now'] ) ){
     //echo $query;
-    include plugin_dir_path(__FILE__). 'action/generate-matches.php';
+    //var_dump( $players );
+    include_once plugin_dir_path(__FILE__). 'action/generate-matches.php';
 }
 
 

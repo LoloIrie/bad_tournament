@@ -25,7 +25,10 @@ if( !empty( $matches ) ){
     //var_dump( $players );
     //echo '</pre>';
 
+    /* Allow to regenerate all games ? */
+    $winner_exists = false;
     foreach( $matches as $match ){
+        $winner = 0;
         $pl1_set1 = 0;
         $pl1_set2 = 0;
         $pl1_set3 = 0;
@@ -71,6 +74,10 @@ if( !empty( $matches ) ){
             $pl2_id_bis = $match['player2_id_bis'];
             $winner = $match['winner'];
             $m_id = $match['id'];
+        }
+
+        if( $winner > 0 ){
+            $winner_exists = true;
         }
 
         if( !isset( $players[ $match->player1_id ] ) && $match->player1_id > 0 ){
@@ -171,12 +178,20 @@ if( !empty( $matches ) ){
 
         $html .= '<br /><br /><hr />';
 
+
         $html .= '</form>';
     }
+
+    if( !$winner_exists ){
+        $html .= '<form method="post">';
+        $html .= '<input name="regenerate_matchs_now" type="submit" value="Matches NEU anlegen" />';
+        $html .= '</form>';
+    }
+
 }else{
+
     $html .= '<form method="post">';
     $html .= '<input name="generate_matchs_now" type="submit" value="Matches anlegen" />';
-
     $html .= '</form>';
 }
 

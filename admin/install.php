@@ -32,8 +32,13 @@ $sql = "CREATE TABLE $nom_table (
   pl1_set5 int(11) NOT NULL,
   pl2_set5 int(11) NOT NULL,
   parent_id int(11) NOT NULL,
-  PRIMARY KEY (id)
-);";
+  PRIMARY KEY (id),
+  INDEX (player1_id),
+  INDEX (player2_id),
+  INDEX (player1_id_bis),
+  INDEX (player2_id_bis),
+  INDEX (tournament_id)
+) ENGINE=InnoDB;";
 dbDelta( $sql );
 
 $nom_table = $wpdb->prefix . 'bvg_players';
@@ -44,7 +49,7 @@ $sql = "CREATE TABLE $nom_table (
   player_level int(6) unsigned NOT NULL,
   status int(6) unsigned NOT NULL,
   PRIMARY KEY (id)
-);";
+) ENGINE=InnoDB;";
 dbDelta( $sql );
 
 $nom_table = $wpdb->prefix . 'bvg_players_tournament';
@@ -64,8 +69,10 @@ $sql = "CREATE TABLE $nom_table (
   points int(6) unsigned NOT NULL,
   points_against int(6) unsigned NOT NULL,
   opponents varchar(250) NOT NULL,
-  PRIMARY KEY (id)
-);";
+  PRIMARY KEY (id),
+  INDEX (tournament_id),
+  INDEX (players_id)
+) ENGINE=InnoDB;";
 dbDelta( $sql );
 
 $nom_table = $wpdb->prefix . 'bvg_tournaments';
@@ -78,9 +85,51 @@ $sql = "CREATE TABLE $nom_table (
   nb_sets int(11) NOT NULL,
   points_set int(11) NOT NULL,
   max_points_set int(11) NOT NULL,
-  PRIMARY KEY (id)
-);";
+  PRIMARY KEY (id),
+  INDEX (parent_id)
+) ENGINE=InnoDB;";
 dbDelta( $sql );
+
+
+/* ADD FOREIGN KEYS */
+$nom_table = $wpdb->prefix . 'bvg_matches';
+$sql = "ALTER TABLE ".$nom_table."
+        ADD FOREIGN KEY (player1_id)
+          REFERENCES ".$wpdb->prefix . "bvg_players_tournament(id)
+          ON UPDATE NO ACTION ON DELETE NO ACTION,
+        ADD FOREIGN KEY (player2_id)
+          REFERENCES ".$wpdb->prefix . "bvg_players_tournament(id)
+          ON UPDATE NO ACTION ON DELETE NO ACTION,
+        ADD FOREIGN KEY (player1_id_bis)
+          REFERENCES ".$wpdb->prefix . "bvg_players_tournament(id)
+          ON UPDATE NO ACTION ON DELETE NO ACTION,
+        ADD FOREIGN KEY (player2_id_bis)
+          REFERENCES ".$wpdb->prefix . "bvg_players_tournament(id)
+          ON UPDATE NO ACTION ON DELETE NO ACTION,
+        ADD FOREIGN KEY (tournament_id)
+          REFERENCES ".$wpdb->prefix . "bvg_tournament(id)
+          ON UPDATE NO ACTION ON DELETE NO ACTION;";
+dbDelta( $sql );
+
+
+$nom_table = $wpdb->prefix . 'bvg_players_tournament';
+$sql = "ALTER TABLE ".$nom_table."
+        ADD FOREIGN KEY (tournament_id)
+          REFERENCES ".$wpdb->prefix . "bvg_tournament(id)
+          ON UPDATE NO ACTION ON DELETE NO ACTION,
+        FOREIGN KEY (players_id)
+          REFERENCES ".$wpdb->prefix . "bvg_players(id)
+          ON UPDATE NO ACTION ON DELETE NO ACTION;";
+dbDelta( $sql );
+
+
+$nom_table = $wpdb->prefix . 'bvg_tournaments';
+$sql = "ALTER TABLE ".$nom_table."
+        ADD FOREIGN KEY (parent_id)
+          REFERENCES ".$wpdb->prefix . "bvg_tournaments(id)
+          ON UPDATE NO ACTION ON DELETE NO ACTION;";
+dbDelta( $sql );
+
 
 $bvg_admin_msg = 'Plugin BVG Turnier installiert !';
 
