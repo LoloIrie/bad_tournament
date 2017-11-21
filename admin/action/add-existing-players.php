@@ -137,7 +137,7 @@ if( isset( $_POST['player_tournament_remove'] ) ){
     $data = array(
         'tournament_id' => $_SESSION['t_id'],
         'players_id' => $_POST['player_select'],
-        'player_level_init' => $_POST['schweizer_system_punkte']
+        'player_level_init' => $_POST['swiss_system_point']
     );
     $wpdb->insert( $wpdb->prefix . 'bvg_players_tournament', $data );
 

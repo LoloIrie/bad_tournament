@@ -11,7 +11,7 @@
 
 
 //$html .= '<div class="admin_block_label">Spiele</div>';
-$html .= '<div class="admin_block nav_match" id="block_spiele">';
+$html .= '<div class="admin_block nav_match" id="block_game" '.( $ADMIN_VIEW == 'matches' ? 'style="display: block;"' : '' ).'>';
 
 
 //var_dump( $players );
@@ -95,7 +95,7 @@ if( !empty( $matches ) ){
 
 
         //var_dump( $match );
-        $html .= '<form method="post" id="match_form_'.$m_id.'">';
+        $html .= '<form method="post" id="match_form_'.$m_id.'" action="admin.php?page=bad_tournament&admin_view=matches">';
         $html .= '<input type="hidden" name="form_action" value="game-result" />';
         $html .= '<input type="hidden" name="match_id" class="match_id" value="'.$m_id.'" />';
         $html .= '<input type="hidden" name="pl1_id" value="'.$pl1_id.'" />';
@@ -133,7 +133,7 @@ if( !empty( $matches ) ){
         $html .= '<input type="number" value="'.$pl1_set3.'" name="pl1_m'.$m_id.'_set3" class="set_score" min="0" max="'.$_SESSION['current_tournament']['max_points_set'].'" />';
         $html .= '<input type="number" value="'.$pl1_set4.'" name="pl1_m'.$m_id.'_set4" class="set_score" '.( $_SESSION['current_tournament']['tournament_nb_sets'] < 3 ? 'disabled="disabled"' : '' ).'/>';
         $html .= '<input type="number" value="'.$pl1_set5.'" name="pl1_m'.$m_id.'_set5" class="set_score" '.( $_SESSION['current_tournament']['tournament_nb_sets'] < 3 ? 'disabled="disabled"' : '' ).'/>';
-        $html .= '<input type="submit" value="Sieger" class="match_winner" data="'.$pl1_id.'" data_m_id="'.$m_id.'" />';
+        $html .= '<input type="submit" value="'.__('Sieger', 'bad-tournament').'" class="match_winner" data="'.$pl1_id.'" data_m_id="'.$m_id.'" />';
         $html .= '</div>';
 
 
@@ -168,13 +168,13 @@ if( !empty( $matches ) ){
         $html .= '<input type="number" value="'.$pl2_set3.'" name="pl2_m'.$m_id.'_set3" class="set_score" min="0" max="'.$_SESSION['current_tournament']['max_points_set'].'" />';
         $html .= '<input type="number" value="'.$pl2_set4.'" name="pl2_m'.$m_id.'_set4" class="set_score" '.( $_SESSION['current_tournament']['tournament_nb_sets'] < 3 ? 'disabled="disabled"' : '' ).'/>';
         $html .= '<input type="number" value="'.$pl2_set5.'" name="pl2_m'.$m_id.'_set5" class="set_score" '.( $_SESSION['current_tournament']['tournament_nb_sets'] < 3 ? 'disabled="disabled"' : '' ).'/>';
-        $html .= '<input type="submit" value="Sieger" class="match_winner" data="'.$pl2_id.'" data_m_id="'.$m_id.'" />';
+        $html .= '<input type="submit" value="'.__('Sieger', 'bad-tournament').'" class="match_winner" data="'.$pl2_id.'" data_m_id="'.$m_id.'" />';
         $html .= '</div>';
 
 
         $html .= '<br />';
 
-        $html .= '<input type="submit" value="Match aktualisieren" />';
+        $html .= '<input type="submit" value="'.__('Update match', 'bad-tournament').'" />';
 
         $html .= '<br /><br /><hr />';
 
@@ -183,15 +183,15 @@ if( !empty( $matches ) ){
     }
 
     if( !$winner_exists ){
-        $html .= '<form method="post">';
-        $html .= '<input name="regenerate_matchs_now" type="submit" value="Matches NEU anlegen" />';
+        $html .= '<form method="post" action="admin.php?page=bad_tournament&admin_view=matches">';
+        $html .= '<input name="regenerate_matchs_now" type="submit" value="'.__('Regenerate matches', 'bad-tournament').'" />';
         $html .= '</form>';
     }
 
 }else{
 
-    $html .= '<form method="post">';
-    $html .= '<input name="generate_matchs_now" type="submit" value="Matches anlegen" />';
+    $html .= '<form method="post" action="admin.php?page=bad_tournament&admin_view=matches">';
+    $html .= '<input name="generate_matchs_now" type="submit" value="'.__('Create matches', 'bad-tournament').'" />';
     $html .= '</form>';
 }
 

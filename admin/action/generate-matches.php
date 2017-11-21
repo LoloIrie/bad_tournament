@@ -58,7 +58,7 @@ if( isset( $_POST['generate_matchs_now'] ) || $generate_matchs_now === true ){
         //var_dump( $player_notplaying );
 
         if( $_SESSION['t_system'] == 1 ){
-            // Schweizer system: Wer nicht spielt bekommt ein Punkt
+            // Swiss system: dont' play ? => Get a point
             $pl_id = $players_match[0]->players_id;
             $wpdb->query(
                 "UPDATE
@@ -170,28 +170,28 @@ if( isset( $_POST['generate_matchs_now'] ) || $generate_matchs_now === true ){
                 /* Trying the 1st player */
                 if( !in_array( $players_match[$k_pl2]->id , $opponents ) ){
                     $already_played = false;
-                    $bvg_admin_msg .= 'Match noch nicht gespielt: '.$players_match[$k_pl1]->id.'-'.$players_match[$k_pl2]->id.'<br />';
+                    $bvg_admin_msg .= 'Not played yet: '.$players_match[$k_pl1]->id.'-'.$players_match[$k_pl2]->id.'<br />';
                     //var_dump( $players_match );
                 }else{
-                    $bvg_admin_msg .= 'Match schon gespielt: '.$players_match[$k_pl1]->id.'-'.$players_match[$k_pl2]->id.'<br />';
+                    $bvg_admin_msg .= 'Game played: '.$players_match[$k_pl1]->id.'-'.$players_match[$k_pl2]->id.'<br />';
                     $k_pl2 = $i + 2;
                     /* Trying the 2nd player */
                     if( !in_array( $players_match[$k_pl2]->id , $opponents ) ){
                         $already_played = false;
                     }else{
-                        $bvg_admin_msg .= 'Match schon gespielt: '.$players_match[$k_pl1]->id.'-'.$players_match[$k_pl2]->id.'<br />';
+                        $bvg_admin_msg .= 'Game played: '.$players_match[$k_pl1]->id.'-'.$players_match[$k_pl2]->id.'<br />';
                         $k_pl2 = $i + 3;
                         /* Trying the 3rd player */
                         if( !in_array( $players_match[$k_pl2]->id , $opponents ) ){
                             $already_played = false;
                         }else{
-                            $bvg_admin_msg .= 'Match schon gespielt: '.$players_match[$k_pl1]->id.'-'.$players_match[$k_pl2]->id.'<br />';
+                            $bvg_admin_msg .= 'Game played: '.$players_match[$k_pl1]->id.'-'.$players_match[$k_pl2]->id.'<br />';
                             $k_pl2 = $i + 3;
                             /* Trying the 4th player */
                             if( !in_array( $players_match[$k_pl2]->id , $opponents ) ){
                                 $already_played = false;
                             }else{
-                                $bvg_admin_msg .= 'Match schon gespielt: '.$players_match[$k_pl1]->id.'-'.$players_match[$k_pl2]->id.'<br />';
+                                $bvg_admin_msg .= 'Game played: '.$players_match[$k_pl1]->id.'-'.$players_match[$k_pl2]->id.'<br />';
                                 /* Get an opponent in the rest of available players */
                                 $k_pl2 = get_free_opponent( $players_match, $k_pl1, $opponents );
                                 if( $k_pl2 > 0 ){
@@ -276,6 +276,25 @@ if( isset( $_POST['generate_matchs_now'] ) || $generate_matchs_now === true ){
     else if( $_SESSION['t_system'] == 4 ){
         /* Grinding Tournament */
         $nb_matches = floor( $nb_players / 4);
+
+        $too_many_players = $nb_players%4;
+        if( $too_many_players > 0 ){
+
+
+            /* Too much players => Remove users with most played games */
+            usort($players_match, function($a, $b) {
+                return $b->played - $a->played;
+            });
+
+            //echo '<pre>';
+            //var_dump($players_match);
+
+            for( $i=0; $i<$too_many_players; $i++ ){
+                unset( $players_match[$i] );
+            }
+            //var_dump($players_match);
+        }
+
         shuffle( $players_match );
         //echo 'NB Matches: '.$nb_matches.'<br />';
         /* Set teams */

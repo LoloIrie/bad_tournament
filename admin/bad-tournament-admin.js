@@ -28,7 +28,7 @@ jQuery('#tournament_select_button').on( 'click', function(){
 
 jQuery('#player_select').on( 'change', function(){
     console.log( jQuery('#player_select option:selected').attr( 'data_level' ) );
-    jQuery( '#schweizer_system_punkte').val( jQuery('#player_select option:selected').attr( 'data_level' ) );
+    jQuery( '#swiss_system_point').val( jQuery('#player_select option:selected').attr( 'data_level' ) );
 });
 
 jQuery( 'select.player_name' ).on('change', function() {

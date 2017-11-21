@@ -10,37 +10,38 @@
 /* Table */
 
 //$html .= '<div class="admin_block_label">Tabelle</div>';
-$html .= '<div class="admin_block nav_table" id="block_table">';
+$html .= '<div class="admin_block nav_table" id="block_table" '.( $ADMIN_VIEW == 'table' ? 'style="display: block;"' : '' ).'>';
 $html .= '<form method="post">';
 $html .= '<input type="hidden" name="form_action" value="next-round" />';
 
 $html .= '<ul class="table">';
 $html .= '<li class="table_header">';
 $html .= '<span class="pl_name">';
-$html .= "Spieler";
+$html .= __('Player', 'bad-tournament');
 $html .= "</span>";
 $html .= '<span class="pl_played">';
-$html .= "Spiele";
+$html .= __('Games', 'bad-tournament');
 $html .= "</span>";
 $html .= '<span class="pl_victory">';
-$html .= "S";
+$html .= __('W', 'bad-tournament');
 $html .= "</span>";
 $html .= '<span class="pl_draw">';
-$html .= "U";
+$html .= __('D', 'bad-tournament');
 $html .= "</span>";
 $html .= '<span class="pl_loss">';
-$html .= "N";
+$html .= __('L', 'bad-tournament');
 $html .= "</span>";
 $html .= '<span class="pl_points_major">';
-$html .= "Punkte";
+$html .= __('Main Points', 'bad-tournament');
 $html .= "</span>";
 $html .= '<span class="pl_sets">';
-$html .= "Sätze";
+$html .= __('Sets', 'bad-tournament');
 $html .= "</span>";
 $html .= '<span class="pl_points">';
-$html .= "Spielpunkte";
+$html .= __('Total points', 'bad-tournament');
 $html .= "</span>";
 $html .= '</li>';
+
 
 foreach( $players as $k => $player ){
 
@@ -85,11 +86,11 @@ foreach( $players as $k => $player ){
 }
 $html .= '</ul>';
 
-$html .= '<input type="submit" value="Nächster Round" class="next_round" style="float: none;" />';
+$html .= '<input type="submit" value="'.__('Next round', 'bad-tournament').'" class="next_round" style="float: none;" />';
 
-$html .= '<h1 class="topspace">Shortcodes</h1>';
-$html .= '<div class="shortcode_bvg"><h2>Tabelle (komplett)</h2><input type="text" class="wp_style" value="[bad_tournament_table t_id='.$_SESSION['t_id'].' view=full]" /></div>';
-$html .= '<div class="shortcode_bvg"><h2>Tabelle (nur die 5 erste)</h2><input type="text" class="wp_style" value="[bad_tournament_table t_id='.$_SESSION['t_id'].' view=5]" /></div>';
+$html .= '<h1 class="topspace">'.__('Shortcodes', 'bad-tournament').'</h1>';
+$html .= '<div class="shortcode_bvg"><h2>'.__('Full table', 'bad-tournament').'</h2><input type="text" class="wp_style" value="[bad_tournament_table t_id='.$_SESSION['t_id'].' view=full]" /></div>';
+$html .= '<div class="shortcode_bvg"><h2>'.__('Table with only first XX players', 'bad-tournament').'</h2><input type="text" class="wp_style" value="[bad_tournament_table t_id='.$_SESSION['t_id'].' view=XX]" /></div>';
 
 
 
