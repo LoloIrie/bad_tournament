@@ -22,8 +22,11 @@ include_once plugin_dir_path(__FILE__). '../admin/db-get-content.php';
 $tournament = db_get_tournaments( $atts['t_id'] );
 $players = db_get_players( $atts['t_id'] );
 $round = $atts[ 'round' ];
-if( $round == 0){
+
+if( $round === 0){
     $round = false;
+}elseif( $round == '!' ){
+    $round = $tournament[0]->round;
 }
 $matches = db_get_matches( $atts['t_id'], $round );
 

@@ -188,9 +188,10 @@ if( !empty( $matches ) ){
         $html .= '</form>';
     }
 
-    $html .= '<h1 class="topspace">Shortcodes</h1>';
-    $html .= '<div class="shortcode_bvg"><h2>Matches</h2><input type="text" class="wp_style" value="[bad_tournament_matches t_id='.$_SESSION['t_id'].' round=0]" /></div>';
-    $html .= '<div class="shortcode_bvg"><h2>Matches nur für Runde 3</h2><input type="text" class="wp_style" value="[bad_tournament_matches t_id='.$_SESSION['t_id'].' round=3]" /></div>';
+    $html .= '<h1 class="topspace">'.__('Shortcodes', 'bad-tournament').'</h1>';
+    $html .= '<div class="shortcode_bvg"><h2>'.__('Matches', 'bad-tournament').'</h2><input type="text" class="wp_style" value="[bad_tournament_matches t_id='.$_SESSION['t_id'].' round=0]" /></div>';
+    $html .= '<div class="shortcode_bvg"><h2>'.__('Matches only for 3rd round', 'bad-tournament').'</h2><input type="text" class="wp_style" value="[bad_tournament_matches t_id='.$_SESSION['t_id'].' round=3]" /></div>';
+    $html .= '<div class="shortcode_bvg"><h2>'.__('Matches only for the current round', 'bad-tournament').'</h2><input type="text" class="wp_style" value="[bad_tournament_matches t_id='.$_SESSION['t_id'].' round=!]" /></div>';
 
 }else{
 
