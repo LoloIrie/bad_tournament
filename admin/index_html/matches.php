@@ -188,6 +188,10 @@ if( !empty( $matches ) ){
         $html .= '</form>';
     }
 
+    $html .= '<h1 class="topspace">Shortcodes</h1>';
+    $html .= '<div class="shortcode_bvg"><h2>Matches</h2><input type="text" class="wp_style" value="[bad_tournament_matches t_id='.$_SESSION['t_id'].' round=0]" /></div>';
+    $html .= '<div class="shortcode_bvg"><h2>Matches nur für Runde 3</h2><input type="text" class="wp_style" value="[bad_tournament_matches t_id='.$_SESSION['t_id'].' round=3]" /></div>';
+
 }else{
 
     $html .= '<form method="post">';
