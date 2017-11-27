@@ -7,6 +7,13 @@
  */
 
 if ( !defined( 'ABSPATH' ) ) die();
+
+$ADMIN_VIEW = false;
+if( isset( $_GET['admin_view'] ) ){
+    $ADMIN_VIEW = $_GET['admin_view'];
+}
+
+
 global $wpdb;
 $bvg_admin_msg = '';
 
@@ -19,7 +26,7 @@ if( isset($_POST['form_action']) ){
 if( !isset( $_SESSION['t_id'] ) ){
     $_SESSION['t_id'] = 1;
     $_SESSION['t_system'] = 1;
-    $_SESSION['t_name'] = 'BVG Turnier';
+    $_SESSION['t_name'] = 'TOurnament';
 }
 if( !isset( $_SESSION['round'] ) ){
     $round = $wpdb->get_results( "SELECT round FROM ".$wpdb->prefix."bvg_tournaments WHERE id=".$_SESSION['t_id']." LIMIT 0,1" );
@@ -33,6 +40,8 @@ $all_players = db_get_all_players();
 $players = db_get_players();
 $matches = db_get_matches( $_SESSION['t_id'], $_SESSION['round'] );
 
+//echo '<pre>';
+//var_dump( $players );
 
 /* Generate matches if required */
 if( empty($matches) || isset( $_POST['regenerate_matchs_now'] ) ){

@@ -7,6 +7,8 @@ Description: Badminton / Tennis / Table tennis Tournament Plugin
 Author: Laurent Dorier
 Version: 1.0
 Author URI: http://etalkers.org
+Text Domain: bad-tournament
+Domain Path: /languages
 */
 define( 'bad_tournament_DEBUG', true );
 if ( !defined( 'ABSPATH' ) ) die();
@@ -25,6 +27,8 @@ function myStartSession() {
 class bad_tournament
 {
     function __construct(){
+        load_plugin_textdomain( 'bad-tournament' );
+
         add_action( 'admin_menu', array( $this, 'bad_tournament_menu' ) );
 
         add_action( 'wp_ajax_change_players_match', array( $this, 'change_players_match' ) );
@@ -35,8 +39,8 @@ class bad_tournament
 
     function bad_tournament_menu(){
         add_menu_page(
-            'BVG Turnier',
-            'BVG Turnier',
+            'Bad Tournament',
+            __('Bad Tournament', 'bad-tournament'),
             'edit_pages',
             'bad_tournament',
             array( $this, 'bad_tournament_admin' ),
@@ -44,9 +48,10 @@ class bad_tournament
             20
         );
 
-        add_submenu_page( 'bad_tournament', 'Players', 'Players', 'manage_options', 'admin.php?page=bad_tournament&view=players');
-        add_submenu_page( 'bad_tournament', 'Table', 'Table', 'manage_options', 'admin.php?page=bad_tournament&view=table');
-        add_submenu_page( 'bad_tournament', 'Matches', 'Matches', 'manage_options', 'admin.php?page=bad_tournament&view=matches');
+        add_submenu_page( 'bad_tournament', 'Tournament', __('Tournament', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=tournament');
+        add_submenu_page( 'bad_tournament', 'Players', __('Players', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=players');
+        add_submenu_page( 'bad_tournament', 'Table', __('Table', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=table');
+        add_submenu_page( 'bad_tournament', 'Matches', __('Matches', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=matches');
 
     }
 
@@ -65,7 +70,7 @@ class bad_tournament
 
             include plugin_dir_path(__FILE__).'admin/index.php';
         }else{
-            die( 'You are not allowed to access here...' );
+            die( __('You are not allowed to access here...', 'bad-tournament') );
         }
 
 

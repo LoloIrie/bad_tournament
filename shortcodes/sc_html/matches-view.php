@@ -11,7 +11,7 @@
 
 
 //$html .= '<div class="admin_block_label">Spiele</div>';
-$html .= '<div class="admin_block nav_match" id="block_spiele">';
+$html .= '<div class="admin_block nav_match" id="block_game">';
 
 if( !$ROUND && ($ROUND_MAX - $ROUND) > 2 ){
     $html .= '<div class="round_select_div">';
