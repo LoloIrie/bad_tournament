@@ -8,277 +8,160 @@
 
 if ( !defined( 'ABSPATH' ) ) die();
 
-global $wpdb;
-require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+$bad_tournament_version = '1.0';
 
-$nom_table = $wpdb->prefix . 'bvg_matches';
-$sql = "CREATE TABLE $nom_table (
-  id bigint(20) unsigned NOT NULL auto_increment,
-  player1_id bigint(20) unsigned NOT NULL,
-  player2_id bigint(20) unsigned NOT NULL,
-  player1_id_bis bigint(20) unsigned NOT NULL,
-  player2_id_bis bigint(20) unsigned NOT NULL,
-  tournament_id bigint(20) unsigned NOT NULL,
-  round int(11) NOT NULL,
-  winner int(11) NOT NULL,
-  pl1_set1 int(11) NOT NULL,
-  pl2_set1 int(11) NOT NULL,
-  pl1_set2 int(11) NOT NULL,
-  pl2_set2 int(11) NOT NULL,
-  pl1_set3 int(11) NOT NULL,
-  pl2_set3 int(11) NOT NULL,
-  pl1_set4 int(11) NOT NULL,
-  pl2_set4 int(11) NOT NULL,
-  pl1_set5 int(11) NOT NULL,
-  pl2_set5 int(11) NOT NULL,
-  parent_id int(11) NOT NULL,
-  PRIMARY KEY (id),
-  INDEX (player1_id),
-  INDEX (player2_id),
-  INDEX (player1_id_bis),
-  INDEX (player2_id_bis),
-  INDEX (tournament_id)
-) ENGINE=InnoDB;";
-dbDelta( $sql );
+function bad_tournament_install( $bad_tournament_version, $bad_tournament_current_version = false ){
 
-$nom_table = $wpdb->prefix . 'bvg_players';
-$sql = "CREATE TABLE $nom_table (
-  id bigint(20) unsigned NOT NULL auto_increment,
-  firstname varchar(150) NOT NULL,
-  lastname varchar(150) NOT NULL,
-  player_level int(6) unsigned NOT NULL,
-  status int(6) unsigned NOT NULL,
-  PRIMARY KEY (id)
-) ENGINE=InnoDB;";
-dbDelta( $sql );
+    if( $bad_tournament_version == '1.0' ) {
+        /* First version */
 
-$nom_table = $wpdb->prefix . 'bvg_players_tournament';
-$sql = "CREATE TABLE $nom_table (
-  id bigint(20) unsigned NOT NULL auto_increment,
-  tournament_id bigint(20) unsigned NOT NULL,
-  players_id bigint(20) unsigned NOT NULL,
-  played int(3) unsigned NOT NULL,
-  player_level_init int(3) unsigned NOT NULL,
-  player_level_current int(3) unsigned NOT NULL,
-  victory int(3) unsigned NOT NULL,
-  draw int(3) unsigned NOT NULL,
-  loss int(3) unsigned NOT NULL,
-  points_major int(3) unsigned NOT NULL,
-  sets int(3) unsigned NOT NULL,
-  sets_against int(3) unsigned NOT NULL,
-  points int(6) unsigned NOT NULL,
-  points_against int(6) unsigned NOT NULL,
-  opponents varchar(250) NOT NULL,
-  PRIMARY KEY (id),
-  INDEX (tournament_id),
-  INDEX (players_id)
-) ENGINE=InnoDB;";
-dbDelta( $sql );
+        bad_tournament_install_init();
 
-$nom_table = $wpdb->prefix . 'bvg_tournaments';
-$sql = "CREATE TABLE $nom_table (
-  id bigint(20) unsigned NOT NULL auto_increment,
-  parent_id int(11) unsigned NOT NULL,
-  name varchar(150) NOT NULL,
-  round int(11) NOT NULL,
-  system int(11) NOT NULL,
-  nb_sets int(11) NOT NULL,
-  points_set int(11) NOT NULL,
-  max_points_set int(11) NOT NULL,
-  PRIMARY KEY (id),
-  INDEX (parent_id)
-) ENGINE=InnoDB;";
-dbDelta( $sql );
+        $bvg_admin_msg = 'Plugin Bad Tournament installed !';
+
+    }else{
+        /* Update */
+        bad_tournament_update( $bad_tournament_version, $bad_tournament_current_version );
+
+        $bvg_admin_msg = 'Plugin Bad Tournament updated !';
+    }
+
+    return $bvg_admin_msg;
+}
 
 
-/* ADD FOREIGN KEYS */
-$nom_table = $wpdb->prefix . 'bvg_matches';
-$sql = "ALTER TABLE ".$nom_table."
-        ADD FOREIGN KEY (player1_id)
-          REFERENCES ".$wpdb->prefix . "bvg_players_tournament(id)
-          ON UPDATE NO ACTION ON DELETE NO ACTION,
-        ADD FOREIGN KEY (player2_id)
-          REFERENCES ".$wpdb->prefix . "bvg_players_tournament(id)
-          ON UPDATE NO ACTION ON DELETE NO ACTION,
-        ADD FOREIGN KEY (player1_id_bis)
-          REFERENCES ".$wpdb->prefix . "bvg_players_tournament(id)
-          ON UPDATE NO ACTION ON DELETE NO ACTION,
-        ADD FOREIGN KEY (player2_id_bis)
-          REFERENCES ".$wpdb->prefix . "bvg_players_tournament(id)
-          ON UPDATE NO ACTION ON DELETE NO ACTION,
-        ADD FOREIGN KEY (tournament_id)
-          REFERENCES ".$wpdb->prefix . "bvg_tournament(id)
-          ON UPDATE NO ACTION ON DELETE NO ACTION;";
-dbDelta( $sql );
-
-
-$nom_table = $wpdb->prefix . 'bvg_players_tournament';
-$sql = "ALTER TABLE ".$nom_table."
-        ADD FOREIGN KEY (tournament_id)
-          REFERENCES ".$wpdb->prefix . "bvg_tournament(id)
-          ON UPDATE NO ACTION ON DELETE NO ACTION,
-        FOREIGN KEY (players_id)
-          REFERENCES ".$wpdb->prefix . "bvg_players(id)
-          ON UPDATE NO ACTION ON DELETE NO ACTION;";
-dbDelta( $sql );
-
-
-$nom_table = $wpdb->prefix . 'bvg_tournaments';
-$sql = "ALTER TABLE ".$nom_table."
-        ADD FOREIGN KEY (parent_id)
-          REFERENCES ".$wpdb->prefix . "bvg_tournaments(id)
-          ON UPDATE NO ACTION ON DELETE NO ACTION;";
-dbDelta( $sql );
-
-
-$bvg_admin_msg = 'Plugin BVG Turnier installiert !';
+function bad_tournament_update( $bad_tournament_version ){
 
 
 
-/*
+    return true;
+}
 
--- phpMyAdmin SQL Dump
--- version 4.5.5.1
--- http://www.phpmyadmin.net
---
--- Host: 127.0.0.1
--- Erstellungszeit: 02. Nov 2017 um 15:19
--- Server-Version: 5.7.11
--- PHP-Version: 5.6.19
+function bad_tournament_install_init(){
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+    global $wpdb;
+    require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
---
--- Datenbank: bvg_dev
---
+    $nom_table = $wpdb->prefix . 'bvg_matches';
+    $sql = "CREATE TABLE $nom_table (
+                  id bigint(20) unsigned NOT NULL auto_increment,
+                  player1_id bigint(20) unsigned NOT NULL,
+                  player2_id bigint(20) unsigned NOT NULL,
+                  player1_id_bis bigint(20) unsigned NOT NULL,
+                  player2_id_bis bigint(20) unsigned NOT NULL,
+                  tournament_id bigint(20) unsigned NOT NULL,
+                  round int(11) NOT NULL,
+                  winner int(11) NOT NULL,
+                  pl1_set1 int(11) NOT NULL,
+                  pl2_set1 int(11) NOT NULL,
+                  pl1_set2 int(11) NOT NULL,
+                  pl2_set2 int(11) NOT NULL,
+                  pl1_set3 int(11) NOT NULL,
+                  pl2_set3 int(11) NOT NULL,
+                  pl1_set4 int(11) NOT NULL,
+                  pl2_set4 int(11) NOT NULL,
+                  pl1_set5 int(11) NOT NULL,
+                  pl2_set5 int(11) NOT NULL,
+                  parent_id int(11) NOT NULL,
+                  PRIMARY KEY (id),
+                  INDEX (player1_id),
+                  INDEX (player2_id),
+                  INDEX (player1_id_bis),
+                  INDEX (player2_id_bis),
+                  INDEX (tournament_id)
+                ) ENGINE=InnoDB;";
+    dbDelta( $sql );
 
--- --------------------------------------------------------
+    $nom_table = $wpdb->prefix . 'bvg_players';
+    $sql = "CREATE TABLE $nom_table (
+                  id bigint(20) unsigned NOT NULL auto_increment,
+                  firstname varchar(150) NOT NULL,
+                  lastname varchar(150) NOT NULL,
+                  player_level int(6) unsigned NOT NULL,
+                  status int(6) unsigned NOT NULL,
+                  PRIMARY KEY (id)
+                ) ENGINE=InnoDB;";
+    dbDelta( $sql );
 
---
--- Tabellenstruktur für Tabelle wp_bvg_matches
---
+    $nom_table = $wpdb->prefix . 'bvg_players_tournament';
+    $sql = "CREATE TABLE $nom_table (
+                  id bigint(20) unsigned NOT NULL auto_increment,
+                  tournament_id bigint(20) unsigned NOT NULL,
+                  players_id bigint(20) unsigned NOT NULL,
+                  played int(3) unsigned NOT NULL,
+                  player_level_init int(3) unsigned NOT NULL,
+                  player_level_current int(3) unsigned NOT NULL,
+                  victory int(3) unsigned NOT NULL,
+                  draw int(3) unsigned NOT NULL,
+                  loss int(3) unsigned NOT NULL,
+                  points_major int(3) unsigned NOT NULL,
+                  sets int(3) unsigned NOT NULL,
+                  sets_against int(3) unsigned NOT NULL,
+                  points int(6) unsigned NOT NULL,
+                  points_against int(6) unsigned NOT NULL,
+                  opponents varchar(250) NOT NULL,
+                  PRIMARY KEY (id),
+                  INDEX (tournament_id),
+                  INDEX (players_id)
+                ) ENGINE=InnoDB;";
+    dbDelta( $sql );
 
-CREATE TABLE wp_bvg_matches (
-  id bigint(20) NOT NULL,
-  player1_id bigint(20) NOT NULL,
-  player2_id bigint(20) NOT NULL,
-  tournament_id bigint(20) NOT NULL,
-  round int(11) NOT NULL,
-  winner int(11) NOT NULL,
-  pl1_set1 int(11) NOT NULL,
-  pl2_set1 int(11) NOT NULL,
-  pl1_set2 int(11) NOT NULL,
-  pl2_set2 int(11) NOT NULL,
-  pl1_set3 int(11) NOT NULL,
-  pl2_set3 int(11) NOT NULL,
-  pl1_set4 int(11) NOT NULL,
-  pl2_set4 int(11) NOT NULL,
-  pl1_set5 int(11) NOT NULL,
-  pl2_set5 int(11) NOT NULL,
-  parent_id int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+    $nom_table = $wpdb->prefix . 'bvg_tournaments';
+    $sql = "CREATE TABLE $nom_table (
+                  id bigint(20) unsigned NOT NULL auto_increment,
+                  parent_id int(11) unsigned NOT NULL,
+                  name varchar(150) NOT NULL,
+                  round int(11) NOT NULL,
+                  system int(11) NOT NULL,
+                  nb_sets int(11) NOT NULL,
+                  points_set int(11) NOT NULL,
+                  max_points_set int(11) NOT NULL,
+                  PRIMARY KEY (id),
+                  INDEX (parent_id)
+                ) ENGINE=InnoDB;";
+    dbDelta( $sql );
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle wp_bvg_players
---
+    /* ADD FOREIGN KEYS */
+    $nom_table = $wpdb->prefix . 'bvg_matches';
+    $sql = "ALTER TABLE ".$nom_table."
+                    ADD FOREIGN KEY (player1_id)
+                      REFERENCES ".$wpdb->prefix . "bvg_players_tournament(id)
+                      ON UPDATE NO ACTION ON DELETE NO ACTION,
+                    ADD FOREIGN KEY (player2_id)
+                      REFERENCES ".$wpdb->prefix . "bvg_players_tournament(id)
+                      ON UPDATE NO ACTION ON DELETE NO ACTION,
+                    ADD FOREIGN KEY (player1_id_bis)
+                      REFERENCES ".$wpdb->prefix . "bvg_players_tournament(id)
+                      ON UPDATE NO ACTION ON DELETE NO ACTION,
+                    ADD FOREIGN KEY (player2_id_bis)
+                      REFERENCES ".$wpdb->prefix . "bvg_players_tournament(id)
+                      ON UPDATE NO ACTION ON DELETE NO ACTION,
+                    ADD FOREIGN KEY (tournament_id)
+                      REFERENCES ".$wpdb->prefix . "bvg_tournaments(id)
+                      ON UPDATE NO ACTION ON DELETE NO ACTION;";
+    dbDelta( $sql );
 
-CREATE TABLE wp_bvg_players (
-  id bigint(20) UNSIGNED NOT NULL,
-  firstname varchar(150) NOT NULL,
-  lastname varchar(150) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+    $nom_table = $wpdb->prefix . 'bvg_players_tournament';
+    $sql = "ALTER TABLE ".$nom_table."
+                    ADD FOREIGN KEY (tournament_id)
+                      REFERENCES ".$wpdb->prefix . "bvg_tournaments(id)
+                      ON UPDATE NO ACTION ON DELETE NO ACTION,
+                    ADD FOREIGN KEY (players_id)
+                      REFERENCES ".$wpdb->prefix . "bvg_players(id)
+                      ON UPDATE NO ACTION ON DELETE NO ACTION;";
+    dbDelta( $sql );
 
---
--- Tabellenstruktur für Tabelle wp_bvg_players_tournament
---
 
-CREATE TABLE wp_bvg_players_tournament (
-  id bigint(20) UNSIGNED NOT NULL,
-  tournament_id bigint(20) UNSIGNED NOT NULL,
-  players_id bigint(20) UNSIGNED NOT NULL,
-  player_level_init int(11) NOT NULL,
-  player_level_current int(11) NOT NULL,
-  played int(3) UNSIGNED NOT NULL,
-  victory int(3) UNSIGNED NOT NULL,
-  draw int(3) UNSIGNED NOT NULL,
-  loss int(3) UNSIGNED NOT NULL,
-  points_major int(3) UNSIGNED NOT NULL,
-  sets int(3) UNSIGNED NOT NULL,
-  sets_against int(11) NOT NULL,
-  points int(6) UNSIGNED NOT NULL,
-  points_against int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+    $nom_table = $wpdb->prefix . 'bvg_tournaments';
+    $sql = "ALTER TABLE ".$nom_table."
+                    ADD FOREIGN KEY (parent_id)
+                      REFERENCES ".$wpdb->prefix . "bvg_tournaments(id)
+                      ON UPDATE NO ACTION ON DELETE NO ACTION;";
+    dbDelta( $sql );
 
--- --------------------------------------------------------
+    return true;
+}
 
---
--- Tabellenstruktur für Tabelle wp_bvg_tournaments
---
-
-CREATE TABLE wp_bvg_tournaments (
-  id bigint(20) NOT NULL,
-  parent_id int(11) NOT NULL,
-  name varchar(150) NOT NULL,
-  round int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Indizes der exportierten Tabellen
---
-
---
--- Indizes für die Tabelle wp_bvg_matches
---
-ALTER TABLE wp_bvg_matches
-  ADD PRIMARY KEY (id);
-
---
--- Indizes für die Tabelle wp_bvg_players
---
-ALTER TABLE wp_bvg_players
-  ADD PRIMARY KEY (id);
-
---
--- Indizes für die Tabelle wp_bvg_players_tournament
---
-ALTER TABLE wp_bvg_players_tournament
-  ADD PRIMARY KEY (id);
-
---
--- Indizes für die Tabelle wp_bvg_tournaments
---
-ALTER TABLE wp_bvg_tournaments
-  ADD PRIMARY KEY (id);
-
---
--- AUTO_INCREMENT für exportierte Tabellen
---
-
---
--- AUTO_INCREMENT für Tabelle wp_bvg_matches
---
-ALTER TABLE wp_bvg_matches
-  MODIFY id bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
---
--- AUTO_INCREMENT für Tabelle wp_bvg_players
---
-ALTER TABLE wp_bvg_players
-  MODIFY id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
---
--- AUTO_INCREMENT für Tabelle wp_bvg_players_tournament
---
-ALTER TABLE wp_bvg_players_tournament
-  MODIFY id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
---
--- AUTO_INCREMENT für Tabelle wp_bvg_tournaments
---
-ALTER TABLE wp_bvg_tournaments
-  MODIFY id bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
-*/
 

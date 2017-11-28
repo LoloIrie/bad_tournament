@@ -18,7 +18,7 @@ if( !empty( trim( $bvg_admin_msg ) ) ){
     */
 }
 
-$html .= '<h1>Administration !!!</h1>';
+$html .= '<h1>Administration Version '.get_option( 'bad_tournament_installed' ).' !!!</h1>';
 
 /* Title */
 $html .= '<h3>'.$_SESSION['t_name'].' (ID:'.$_SESSION['current_tournament']['id'].')' .' ( '.__( 'Round', 'bad-tournament').': '.$_SESSION['round'].')</h3>';

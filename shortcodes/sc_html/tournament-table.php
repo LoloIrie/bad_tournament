@@ -52,7 +52,7 @@ foreach( $players as $k => $player ){
         break;
     }
 
-    $html .= '<li class="table_row">'.$nb_row.'. ';
+    $html .= '<li class="table_row"><span class="pl_rang">'.$nb_row.'.</span>';
     $html .= '<span class="pl_name">';
     $html .= $player->player_firstname.' '.$player->player_lastname;
     $html .= "</span>";

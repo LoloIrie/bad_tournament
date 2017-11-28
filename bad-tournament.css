@@ -51,10 +51,16 @@ ul.table span{
     border-bottom: 1px solid #777;
     font-weight: bold;
 }
+.table_header span.pl_name{
+    width: 215px !important;
+}
 .table_row span{
     min-width: 60px;
     padding: 3px;
     font-weight: normal;
+}
+.table span.pl_rang{
+    width: 40px;
 }
 .table span.pl_name{
     width: 150px;
