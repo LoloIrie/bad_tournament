@@ -6,12 +6,18 @@
  * Time: 15:32
  */
 
+$dates = explode( '/', $_POST['birthdate'] );
+$birthdate = $dates[2].'-'.$dates[1].'-'.$dates[0];
 
 $data = array(
     'firstname' => $_POST['firstname'],
     'lastname' => $_POST['lastname'],
     'player_level' => $_POST['swiss_system_point'],
-    'status' => 1
+    'status' => 1,
+    'club_id' => $_POST['club_id'],
+    'player_id' => $_POST['player_id'],
+    'birthdate' => $birthdate,
+    'sex' => $_POST['sex']
 );
 $wpdb->insert( $wpdb->prefix . 'bvg_players', $data );
 

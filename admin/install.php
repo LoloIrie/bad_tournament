@@ -79,6 +79,10 @@ function bad_tournament_install_init(){
                   lastname varchar(150) NOT NULL,
                   player_level int(6) unsigned NOT NULL,
                   status int(6) unsigned NOT NULL,
+                  club_id int(6) unsigned NOT NULL,
+                  player_id varchar(50) NOT NULL,
+                  birtdate date,
+                  sex int(2) unsigned NOT NULL,
                   PRIMARY KEY (id)
                 ) ENGINE=InnoDB;";
     dbDelta( $sql );

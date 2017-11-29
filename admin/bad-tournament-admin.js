@@ -26,9 +26,14 @@ jQuery('#tournament_select_button').on( 'click', function(){
     jQuery( '#tournament_select_id' ).val( jQuery( '#tournament_select' ).val() );
 });
 
-jQuery('#player_select').on( 'change', function(){
-    console.log( jQuery('#player_select option:selected').attr( 'data_level' ) );
-    jQuery( '#swiss_system_point').val( jQuery('#player_select option:selected').attr( 'data_level' ) );
+
+jQuery('#bvg_admin_msg_close').on( 'click', function(){
+    console.log( 'Close admin msg...' );
+    jQuery( '#bvg_admin_msg').animate({ height: 0, opacity: 0 }, 'slow');
+});
+
+jQuery('.plus_icon').on( 'click', function(){
+    jQuery( this).next().next().slideDown();
 });
 
 jQuery( 'select.player_name' ).on('change', function() {
@@ -66,3 +71,5 @@ jQuery( 'select.player_name' ).on('change', function() {
         }
     }
 );
+
+jQuery('.datepicker').datepicker( {dateFormat: "dd/mm/yy"} );
