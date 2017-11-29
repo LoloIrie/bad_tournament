@@ -62,10 +62,12 @@ class bad_tournament
 
         if ( current_user_can('edit_pages') ) {
 
-            if( get_option( 'bad_tournament_installed' ) !== 'ok' ){
+            include plugin_dir_path(__FILE__).'admin/install.php';
+            if( get_option( 'bad_tournament_installed' ) !== $bad_tournament_version ){
+                $bad_tournament_current_version = get_option( 'bad_tournament_installed' );
                 /* Not yet installed ? */
-                include plugin_dir_path(__FILE__).'admin/install.php';
-                add_option('bad_tournament_installed', 'ok'  );
+                $bvg_admin_msg = bad_tournament_install( $bad_tournament_version, $bad_tournament_current_version );
+                add_option('bad_tournament_installed', $bad_tournament_version  );
             }
 
             include plugin_dir_path(__FILE__).'admin/index.php';

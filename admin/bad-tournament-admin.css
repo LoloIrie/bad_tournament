@@ -13,14 +13,43 @@ hr{
     clear: both;
 }
 #bvg_admin_msg{
+    margin-top: 10px;
+    padding-left: 24px;
 
-    border: 2px solid #c00;
+    background-image: url('../icons/bad-tournament-warning-icon.png');
+    background-position: top left;
+    background-repeat: no-repeat;
+
+    border: 2px solid #000;
 
     font-weight: bold;
     color: #c00;
 }
-.admin_block{
+#bvg_admin_msg_close, .plus_icon{
+    width: 20px;
+    height: 20px;
+    float: right;
+
+    background-image: url('../icons/bad-tournament-close-icon.png');
+    background-repeat: no-repeat;
+
+    cursor: pointer;
+}
+.plus_icon{
+    margin: 10px 0 10px 0;
+    display: block;
+    float: left;
+    clear: both;
+
+    background-image: url('../icons/bad-tournament-plus-icon.png');
+}
+.admin_block, .admin_block_extended{
     display: none;
+}
+.admin_block_extended{
+    float: left;
+    margin-top: 35px;
+    margin-left: -20px;
 }
 .admin_block_label{
     clear: both;
@@ -46,10 +75,17 @@ input, select{
     float: left;
     margin-top: 4px;
 }
+input[type=submit]{
+    float: none;
+    margin-top: 0;
+}
 input[type=number]{
     min-width: 50px;
 }
-
+input[type=radio]{
+    margin-top: 2px;
+    line-height: 24px;
+}
 ul.table{
     width: 100%;
 }
@@ -90,7 +126,11 @@ select.player_name.winner, input.player_name.winner{
     background-color: #adff2f;
     color: #000;
 }
-
+.radio_block{
+    display: inline-block;
+    float: left;
+    padding-top: 8px;
+}
 .radio_block label{
     border: 0;
     float: none;

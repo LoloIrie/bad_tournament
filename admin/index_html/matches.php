@@ -27,6 +27,7 @@ if( !empty( $matches ) ){
 
     /* Allow to regenerate all games ? */
     $winner_exists = false;
+    $tabindex = 0;
     foreach( $matches as $match ){
         $winner = 0;
         $pl1_set1 = 0;
@@ -128,11 +129,11 @@ if( !empty( $matches ) ){
             }
             $html .= '</select>';
         }
-        $html .= '<input type="number" value="'.$pl1_set1.'" name="pl1_m'.$m_id.'_set1" class="set_score" min="0" max="'.$_SESSION['current_tournament']['max_points_set'].'" />';
-        $html .= '<input type="number" value="'.$pl1_set2.'" name="pl1_m'.$m_id.'_set2" class="set_score" min="0" max="'.$_SESSION['current_tournament']['max_points_set'].'" />';
-        $html .= '<input type="number" value="'.$pl1_set3.'" name="pl1_m'.$m_id.'_set3" class="set_score" min="0" max="'.$_SESSION['current_tournament']['max_points_set'].'" />';
-        $html .= '<input type="number" value="'.$pl1_set4.'" name="pl1_m'.$m_id.'_set4" class="set_score" '.( $_SESSION['current_tournament']['tournament_nb_sets'] < 3 ? 'disabled="disabled"' : '' ).'/>';
-        $html .= '<input type="number" value="'.$pl1_set5.'" name="pl1_m'.$m_id.'_set5" class="set_score" '.( $_SESSION['current_tournament']['tournament_nb_sets'] < 3 ? 'disabled="disabled"' : '' ).'/>';
+        $html .= '<input type="number" value="'.$pl1_set1.'" name="pl1_m'.$m_id.'_set1" class="set_score" min="0" max="'.$_SESSION['current_tournament']['max_points_set'].'" tabindex='.($tabindex+1).' />';
+        $html .= '<input type="number" value="'.$pl1_set2.'" name="pl1_m'.$m_id.'_set2" class="set_score" min="0" max="'.$_SESSION['current_tournament']['max_points_set'].'" tabindex='.($tabindex+3).' />';
+        $html .= '<input type="number" value="'.$pl1_set3.'" name="pl1_m'.$m_id.'_set3" class="set_score" min="0" max="'.$_SESSION['current_tournament']['max_points_set'].'" tabindex='.($tabindex+5).' />';
+        $html .= '<input type="number" value="'.$pl1_set4.'" name="pl1_m'.$m_id.'_set4" class="set_score" '.( $_SESSION['current_tournament']['tournament_nb_sets'] < 3 ? 'disabled="disabled"' : '' ).'tabindex='.($tabindex+7).' />';
+        $html .= '<input type="number" value="'.$pl1_set5.'" name="pl1_m'.$m_id.'_set5" class="set_score" '.( $_SESSION['current_tournament']['tournament_nb_sets'] < 3 ? 'disabled="disabled"' : '' ).'tabindex='.($tabindex+9).' />';
         $html .= '<input type="submit" value="'.__('Sieger', 'bad-tournament').'" class="match_winner" data="'.$pl1_id.'" data_m_id="'.$m_id.'" />';
         $html .= '</div>';
 
@@ -163,11 +164,11 @@ if( !empty( $matches ) ){
             }
             $html .= '</select>';
         }
-        $html .= '<input type="number" value="'.$pl2_set1.'" name="pl2_m'.$m_id.'_set1" class="set_score" min="0" max="'.$_SESSION['current_tournament']['max_points_set'].'" />';
-        $html .= '<input type="number" value="'.$pl2_set2.'" name="pl2_m'.$m_id.'_set2" class="set_score" min="0" max="'.$_SESSION['current_tournament']['max_points_set'].'" />';
-        $html .= '<input type="number" value="'.$pl2_set3.'" name="pl2_m'.$m_id.'_set3" class="set_score" min="0" max="'.$_SESSION['current_tournament']['max_points_set'].'" />';
-        $html .= '<input type="number" value="'.$pl2_set4.'" name="pl2_m'.$m_id.'_set4" class="set_score" '.( $_SESSION['current_tournament']['tournament_nb_sets'] < 3 ? 'disabled="disabled"' : '' ).'/>';
-        $html .= '<input type="number" value="'.$pl2_set5.'" name="pl2_m'.$m_id.'_set5" class="set_score" '.( $_SESSION['current_tournament']['tournament_nb_sets'] < 3 ? 'disabled="disabled"' : '' ).'/>';
+        $html .= '<input type="number" value="'.$pl2_set1.'" name="pl2_m'.$m_id.'_set1" class="set_score" min="0" max="'.$_SESSION['current_tournament']['max_points_set'].'" tabindex='.($tabindex+2).' />';
+        $html .= '<input type="number" value="'.$pl2_set2.'" name="pl2_m'.$m_id.'_set2" class="set_score" min="0" max="'.$_SESSION['current_tournament']['max_points_set'].'" tabindex='.($tabindex+4).' />';
+        $html .= '<input type="number" value="'.$pl2_set3.'" name="pl2_m'.$m_id.'_set3" class="set_score" min="0" max="'.$_SESSION['current_tournament']['max_points_set'].'" tabindex='.($tabindex+6).' />';
+        $html .= '<input type="number" value="'.$pl2_set4.'" name="pl2_m'.$m_id.'_set4" class="set_score" '.( $_SESSION['current_tournament']['tournament_nb_sets'] < 3 ? 'disabled="disabled"' : '' ).'tabindex='.($tabindex+8).' />';
+        $html .= '<input type="number" value="'.$pl2_set5.'" name="pl2_m'.$m_id.'_set5" class="set_score" '.( $_SESSION['current_tournament']['tournament_nb_sets'] < 3 ? 'disabled="disabled"' : '' ).'tabindex='.($tabindex+10).' />';
         $html .= '<input type="submit" value="'.__('Sieger', 'bad-tournament').'" class="match_winner" data="'.$pl2_id.'" data_m_id="'.$m_id.'" />';
         $html .= '</div>';
 
@@ -181,6 +182,8 @@ if( !empty( $matches ) ){
 
         
         $html .= '</form>';
+
+        $tabindex = $tabindex + 100;
     }
 
     if( !$winner_exists ){

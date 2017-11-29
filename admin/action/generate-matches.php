@@ -83,7 +83,7 @@ if( isset( $_POST['generate_matchs_now'] ) || $generate_matchs_now === true ){
         $nb_matches = floor( $nb_players / 2 );
         /* Schweizer system */
 //echo __LINE__;
-        if( $_SESSION['round'] < 1 ){
+        if( $_SESSION['round'] < 2 ){
 
             /* First round */
 
@@ -94,7 +94,18 @@ if( isset( $_POST['generate_matchs_now'] ) || $generate_matchs_now === true ){
             for( $i=0; $i<$nb_matches; $i++ ){
                 $k_pl1 = $i;
                 $k_pl2 = $i + $nb_matches;
+
+                /* Create matches in DB */
+                $data = array(
+                    'player1_id' => $players_match[ $k_pl1 ]->id,
+                    'player2_id' => $players_match[ $k_pl2 ]->id,
+                    'tournament_id' => $_SESSION['t_id'],
+                    'round' => $_SESSION['round']
+                );
+                $wpdb->insert( $wpdb->prefix . 'bvg_matches', $data );
+
                 $matches[] = array(
+                    'id' => $wpdb->insert_id,
                     'player1_id' => $players_match[ $k_pl1 ]->id,
                     'player2_id' => $players_match[ $k_pl2 ]->id,
                     'player1_name' => $players_match[ $k_pl1 ]->player_firstname.' '.$players_match[ $k_pl1 ]->player_lastname,
@@ -113,16 +124,6 @@ if( isset( $_POST['generate_matchs_now'] ) || $generate_matchs_now === true ){
                     'pl2_set5' => 0,
                     'parent_id' => 0
                 );
-
-                /* Create matches in DB */
-                $data = array(
-                    'player1_id' => $players_match[ $k_pl1 ]->id,
-                    'player2_id' => $players_match[ $k_pl2 ]->id,
-                    'tournament_id' => $_SESSION['t_id'],
-                    'round' => $_SESSION['round']
-                );
-                $wpdb->insert( $wpdb->prefix . 'bvg_matches', $data );
-
 
                 /* Add players opponents in DB */
                 $wpdb->query( "UPDATE

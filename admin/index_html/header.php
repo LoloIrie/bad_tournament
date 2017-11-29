@@ -10,7 +10,7 @@
 
 /* Msg */
 if( !empty( trim( $bvg_admin_msg ) ) ){
-    $html .= '<div id="bvg_admin_msg">'.$bvg_admin_msg.'</div>';
+    $html .= '<div id="bvg_admin_msg"><span id="bvg_admin_msg_close"></span>'.$bvg_admin_msg.'</div>';
     /*
         echo '<div><pre>';
         var_dump( $_POST );
@@ -18,10 +18,20 @@ if( !empty( trim( $bvg_admin_msg ) ) ){
     */
 }
 
-$html .= '<h1>Administration !!!</h1>';
+$html .= '<h1>Bad Tournament Administration, Version '.get_option( 'bad_tournament_installed' ).' !!!</h1>';
 
 /* Title */
-$html .= '<h3>'.$_SESSION['t_name'].' (ID:'.$_SESSION['current_tournament']['id'].')' .' ( '.__( 'Round', 'bad-tournament').': '.$_SESSION['round'].')</h3>';
+if( $_SESSION['current_tournament']['id'] != $_SESSION['current_tournament']['parent_id'] ){
+    foreach( $tournaments as $k => $t ){
+        if( $t->id == $_SESSION['current_tournament']['parent_id'] ){
+            $tournament_parent = $tournaments[ $k ];
+            break;
+        }
+    }
+    $html .= '<h2 class="tournament_name">'.$tournament_parent->name.' (ID:'.$tournament_parent->id.')</h2>';
+}
+$html .= '<h3 class="subtournament_name">'.$_SESSION['t_name'].' (ID:'.$_SESSION['current_tournament']['id'].')' .' ( '.__( 'Round', 'bad-tournament').': '.$_SESSION['round'].')</h3>';
+$html .= '<h4>'.$t_system[ $_SESSION['current_tournament']['system'] ].'</h4>';
 $html .= '<h4>'.__( 'Sets to win:', 'bad-tournament').' '.$_SESSION['current_tournament']['nb_sets'].' '.__( 'Points/Set:', 'bad-tournament').' '.$_SESSION['current_tournament']['points_set'].' '.__( 'Max. points per set:', 'bad-tournament').' '.$_SESSION['current_tournament']['max_points_set'].'</h4>';
 
 

@@ -8,6 +8,14 @@
 
 if ( !defined( 'ABSPATH' ) ) die();
 
+$t_system = array(
+    0 => '-',
+    1 => __('Swiss System', 'bad-tournament'),
+    2 => __('League', 'bad-tournament'),
+    3 => __('KO System', 'bad-tournament'),
+    4 => __('Grinding tournament', 'bad-tournament')
+);
+
 $ADMIN_VIEW = false;
 if( isset( $_GET['admin_view'] ) ){
     $ADMIN_VIEW = $_GET['admin_view'];
@@ -34,7 +42,7 @@ if( !isset( $_SESSION['round'] ) ){
 }
 
 /* Get DB content */
-include plugin_dir_path(__FILE__). 'db-get-content.php';
+include_once plugin_dir_path(__FILE__). 'db-get-content.php';
 $tournaments = db_get_tournaments();
 $all_players = db_get_all_players();
 $players = db_get_players();
