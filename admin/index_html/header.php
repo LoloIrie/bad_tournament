@@ -25,10 +25,11 @@ if( $_SESSION['current_tournament']['id'] != $_SESSION['current_tournament']['pa
     foreach( $tournaments as $k => $t ){
         if( $t->id == $_SESSION['current_tournament']['parent_id'] ){
             $tournament_parent = $tournaments[ $k ];
+            $html .= '<h2 class="tournament_name">'.$tournament_parent->name.' (ID:'.$tournament_parent->id.')</h2>';
             break;
         }
     }
-    $html .= '<h2 class="tournament_name">'.$tournament_parent->name.' (ID:'.$tournament_parent->id.')</h2>';
+
 }
 $html .= '<h3 class="subtournament_name">'.$_SESSION['t_name'].' (ID:'.$_SESSION['current_tournament']['id'].')' .' ( '.__( 'Round', 'bad-tournament').': '.$_SESSION['round'].')</h3>';
 $html .= __('Matches played: ', 'bad-tournament').$nb_matchs;
