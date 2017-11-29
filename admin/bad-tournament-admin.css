@@ -14,6 +14,7 @@ hr{
 }
 #bvg_admin_msg{
     margin-top: 10px;
+    padding: 15px;
     padding-left: 24px;
 
     background-image: url('../icons/bad-tournament-warning-icon.png');
@@ -32,6 +33,7 @@ hr{
 
     background-image: url('../icons/bad-tournament-close-icon.png');
     background-repeat: no-repeat;
+    background-position: top right;
 
     cursor: pointer;
 }

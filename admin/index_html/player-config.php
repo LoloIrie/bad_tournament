@@ -12,32 +12,38 @@
 //$html .= '<div class="admin_block_label">Spieler</div>';
 $html .= '<div class="admin_block nav_player" id="block_add_players" '.( $ADMIN_VIEW == 'players' ? 'style="display: block;"' : '' ).'>';
 
-$html .= '<form method="post">';
-$html .= '<input type="hidden" name="form_action" value="add-existing-players" />';
-//$html .= '<input type="hidden" id="swiss_system_point" name="schweizer_system_punkte" value="0" />';
 
-$html .= '<label>'.__('Player:', 'bad-tournament').'</label>';
-$html .= '<select type="text" value="" name="player_select[]" id="player_select" multiple="multiple" >';
-//$html .= '<option value="0">'.__('Choose', 'bad-tournament').'</option>';
-foreach( $all_players as $k => $all_player ){
-    foreach( $players as $player ){
-        if( $player->players_id == $k ){
-            continue 2;
+if( count( $all_players )  != count( $players ) ){
+    $html .= '<form method="post">';
+    $html .= '<input type="hidden" name="form_action" value="add-existing-players" />';
+    //$html .= '<input type="hidden" id="swiss_system_point" name="schweizer_system_punkte" value="0" />';
+
+    $html .= '<label>'.__('Player:', 'bad-tournament').'</label>';
+    $html .= '<select type="text" value="" name="player_select[]" id="player_select" multiple="multiple" >';
+    //$html .= '<option value="0">'.__('Choose', 'bad-tournament').'</option>';
+    foreach( $all_players as $k => $all_player ){
+        foreach( $players as $player ){
+            if( $player->players_id == $k ){
+                continue 2;
+            }
         }
+
+        $html .= '<option value="'.$all_player->player_id.'" data_level="'.$all_player->player_level.'">'.$all_player->player_firstname.' '.$all_player->player_lastname.'</option>';
     }
+    $html .= '</select>';
 
-    $html .= '<option value="'.$all_player->player_id.'" data_level="'.$all_player->player_level.'">'.$all_player->player_firstname.' '.$all_player->player_lastname.'</option>';
+    $html .= '<hr />';
+    $html .= '<input type="submit" value="'.__('Add player(s) to the tournament', 'bad-tournament').'" />';
+    $html .= '<input type="submit" value="'.__('Add all players', 'bad-tournament').'" id="all_players" name="all_players" />';
+    $html .= '<input type="submit" value="'.__('Remove all players for this Tournament', 'bad-tournament').'" id="player_tournament_remove" name="player_tournament_remove" />';
+    $html .= '<input type="submit" value="'.__('Set player(s) as inactive', 'bad-tournament').'" id="player_down" name="player_down" />';
+
+    $html .= '</form>';
+    $html .= '<hr />';
 }
-$html .= '</select>';
 
-$html .= '<hr />';
-$html .= '<input type="submit" value="'.__('Add player(s) to the tournament', 'bad-tournament').'" />';
-$html .= '<input type="submit" value="'.__('Add all players', 'bad-tournament').'" id="all_players" name="all_players" />';
-$html .= '<input type="submit" value="'.__('Remove all players for this Tournament', 'bad-tournament').'" id="player_tournament_remove" name="player_tournament_remove" />';
-$html .= '<input type="submit" value="'.__('Set player(s) as inactive', 'bad-tournament').'" id="player_down" name="player_down" />';
 
-$html .= '</form>';
-$html .= '<hr />';
+
 
 $html .= '<form method="post">';
 $html .= '<input type="hidden" name="form_action" value="add-players" />';

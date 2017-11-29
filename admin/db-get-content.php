@@ -98,6 +98,26 @@ function db_get_players( $tournament_id = false ){
     return $players;
 }
 
+/* Get played matches for the current tournament */
+function db_nb_matches( $tournament_id = false, $round = false ){
+
+    global $wpdb;
+
+    $query = "SELECT
+        count(*) as nb
+
+        FROM
+        ".$wpdb->prefix."bvg_matches
+
+        WHERE
+        tournament_id = ".$tournament_id;
+
+
+    $nb_matches = $wpdb->get_results( $query );
+
+    return $nb_matches[0]->nb;
+}
+
 /* Get matches */
 function db_get_matches( $tournament_id = false, $round = false ){
 

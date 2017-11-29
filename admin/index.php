@@ -47,6 +47,7 @@ $tournaments = db_get_tournaments();
 $all_players = db_get_all_players();
 $players = db_get_players();
 $matches = db_get_matches( $_SESSION['t_id'], $_SESSION['round'] );
+$nb_matchs = db_nb_matches( $_SESSION['t_id'] );
 
 //echo '<pre>';
 //var_dump( $players );
