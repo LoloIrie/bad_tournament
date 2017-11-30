@@ -31,7 +31,9 @@ class bad_tournament
 
         add_action( 'admin_menu', array( $this, 'bad_tournament_menu' ) );
 
+        // Ajax
         add_action( 'wp_ajax_change_players_match', array( $this, 'change_players_match' ) );
+        add_action( 'wp_ajax_player_tooltip', array( $this, 'player_tooltip' ) );
 
         add_shortcode( 'bad_tournament_table', array( $this, 'bad_tournament_table_shortcode' ) );
         add_shortcode( 'bad_tournament_matches', array( $this, 'bad_tournament_matches_shortcode' ) );
@@ -57,6 +59,10 @@ class bad_tournament
 
     function bad_tournament_admin(){
 
+        wp_enqueue_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css');
+        wp_register_script('addons_script', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', array('jquery'), '');
+        wp_enqueue_script('addons_script');
+
         wp_enqueue_style( 'bad_tournament_admin_style', plugin_dir_url(__FILE__).'admin/bad-tournament-admin.css');
         wp_enqueue_script( 'bad_tournament_admin', plugins_url( 'admin/bad-tournament-admin.js', __FILE__ ) );
 
@@ -79,7 +85,17 @@ class bad_tournament
         return true;
     }
 
+    // Reutnr player infos for tootip
+    function player_tooltip( $atts ){
+        $html_ajax = '';
+        include plugin_dir_path(__FILE__).'admin/action/player-info.php';
+
+        echo $html_ajax;
+        wp_die();
+    }
+
     function change_players_match(){
+        $html_ajax = '';
         include plugin_dir_path(__FILE__).'admin/action/change-player-match.php';
         //var_dump( $_POST );
         echo $html_ajax;

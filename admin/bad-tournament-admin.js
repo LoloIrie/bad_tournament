@@ -72,4 +72,28 @@ jQuery( 'select.player_name' ).on('change', function() {
     }
 );
 
+jQuery('.pl_infos').on( 'click', function(){
+    console.log('Display player infos');
+});
+
+
+jQuery('.pl_remove').on( 'click', function(){
+    console.log('Remove player');
+});
+
 jQuery('.datepicker').datepicker( {dateFormat: "dd/mm/yy"} );
+
+jQuery(document).tooltip({
+    items:'.pl_infos',
+    tooltipClass:'pl_infos_content',
+    position: { my: "left top", at: "left top" },
+    content:function( callback ) {
+        pl_id=jQuery( this ).attr('data-pl_id');
+        jQuery.post(ajaxurl, {
+            action: 'player_tooltip',
+            pl_id:pl_id
+        }, function(data) {
+            callback(data);
+        });
+    },
+});

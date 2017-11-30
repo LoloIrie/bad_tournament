@@ -17,11 +17,12 @@ hr{
     padding: 15px;
     padding-left: 24px;
 
+    background-color: #ddd;
     background-image: url('../icons/bad-tournament-warning-icon.png');
     background-position: top left;
     background-repeat: no-repeat;
 
-    border: 2px solid #000;
+    border: 0 0 0 4px solid #c00;
 
     font-weight: bold;
     color: #c00;
@@ -100,13 +101,22 @@ ul.table span{
     border-bottom: 1px solid #777;
     font-weight: bold;
 }
+.table_row{
+    width: 880px;
+}
+.table_row:hover{
+    background-color: rgba( 0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
 .table_row span{
     width: 60px;
     padding: 3px;
     font-weight: normal;
 }
 .table span.pl_name{
-    width: 150px;
+    min-width: 250px;
+    width: 350px;
 }
 
 input.set_score, input.match_winner{
@@ -158,4 +168,52 @@ input.wp_style{
 }
 h1.topspace{
     padding-top: 50px;
+}
+
+.pl_options{
+    float: right;
+}
+.pl_infos, .pl_remove{
+    float: right;
+    width: 14px;
+    height: 14px;
+
+    cursor: pointer;
+}
+.pl_remove{
+    margin-right: 10px;
+}
+.pl_infos_content{
+    max-width: 450px;
+    padding: 8px;
+    margin: auto;
+
+    background-color: #ffffff !important;
+
+    border: 2px solid #000;
+    border-radius: 8px;
+
+    color: #000;
+}
+.ui-tooltip.pl_infos_content{
+    //display: block;
+    //position: relative;
+    max-width: 450px;
+    max-height: 450px;
+    overflow: hidden;
+    opacity: 1 !important;
+    height: auto; !important;
+    max-height: auto !important;
+    background-color: #ffffff !important;
+    background-image: none;
+}
+.pl_tooltip_label{
+    float: left;
+    font-weight: bold;
+}
+.label_row{
+    display: inline-block;
+    line-height: 32px;
+    margin-top: 4px;
+    margin-right: 8px;
 }
