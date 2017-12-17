@@ -34,6 +34,9 @@ class bad_tournament
         // Ajax
         add_action( 'wp_ajax_change_players_match', array( $this, 'change_players_match' ) );
         add_action( 'wp_ajax_player_tooltip', array( $this, 'player_tooltip' ) );
+        add_action( 'wp_ajax_player_remove', array( $this, 'player_remove_from_tournament' ) );
+
+
 
         add_shortcode( 'bad_tournament_table', array( $this, 'bad_tournament_table_shortcode' ) );
         add_shortcode( 'bad_tournament_matches', array( $this, 'bad_tournament_matches_shortcode' ) );
@@ -85,10 +88,19 @@ class bad_tournament
         return true;
     }
 
-    // Reutnr player infos for tootip
+    // Return player infos for tootip
     function player_tooltip( $atts ){
         $html_ajax = '';
         include plugin_dir_path(__FILE__).'admin/action/player-info.php';
+
+        echo $html_ajax;
+        wp_die();
+    }
+
+    // Return player infos for tootip
+    function player_remove_from_tournament( $atts ){
+        $html_ajax = '';
+        include plugin_dir_path(__FILE__).'admin/action/player-remove-from-tournament.php';
 
         echo $html_ajax;
         wp_die();
