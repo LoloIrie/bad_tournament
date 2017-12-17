@@ -104,6 +104,7 @@ function bad_tournament_install_init(){
                   points int(6) unsigned NOT NULL,
                   points_against int(6) unsigned NOT NULL,
                   opponents varchar(250) NOT NULL,
+                  status int(6) unsigned NOT NULL,
                   PRIMARY KEY (id),
                   INDEX (tournament_id),
                   INDEX (players_id)

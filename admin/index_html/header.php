@@ -18,7 +18,7 @@ if( !empty( trim( $bvg_admin_msg ) ) ){
     */
 }
 
-$html .= '<h1>Bad Tournament Administration, Version '.get_option( 'bad_tournament_installed' ).' !!!</h1>';
+$html .= '<h1 id="bad_tournament_maintitle">Bad Tournament Administration, Version '.get_option( 'bad_tournament_installed' ).' !!!</h1>';
 
 /* Title */
 if( $_SESSION['current_tournament']['id'] != $_SESSION['current_tournament']['parent_id'] ){

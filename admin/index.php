@@ -79,6 +79,8 @@ include plugin_dir_path(__FILE__). 'index_html/tournament-table.php';
 /* Matches */
 include plugin_dir_path(__FILE__). 'index_html/matches.php';
 
+/* Footer */
+include plugin_dir_path(__FILE__). 'index_html/footer.php';
 
 echo $html;
 

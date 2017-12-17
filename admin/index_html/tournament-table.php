@@ -45,48 +45,50 @@ $html .= '<ul class="table">';
 
 foreach( $players as $k => $player ){
 
-
-    $html .= '<li class="table_row">';
+    if( $player->status != 2 ){
+        $html .= '<li class="table_row">';
         $html .= '<span class="pl_name">';
-            $html .= $player->player_firstname.' '.$player->player_lastname;
-            $html .= '<span class="pl_options">';
-                $html .= '<img src="'.plugin_dir_url( __FILE__ ).'../../icons/bad-tournament-close-icon.png'.'" class="pl_remove" data-pl_id="'.$player->players_id.'" />';
-                $html .= '<img src="'.plugin_dir_url( __FILE__ ).'../../icons/bad-tournament-info-icon.png'.'" class="pl_infos" data-pl_id="'.$player->players_id.'" />';
-            $html .= "</span>";
+        $html .= $player->player_firstname.' '.$player->player_lastname;
+        $html .= '<span class="pl_options">';
+        $html .= '<img src="'.plugin_dir_url( __FILE__ ).'../../icons/bad-tournament-close-icon.png'.'" class="pl_remove" data-pl_id="'.$player->players_id.'" />';
+        $html .= '<img src="'.plugin_dir_url( __FILE__ ).'../../icons/bad-tournament-info-icon.png'.'" class="pl_infos" data-pl_id="'.$player->players_id.'" />';
+        $html .= "</span>";
         $html .= "</span>";
 
         $html .= '<span class="pl_played">';
-            $html .= $player->played;
+        $html .= $player->played;
         $html .= "</span>";
 
         $html .= '<span class="pl_victory">';
-            $html .= $player->victory;
+        $html .= $player->victory;
         $html .= "</span>";
 
         $html .= '<span class="pl_draw">';
-            $html .= $player->draw;
+        $html .= $player->draw;
         $html .= "</span>";
 
         $html .= '<span class="pl_loss">';
-            $html .= $player->loss;
+        $html .= $player->loss;
         $html .= "</span>";
 
         $html .= '<span class="pl_points_major">';
-            $html .= $player->points_major;
+        $html .= $player->points_major;
         $html .= "</span>";
 
         $html .= '<span class="pl_sets">';
-            $html .= $player->sets;
-            $html .= ' - ';
-            $html .= $player->sets_against;
+        $html .= $player->sets;
+        $html .= ' - ';
+        $html .= $player->sets_against;
         $html .= "</span>";
 
         $html .= '<span class="pl_points">';
-            $html .= $player->points;
-            $html .= ' - ';
-            $html .= $player->points_against;
+        $html .= $player->points;
+        $html .= ' - ';
+        $html .= $player->points_against;
         $html .= "</span>";
-    $html .= '</li>';
+        $html .= '</li>';
+    }
+
 }
 $html .= '</ul>';
 

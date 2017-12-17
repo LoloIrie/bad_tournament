@@ -6,6 +6,7 @@
  * Time: 15:32
  */
 
+
 /*
 echo '<pre>';
 var_dump( $all_players );
@@ -34,30 +35,71 @@ if( isset( $_POST['player_tournament_remove'] ) ){
 
 }else if( isset( $_POST['player_down'] ) ){
     // Unactivate player
-
+    //$html_ajax .= __( 'Unactivate player now...', 'bad-tournament' );
     foreach( $_POST['player_select'] as $pl_id ){
         if( is_numeric( $pl_id )){
-            $query = "UPDATE
-            ".$wpdb->prefix."bvg_players
-    
-            SET
-            status=2
-    
-            WHERE
-            id=".$pl_id;
-            $wpdb->query( $query );
+            //$html_ajax .= __( ' is_numeric ', 'bad-tournament' );
+            if( !isset( $player_keep_status ) || !$player_keep_status ){
+                $query = "UPDATE
+                ".$wpdb->prefix."bvg_players
 
-            // Get player ID for this tournament if existing
-            /* Get all players for the current tournament */
-            $query = "SELECT
-            pl_t.id
-    
-            FROM
-            ".$wpdb->prefix."bvg_players_tournament as pl_t
-    
-    
-            WHERE
-            players_id=".$pl_id;
+                SET
+                status=2
+
+                WHERE
+                id=".$pl_id;
+                $wpdb->query( $query );
+            }
+
+
+
+
+            if( isset( $player_current_tournament_only) && $player_current_tournament_only ){
+                $query = "UPDATE
+                ".$wpdb->prefix."bvg_players_tournament
+
+                SET
+                status=2
+
+                WHERE
+                players_id=".$pl_id."
+                AND
+                tournament_id=".$_SESSION['t_id'];
+                $wpdb->query( $query );
+
+                $query = "SELECT
+                pl_t.id
+
+                FROM
+                ".$wpdb->prefix."bvg_players_tournament as pl_t
+
+                WHERE
+                players_id=".$pl_id."
+                AND
+                tournament_id=".$_SESSION['t_id'];
+            }else{
+                $query = "UPDATE
+                ".$wpdb->prefix."bvg_players_tournament
+
+                SET
+                status=2
+
+                WHERE
+                players_id=".$pl_id;
+                $wpdb->query( $query );
+
+                // Get player ID for this tournament if existing
+                /* Get all players for the current tournament */
+                $query = "SELECT
+                pl_t.id
+
+                FROM
+                ".$wpdb->prefix."bvg_players_tournament as pl_t
+
+                WHERE
+                players_id=".$pl_id;
+
+            }
             $player_tournaments = $wpdb->get_results( $query, OBJECT_K  );
             foreach( $player_tournaments as $pl_t ){
                 $pl_t_ids[] = $pl_t->id;

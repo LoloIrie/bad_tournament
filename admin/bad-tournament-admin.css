@@ -114,9 +114,16 @@ ul.table span{
     padding: 3px;
     font-weight: normal;
 }
+.table_row .player_infos span{
+    width: auto;
+    padding: 0;
+}
 .table span.pl_name{
     min-width: 250px;
     width: 350px;
+}
+.player_removed span.pl_name{
+    color: #fff;
 }
 
 input.set_score, input.match_winner{
@@ -216,4 +223,33 @@ h1.topspace{
     line-height: 32px;
     margin-top: 4px;
     margin-right: 8px;
+}
+
+#ajax_spinner_layer{
+    display: none;
+    position: absolute;
+    top: 18px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    float: left;
+    line-height: 100%;
+
+    background-color: rgba( 0, 0, 0, 0.9);
+    border-radius: 100%;
+
+    vertical-align: middle;
+    text-align: center;
+
+    //transition: background-color 0.5s;
+}
+#ajax_spinner_layer img{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    display: inline-block;
+    margin:auto;
 }

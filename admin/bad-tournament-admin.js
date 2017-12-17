@@ -74,15 +74,81 @@ jQuery( 'select.player_name' ).on('change', function() {
 
 jQuery('.pl_infos').on( 'click', function(){
     console.log('Display player infos');
+
+    row_parent = jQuery( this).closest( 'li.table_row' );
+
+    if( row_parent.find( '.player_infos').length > 0 ){
+        console.log( 'Remove player infos' );
+        row_parent.find( '.player_infos').fadeOut().remove();
+    }else{
+        jQuery('#ajax_spinner_layer').fadeIn();
+        console.log( 'Display player infos' );
+        pl_id = jQuery( this ).attr('data-pl_id');
+
+        var data = {
+            action: 'player_tooltip',
+            pl_id: pl_id
+        };
+
+        jQuery.ajax({
+            type: "POST",
+            data : data,
+            async: true,
+            cache: false,
+            url: ajaxurl,
+            success: function(data) {
+                console.log( 'Attach infos now...' );
+                console.log(data);
+                row_parent.append( '<div class="player_infos"></div>' );
+                row_parent.find( '.player_infos').append( data );
+                jQuery('#ajax_spinner_layer').fadeOut( 'slow' );
+            }
+        });
+    }
+
 });
 
 
 jQuery('.pl_remove').on( 'click', function(){
+    jQuery('#ajax_spinner_layer').fadeIn();
+
     console.log('Remove player');
+
+    row_parent = jQuery( this).closest( 'li.table_row' );
+
+    pl_id = jQuery( this ).attr('data-pl_id');
+
+    var data = {
+        action: 'player_remove',
+        pl_id: pl_id
+    };
+
+    jQuery.ajax({
+        type: "POST",
+        data : data,
+        async: true,
+        cache: false,
+        url: ajaxurl,
+        success: function(data) {
+            if( jQuery( '#bvg_admin_msg' ).length > 0 ){
+                jQuery( '#bvg_admin_msg').append( data );
+            }else{
+                jQuery( '#bad_tournament_maintitle' ).before( '<div id="bvg_admin_msg"><span id="bvg_admin_msg_close"></span>' + data + '</div>' );
+                row_parent.fadeOut();
+                jQuery('#bvg_admin_msg_close').on( 'click', function(){
+                    console.log( 'Close admin msg...' );
+                    jQuery( '#bvg_admin_msg').animate({ height: 0, opacity: 0 }, 'slow');
+                });
+            }
+            console.log(data);
+            jQuery('#ajax_spinner_layer').fadeOut( 'slow' );
+        }
+    });
 });
 
 jQuery('.datepicker').datepicker( {dateFormat: "dd/mm/yy"} );
 
+/*
 jQuery(document).tooltip({
     items:'.pl_infos',
     tooltipClass:'pl_infos_content',
@@ -97,3 +163,4 @@ jQuery(document).tooltip({
         });
     },
 });
+*/
