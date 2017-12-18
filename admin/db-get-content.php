@@ -85,8 +85,6 @@ function db_get_players( $tournament_id = false ){
     
     WHERE
     pl_t.tournament_id = ".$tournament_id."
-    AND
-    pl.status=1
     
     ORDER BY
     pl_t.points_major DESC, pl_t.played ASC, pl_t.sets DESC, pl_t.sets_against ASC, pl_t.points DESC, pl_t.points_against ASC, pl_t.player_level_init DESC

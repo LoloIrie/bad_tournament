@@ -26,7 +26,7 @@ global $wpdb;
 $bvg_admin_msg = '';
 
 
-/* Actions */
+/* ACTIONS */
 if( isset($_POST['form_action']) ){
     include plugin_dir_path(__FILE__). 'action/'.$_POST['form_action'].'.php';
 }
@@ -41,7 +41,7 @@ if( !isset( $_SESSION['round'] ) ){
     $_SESSION['round'] = $round[0]->round;
 }
 
-/* Get DB content */
+/* GET DB CONTENT */
 include_once plugin_dir_path(__FILE__). 'db-get-content.php';
 $tournaments = db_get_tournaments();
 $all_players = db_get_all_players();

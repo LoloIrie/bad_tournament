@@ -81,7 +81,7 @@ function bad_tournament_install_init(){
                   status int(6) unsigned NOT NULL,
                   club_id bigint(20) unsigned NOT NULL,
                   player_id varchar(50) NOT NULL,
-                  birtdate date,
+                  birthdate date,
                   sex int(2) unsigned NOT NULL,
                   PRIMARY KEY (id)
                 ) ENGINE=InnoDB;";

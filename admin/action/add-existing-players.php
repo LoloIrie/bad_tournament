@@ -12,9 +12,9 @@ echo '<pre>';
 var_dump( $all_players );
 echo '</pre>';
 */
-//$wpdb->show_errors();
+$wpdb->show_errors();
 if( isset( $_POST['player_tournament_remove'] ) ){
-    // Remove all players for the current
+    // Remove all players for the current tournament
 
     $query = "DELETE FROM
     ".$wpdb->prefix."bvg_matches
@@ -39,7 +39,7 @@ if( isset( $_POST['player_tournament_remove'] ) ){
     foreach( $_POST['player_select'] as $pl_id ){
         if( is_numeric( $pl_id )){
             //$html_ajax .= __( ' is_numeric ', 'bad-tournament' );
-            if( !isset( $player_keep_status ) || !$player_keep_status ){
+            if( !isset( $player_keep_status ) || $player_keep_status === false ){
                 $query = "UPDATE
                 ".$wpdb->prefix."bvg_players
 
@@ -50,9 +50,6 @@ if( isset( $_POST['player_tournament_remove'] ) ){
                 id=".$pl_id;
                 $wpdb->query( $query );
             }
-
-
-
 
             if( isset( $player_current_tournament_only) && $player_current_tournament_only ){
                 $query = "UPDATE
@@ -168,7 +165,8 @@ if( isset( $_POST['player_tournament_remove'] ) ){
         $data = array(
             'tournament_id' => $_SESSION['t_id'],
             'players_id' => $pl->player_id,
-            'player_level_init' => $pl->player_level_init
+            'player_level_init' => $pl->player_level_init,
+            'status' => 1
         );
         $wpdb->insert( $wpdb->prefix . 'bvg_players_tournament', $data );
     }
@@ -177,23 +175,55 @@ if( isset( $_POST['player_tournament_remove'] ) ){
 
     $bvg_admin_msg .= 'Alle Spieler für das Turnier gespeichert...';
 
-}else{
+}else if( !empty( $_POST['player_select'] ) ){
 
+    // Add player(s) to the tournament
     include_once plugin_dir_path(__FILE__). '../db-get-content.php';
     $players = db_get_all_players();
+    $players_in_tournament = db_get_players();
+    $nb_new_players = 0;
 
+    //var_dump( $players );
     foreach( $_POST['player_select'] as $pl_id ){
-        $data = array(
-            'tournament_id' => $_SESSION['t_id'],
-            'players_id' => $pl_id,
-            'player_level_init' => $players[ $pl_id ]->player_level
-        );
-        $wpdb->insert( $wpdb->prefix . 'bvg_players_tournament', $data );
+        if( !is_numeric( $pl_id ) ){
+            break;
+        }
+
+
+        $player_already_in_tournament = false;
+        foreach( $players_in_tournament as $player_in_tournament){
+/*
+            echo $pl_id.'<br />';
+            echo $player_in_tournament->player_id.'<br />';
+            echo $player_in_tournament->status.'<br />';
+*/
+            if( $player_in_tournament->player_id == $pl_id && $player_in_tournament->status == 2 ){
+                $data = array(
+                    'status' => 1
+                );
+                $wpdb->update( $wpdb->prefix . 'bvg_players_tournament',
+                    $data,
+                    array( 'id' => $player_in_tournament->id ) );
+                $player_already_in_tournament = true;
+                $bvg_admin_msg .= __( 'Player '.$player_in_tournament->player_firstname.' '.$player_in_tournament->player_lastname.' restored for the current tournament...' , 'bad-tournament') ;
+                break;
+            }
+        }
+        if( !$player_already_in_tournament ){
+            $nb_new_players++;
+            $data = array(
+                'tournament_id' => $_SESSION['t_id'],
+                'players_id' => $pl_id,
+                'player_level_init' => $players[ $pl_id ]->player_level,
+                'status' => 1
+            );
+            $wpdb->insert( $wpdb->prefix . 'bvg_players_tournament', $data );
+        }
+
     }
 
-
-
-
-    $bvg_admin_msg .= 'Spieler für das Turnier gespeichert...';
+    if( $nb_new_players > 0 ) {
+        $bvg_admin_msg .= __('Player(s) added to the current tournament...', 'bad-tournament');
+    }
 }
 

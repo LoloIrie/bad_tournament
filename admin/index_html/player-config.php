@@ -6,24 +6,35 @@
  * Time: 09:12
  */
 
-//var_dump( $all_players );
+/*
+echo '<pre>';
+var_dump( $all_players );
+var_dump( $players );
+echo '</pre>';
+*/
 
 /* Players */
 //$html .= '<div class="admin_block_label">Spieler</div>';
 $html .= '<div class="admin_block nav_player" id="block_add_players" '.( $ADMIN_VIEW == 'players' ? 'style="display: block;"' : '' ).'>';
 
+$nb_player_unactivated_for_this_tournament = 0;
+foreach( $players as $pl ){
+    if( $pl->status == 2 ){
+        $nb_player_unactivated_for_this_tournament++;
+    }
+}
 
-if( count( $all_players )  != count( $players ) ){
+if( count( $all_players )  != count( $players ) - $nb_player_unactivated_for_this_tournament ){
     $html .= '<form method="post">';
     $html .= '<input type="hidden" name="form_action" value="add-existing-players" />';
     //$html .= '<input type="hidden" id="swiss_system_point" name="schweizer_system_punkte" value="0" />';
 
-    $html .= '<label>'.__('Player:', 'bad-tournament').'</label>';
+    $html .= '<label>'.__('Player(s):', 'bad-tournament').'</label>';
     $html .= '<select type="text" value="" name="player_select[]" id="player_select" multiple="multiple" >';
     //$html .= '<option value="0">'.__('Choose', 'bad-tournament').'</option>';
     foreach( $all_players as $k => $all_player ){
         foreach( $players as $player ){
-            if( $player->players_id == $k ){
+            if( $player->players_id == $k && $player->status != 2 ){
                 continue 2;
             }
         }

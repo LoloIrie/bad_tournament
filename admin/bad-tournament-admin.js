@@ -130,11 +130,11 @@ jQuery('.pl_remove').on( 'click', function(){
         cache: false,
         url: ajaxurl,
         success: function(data) {
+            row_parent.fadeOut();
             if( jQuery( '#bvg_admin_msg' ).length > 0 ){
                 jQuery( '#bvg_admin_msg').append( data );
             }else{
                 jQuery( '#bad_tournament_maintitle' ).before( '<div id="bvg_admin_msg"><span id="bvg_admin_msg_close"></span>' + data + '</div>' );
-                row_parent.fadeOut();
                 jQuery('#bvg_admin_msg_close').on( 'click', function(){
                     console.log( 'Close admin msg...' );
                     jQuery( '#bvg_admin_msg').animate({ height: 0, opacity: 0 }, 'slow');
