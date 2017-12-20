@@ -32,9 +32,32 @@ if( isset($_POST['form_action']) ){
 }
 //echo 'XXX'.$_SESSION['round'];
 if( !isset( $_SESSION['t_id'] ) ){
-    $_SESSION['t_id'] = 1;
-    $_SESSION['t_system'] = 1;
-    $_SESSION['t_name'] = 'TOurnament';
+
+    $query = "SELECT
+    *
+    
+    FROM
+    ".$wpdb->prefix."bvg_tournaments
+    
+    ORDER BY
+    id DESC
+    
+    LIMIT
+    0,1";
+    $last_tournament = $wpdb->get_results( $query  );
+
+    if( isset($last_tournament[0]->id) && is_numeric($last_tournament[0]->id) ){
+        $_SESSION['t_id'] = $last_tournament[0]->id;
+        $_SESSION['t_system'] = $last_tournament[0]->system;
+        $_SESSION['t_name'] = $last_tournament[0]->name;
+        $_SESSION['current_tournament'] = get_object_vars( $last_tournament[0] );
+    }else{
+        $_SESSION['t_id'] = 1;
+        $_SESSION['t_system'] = 1;
+        $_SESSION['t_name'] = __( 'No tournament yet', 'bad-tournament' );
+        $_SESSION['current_tournament'] = false;
+    }
+
 }
 if( !isset( $_SESSION['round'] ) ){
     $round = $wpdb->get_results( "SELECT round FROM ".$wpdb->prefix."bvg_tournaments WHERE id=".$_SESSION['t_id']." LIMIT 0,1" );

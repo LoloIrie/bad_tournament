@@ -253,3 +253,7 @@ h1.topspace{
     display: inline-block;
     margin:auto;
 }
+
+#ui-datepicker-div{
+    display: none;
+}
