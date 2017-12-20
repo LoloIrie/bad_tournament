@@ -35,27 +35,27 @@ if( !is_numeric( $_POST['pl_id'] ) ){
         $html_ajax .= '<label class="pl_tooltip_label">';
             $html_ajax .= __('ID: ', 'bad-tournament');
         $html_ajax .= '</label>';
-        $html_ajax .= '<span class="label_row">'.( $player[0]->player_id == '' ? ' - ' : $player[0]->player_id ).'</span>';
+        $html_ajax .= '<span class="label_row">'.( $player[0]->player_id == '' ? ' - ' : $player[0]->player_id ).'<input class="pl_edit_field" type="text" id="player_id" name="player_id" value="'.$player[0]->player_id.'" /></span>';
     $html_ajax .= '</div>';
     $html_ajax .= '<div class="pl_tooltip_sex">';
         $html_ajax .= '<label class="pl_tooltip_label">';
             $html_ajax .= __('Sex: ', 'bad-tournament');
         $html_ajax .= '</label>';
-        $html_ajax .= '<span class="label_row">'.( $player[0]->sex == 2 ? __( 'Female' , 'bad-tournament' ) : __( 'Male' , 'bad-tournament' ) ).'</span>';
+        $html_ajax .= '<span class="label_row">'.( $player[0]->sex == 2 ? __( 'Female' , 'bad-tournament' ) : __( 'Male' , 'bad-tournament' ) ).'<select class="pl_edit_field" id="sex" name="sex" ><option value="0">'.__( 'Choose...' , 'bad-tournament' ).'</option><option value="1" '.( $player[0]->sex == 1 ? 'selected="selected"' : '' ).'>'.__( 'Male' , 'bad-tournament' ).'</option><option value="2" '.( $player[0]->sex == 2 ? 'selected="selected"' : '' ).'>'.__( 'Female' , 'bad-tournament' ).'</option></select></span>';
     $html_ajax .= '</div>';
     $html_ajax .= '<div class="pl_tooltip_birthdate">';
         $html_ajax .= '<label class="pl_tooltip_label">';
             $html_ajax .= __('Birthdate: ', 'bad-tournament');
         $html_ajax .= '</label>';
             $date = new DateTime( $player[0]->birthdate );
-            $html_ajax .= '<span class="label_row">'.$date->format('d.m.Y').'</span>';
+            $html_ajax .= '<span class="label_row">'.$date->format('d.m.Y').'<input class="pl_edit_field datepicker" type="text" id="birthdate" name="birthdate" value="'.$date->format('d.m.Y').'" /></span>';
     $html_ajax .= '</div>';
     if( $_SESSION['t_system'] == 1 ){
-        $html_ajax .= '<div class="pl_tooltip_birthdate">';
+        $html_ajax .= '<div class="pl_tooltip_level_init">';
             $html_ajax .= '<label class="pl_tooltip_label">';
                 $html_ajax .= __('Level: ', 'bad-tournament');
             $html_ajax .= '</label>';
-            $html_ajax .= '<span class="label_row">'.$player[0]->player_level.'</span>';
+            $html_ajax .= '<span class="label_row">'.$player[0]->player_level.'<input class="pl_edit_field" type="text" id="player_level" name="player_level" value="'.$player[0]->player_level.'" /></span>';
         $html_ajax .= '</div>';
     }
 

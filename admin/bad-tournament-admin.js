@@ -1,12 +1,7 @@
 console.log( 'bad-tournament-admin.js included...' );
+console.log( bvg_tournament_constants );
 
-/*
-jQuery('.admin_block_label').on( 'click', function(){
-    jQuery('.admin_block').hide();
-    jQuery( this ).next().slideDown();
-});
-*/
-
+/* Switching admin page */
 jQuery('.nav_item').on( 'click', function(){
     id_nav = jQuery( this ).attr( 'id' );
     id_block = '.admin_block.' + id_nav;
@@ -14,6 +9,7 @@ jQuery('.nav_item').on( 'click', function(){
     jQuery( id_block ).slideDown( 'slow' );
 });
 
+/* Set match winner */
 jQuery('.match_winner').on( 'click', function(){
     jMatchId = '#match_winner_' + jQuery( this ).attr('data_m_id');
     jFormId = '#form_match_' + jQuery().attr('data_m_id');
@@ -21,21 +17,24 @@ jQuery('.match_winner').on( 'click', function(){
     jQuery( jFormId ).submit();
 });
 
+/* Choose existing tournament */
 jQuery('#tournament_select_button').on( 'click', function(){
     jQuery( '#tournament_name').val( '' );
     jQuery( '#tournament_select_id' ).val( jQuery( '#tournament_select' ).val() );
 });
 
-
+/* Close admin message */
 jQuery('#bvg_admin_msg_close').on( 'click', function(){
     console.log( 'Close admin msg...' );
     jQuery( '#bvg_admin_msg').animate({ height: 0, opacity: 0 }, 'slow');
 });
 
+/* Expand new player form */
 jQuery('.plus_icon').on( 'click', function(){
     jQuery( this).next().next().slideDown();
 });
 
+/* Change player for a match */
 jQuery( 'select.player_name' ).on('change', function() {
         if (confirm('Wollen Sie wirklich die Spieleinstellung ändern ? ')) {
             the_form = jQuery(this).closest('form');
@@ -69,9 +68,9 @@ jQuery( 'select.player_name' ).on('change', function() {
             });
 
         }
-    }
-);
+    } );
 
+/* Expand player profile on table view */
 jQuery('.pl_infos').on( 'click', function(){
     console.log('Display player infos');
 
@@ -102,13 +101,62 @@ jQuery('.pl_infos').on( 'click', function(){
                 row_parent.append( '<div class="player_infos"></div>' );
                 row_parent.find( '.player_infos').append( data );
                 jQuery('#ajax_spinner_layer').fadeOut( 'slow' );
+
+                jQuery( '.pl_edit_field' ).on('change keypress', function(){
+                    if( jQuery( '#edit_field_valid' ).length < 1 ){
+                        jQuery( this).after( '<img src="' + bvg_tournament_constants.badTournamentURI + 'icons/bad-tournament-ok-icon.png" id="edit_field_valid" class="edit_field_valid" />' );
+                        jQuery( '#edit_field_valid' ).on( 'click', function(){
+                            if( confirm( bad_tournament_admin.save_now )){
+                                var pl_field = jQuery( this );
+                                pl_field_name = jQuery( this ).prev().prop( 'id' );
+                                pl_field_value = jQuery( this ).prev().val();
+                                jQuery('#ajax_spinner_layer').fadeIn();
+                                data = {
+                                    action: 'player_edit_field',
+                                    pl_id: pl_id,
+                                    pl_field_name: pl_field_name,
+                                    pl_field_value: pl_field_value
+                                };
+                                jQuery.ajax({
+                                    type: "POST",
+                                    data : data,
+                                    async: true,
+                                    cache: false,
+                                    url: ajaxurl,
+                                    success: function(data) {
+                                        console.log('Field: ' + pl_field_name );
+                                        if( pl_field_name == 'player_level' ){
+                                            pl_field.parent().closest( 'li').find( '.pl_level_init' ).html('(' + pl_field_value + ')');
+                                        }
+                                        if( jQuery( '#bvg_admin_msg' ).length > 0 ){
+                                            jQuery( '#bvg_admin_msg').append( data );
+                                        }else{
+                                            jQuery( '#bad_tournament_maintitle' ).before( '<div id="bvg_admin_msg"><span id="bvg_admin_msg_close"></span>' + data + '</div>' );
+                                            jQuery('#bvg_admin_msg_close').on( 'click', function(){
+                                                console.log( 'Close admin msg...' );
+                                                jQuery( '#bvg_admin_msg').animate({ height: 0, opacity: 0 }, 'slow');
+                                            });
+                                        }
+                                        console.log(data);
+                                        jQuery('#ajax_spinner_layer').fadeOut( 'slow' );
+                                        pl_field.fadeOut(function(){
+                                            pl_field.remove();
+                                        });
+                                    }
+                                });
+                            }
+
+                        });
+                    }
+
+                });
             }
         });
     }
 
-});
+} );
 
-
+/* Remove player from tournament */
 jQuery('.pl_remove').on( 'click', function(){
     jQuery('#ajax_spinner_layer').fadeIn();
 
@@ -144,23 +192,7 @@ jQuery('.pl_remove').on( 'click', function(){
             jQuery('#ajax_spinner_layer').fadeOut( 'slow' );
         }
     });
-});
+} );
 
+/* add datepicker to forms */
 jQuery('.datepicker').datepicker( {dateFormat: "dd/mm/yy"} );
-
-/*
-jQuery(document).tooltip({
-    items:'.pl_infos',
-    tooltipClass:'pl_infos_content',
-    position: { my: "left top", at: "left top" },
-    content:function( callback ) {
-        pl_id=jQuery( this ).attr('data-pl_id');
-        jQuery.post(ajaxurl, {
-            action: 'player_tooltip',
-            pl_id:pl_id
-        }, function(data) {
-            callback(data);
-        });
-    },
-});
-*/

@@ -35,11 +35,25 @@ class bad_tournament
         add_action( 'wp_ajax_change_players_match', array( $this, 'change_players_match' ) );
         add_action( 'wp_ajax_player_tooltip', array( $this, 'player_tooltip' ) );
         add_action( 'wp_ajax_player_remove', array( $this, 'player_remove_from_tournament' ) );
+        add_action( 'wp_ajax_player_edit_field', array( $this, 'player_edit_field' ) );
 
+
+        add_action( 'admin_head', array( $this, 'bvg_head_javascript_object' ) );
 
 
         add_shortcode( 'bad_tournament_table', array( $this, 'bad_tournament_table_shortcode' ) );
         add_shortcode( 'bad_tournament_matches', array( $this, 'bad_tournament_matches_shortcode' ) );
+    }
+
+    function bvg_head_javascript_object(){
+        ?>
+        <script>
+            var bvg_tournament_constants = {
+                "badTournamentURI": '<?php echo plugin_dir_url( __FILE__ ); ?>',
+            }
+            console.log( bvg_tournament_constants );
+        </script>
+        <?php
     }
 
     function bad_tournament_menu(){
@@ -67,7 +81,12 @@ class bad_tournament
         wp_enqueue_script('addons_script');
 
         wp_enqueue_style( 'bad_tournament_admin_style', plugin_dir_url(__FILE__).'admin/bad-tournament-admin.css');
-        wp_enqueue_script( 'bad_tournament_admin', plugins_url( 'admin/bad-tournament-admin.js', __FILE__ ) );
+        wp_register_script( 'bad_tournament_admin', plugins_url( 'admin/bad-tournament-admin.js', __FILE__ ) );
+        $translation_array = array(
+            'save_now' => __( 'Save now ?..', 'bad-tournament' )
+        );
+        wp_localize_script( 'bad_tournament_admin', 'bad_tournament_admin', $translation_array );
+        wp_enqueue_script( 'bad_tournament_admin'  );
 
         if ( current_user_can('edit_pages') ) {
 
@@ -88,7 +107,7 @@ class bad_tournament
         return true;
     }
 
-    // Return player infos for tootip
+    // Ajax: Return player infos for tootip
     function player_tooltip( $atts ){
         $html_ajax = '';
         include plugin_dir_path(__FILE__).'admin/action/player-info.php';
@@ -97,10 +116,19 @@ class bad_tournament
         wp_die();
     }
 
-    // Return player infos for tootip
+    // Ajax: Remove player from tournament
     function player_remove_from_tournament( $atts ){
         $html_ajax = '';
         include plugin_dir_path(__FILE__).'admin/action/player-remove-from-tournament.php';
+
+        echo $html_ajax;
+        wp_die();
+    }
+
+    //
+    function player_edit_field(){
+        $html_ajax = '';
+        include plugin_dir_path(__FILE__).'admin/action/player-edit-field.php';
 
         echo $html_ajax;
         wp_die();

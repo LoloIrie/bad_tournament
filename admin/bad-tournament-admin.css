@@ -257,3 +257,16 @@ h1.topspace{
 #ui-datepicker-div{
     display: none;
 }
+
+.edit_field_valid{
+    height: 20px;
+    width: 20px;
+    padding: 3px;
+    margin: 0 2px;
+    vertical-align: middle;
+
+    border: 1px solid #ddd;
+    border-radius: 4px;
+
+    cursor: pointer;
+}

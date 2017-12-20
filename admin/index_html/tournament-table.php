@@ -48,11 +48,14 @@ foreach( $players as $k => $player ){
     if( $player->status != 2 ){
         $html .= '<li class="table_row">';
         $html .= '<span class="pl_name">';
-        $html .= $player->player_firstname.' '.$player->player_lastname;
-        $html .= '<span class="pl_options">';
-        $html .= '<img src="'.plugin_dir_url( __FILE__ ).'../../icons/bad-tournament-close-icon.png'.'" class="pl_remove" data-pl_id="'.$player->players_id.'" />';
-        $html .= '<img src="'.plugin_dir_url( __FILE__ ).'../../icons/bad-tournament-info-icon.png'.'" class="pl_infos" data-pl_id="'.$player->players_id.'" />';
-        $html .= "</span>";
+            $html .= $player->player_firstname.' '.$player->player_lastname;
+            if( $_SESSION['t_system'] == 1 ){
+                $html .= '<span class="pl_level_init"> ('.$player->player_level_init.')</span>';
+            }
+            $html .= '<span class="pl_options">';
+                $html .= '<img src="'.plugin_dir_url( __FILE__ ).'../../icons/bad-tournament-close-icon.png'.'" class="pl_remove" data-pl_id="'.$player->players_id.'" />';
+                $html .= '<img src="'.plugin_dir_url( __FILE__ ).'../../icons/bad-tournament-info-icon.png'.'" class="pl_infos" data-pl_id="'.$player->players_id.'" />';
+            $html .= "</span>";
         $html .= "</span>";
 
         $html .= '<span class="pl_played">';

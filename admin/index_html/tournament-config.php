@@ -46,8 +46,8 @@ $html .= '<input type="hidden" name="form_action" value="tournament-select" />';
 $html .= '<label>'.__('Tournament System:', 'bad-tournament').'</label>';
 $html .= '<div class="radio_block">';
 $html .= '<span><input type="radio" id="tournament_system1" name="tournament_system" value="1" checked="checked" /> <label for="tournament_system1" class="radio">'.__('Swiss System', 'bad-tournament').'</label></span>';
-$html .= '<span><input type="radio" id="tournament_system2" name="tournament_system" value="2" disabled="disabled" /> <label for="tournament_system2" class="radio">'.__('League', 'bad-tournament').'</label></span>';
-$html .= '<span><input type="radio" id="tournament_system3" name="tournament_system" value="3" disabled="disabled" /> <label for="tournament_system3" class="radio">'.__('KO System', 'bad-tournament').'</label></span>';
+//$html .= '<span><input type="radio" id="tournament_system2" name="tournament_system" value="2" disabled="disabled" /> <label for="tournament_system2" class="radio">'.__('League', 'bad-tournament').'</label></span>';
+//$html .= '<span><input type="radio" id="tournament_system3" name="tournament_system" value="3" disabled="disabled" /> <label for="tournament_system3" class="radio">'.__('KO System', 'bad-tournament').'</label></span>';
 $html .= '<span><input type="radio" id="tournament_system4" name="tournament_system" value="4" /> <label for="tournament_system4" class="radio">'.__('Grinding Tournament', 'bad-tournament').'</label></span>';
 $html .= '</div>';
 
