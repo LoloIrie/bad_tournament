@@ -106,6 +106,7 @@ if( !empty( $matches ) ){
         $html .= '<input type="hidden" id="match_winner_'.$m_id.'" name="match_winner_'.$m_id.'" value="" />';
 
         $html .= '<div>';
+        $html .= '<div>'.__( 'Match' , 'bad-tournament').' '.$m_id.': '.$players[$pl1_id]->player_firstname.' '.$players[$pl1_id]->player_lastname.( $_SESSION['t_system'] == 1 ? '('.$players[$pl1_id]->player_level_init.')' : '' ).' - '.$players[$pl2_id]->player_firstname.' '.$players[$pl2_id]->player_lastname.( $_SESSION['t_system'] == 1 ? '('.$players[$pl2_id]->player_level_init.')' : '' ).'</div>';
 
         $html .= '<select name="pl1_m'.$m_id.'_name" id="pl1_m'.$m_id.'_name" data_pl_id="pl1_id" class="player_name '.( $winner == $pl1_id ? 'winner' : '' ).' '.( $winner == $pl2_id ? 'loser' : '' ).'" />';
         if( $player1_name == 'Inaktiv' ){

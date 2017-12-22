@@ -101,10 +101,17 @@ jQuery('.pl_infos').on( 'click', function(){
                 row_parent.append( '<div class="player_infos"></div>' );
                 row_parent.find( '.player_infos').append( data );
                 jQuery('#ajax_spinner_layer').fadeOut( 'slow' );
+                /* add datepicker to forms */
+                jQuery('.datepicker').datepicker( {dateFormat: "dd/mm/yy"} );
 
-                jQuery( '.pl_edit_field' ).on('change keypress', function(){
-                    if( jQuery( '#edit_field_valid' ).length < 1 ){
+                jQuery( '.pl_edit_field' ).on('change keypress', function(e){
+                    allow_to_edit = true;
+                    if( jQuery('option:selected', this).hasClass( 'no_edit' ) ){
+                        allow_to_edit = false;
+                    }
+                    if( jQuery( '#edit_field_valid' ).length < 1 && allow_to_edit === true ){
                         jQuery( this).after( '<img src="' + bvg_tournament_constants.badTournamentURI + 'icons/bad-tournament-ok-icon.png" id="edit_field_valid" class="edit_field_valid" />' );
+
                         jQuery( '#edit_field_valid' ).on( 'click', function(){
                             if( confirm( bad_tournament_admin.save_now )){
                                 var pl_field = jQuery( this );
@@ -125,6 +132,17 @@ jQuery('.pl_infos').on( 'click', function(){
                                     url: ajaxurl,
                                     success: function(data) {
                                         console.log('Field: ' + pl_field_name );
+                                        if( pl_field_name == 'sex' ){
+                                            if( pl_field_value == 1 ){
+                                                pl_field_value = bvg_tournament_constants.badTournamentMale;
+                                            }else{
+                                                pl_field_value = bvg_tournament_constants.badTournamentFemale;
+                                            }
+
+                                        }
+                                        pl_field.parent().find( 'span.player_current_value').html( pl_field_value );
+                                        //console.log( pl_field.parent() );
+                                        //console.log( pl_field.parent().find( 'span.player_current_value') );
                                         if( pl_field_name == 'player_level' ){
                                             pl_field.parent().closest( 'li').find( '.pl_level_init' ).html('(' + pl_field_value + ')');
                                         }
@@ -146,9 +164,14 @@ jQuery('.pl_infos').on( 'click', function(){
                                 });
                             }
 
-                        });
-                    }
+                        })
 
+                    }
+                    var key = e.which;
+                    if( key == 13 ){
+                        jQuery('#edit_field_valid').click();
+                        return false;
+                    }
                 });
             }
         });

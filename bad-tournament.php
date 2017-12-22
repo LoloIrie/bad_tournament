@@ -50,6 +50,8 @@ class bad_tournament
         <script>
             var bvg_tournament_constants = {
                 "badTournamentURI": '<?php echo plugin_dir_url( __FILE__ ); ?>',
+                "badTournamentMale": '<?php echo __( 'Male' , 'bad-tournament' ); ?>',
+                "badTournamentFemale": '<?php echo __( 'Female' , 'bad-tournament' ); ?>',
             }
             console.log( bvg_tournament_constants );
         </script>

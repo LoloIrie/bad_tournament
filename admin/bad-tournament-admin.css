@@ -225,6 +225,10 @@ h1.topspace{
     margin-right: 8px;
 }
 
+.label_row > span{
+    float: left;
+}
+
 #ajax_spinner_layer{
     display: none;
     position: absolute;
@@ -236,12 +240,15 @@ h1.topspace{
     line-height: 100%;
 
     background-color: rgba( 0, 0, 0, 0.9);
+    background-image: url( '../icons/background_spinner_ldo.png' );
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+
     border-radius: 100%;
 
     vertical-align: middle;
     text-align: center;
-
-    //transition: background-color 0.5s;
 }
 #ajax_spinner_layer img{
     position: absolute;
@@ -258,12 +265,18 @@ h1.topspace{
     display: none;
 }
 
+.pl_edit_field{
+    margin-top: 0;
+    margin-left: 15px;
+}
+
 .edit_field_valid{
     height: 20px;
     width: 20px;
     padding: 3px;
     margin: 0 2px;
     vertical-align: middle;
+    float: right;
 
     border: 1px solid #ddd;
     border-radius: 4px;
