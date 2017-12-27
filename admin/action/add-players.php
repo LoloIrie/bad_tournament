@@ -30,4 +30,4 @@ $data = array(
 $wpdb->insert( $wpdb->prefix . 'bvg_players_tournament', $data );
 
 
-$bvg_admin_msg .= 'Neuer Spieler gespeichert...';
+$bvg_admin_msg .= __( 'New player added...', 'bad-tournament' );

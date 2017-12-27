@@ -48,6 +48,10 @@ $html .= '<nav id="main_nav">';
         $html .= __('Tournament', 'bad-tournament');
         $html .= '</li>';
 
+        $html .= '<li class="nav_item" id="nav_club">';
+        $html .= __('Clubs', 'bad-tournament');
+        $html .= '</li>';
+
         $html .= '<li class="nav_item" id="nav_player">';
         $html .= __('Players', 'bad-tournament');
         $html .= '</li>';

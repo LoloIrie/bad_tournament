@@ -34,6 +34,37 @@ function db_get_tournaments( $tournament_id = false ){
     return $tournaments;
 }
 
+/* Get all tournaments */
+function db_get_clubs( $club_id = false ){
+
+    global $wpdb;
+
+    if( !$club_id ){
+        $query = "SELECT
+        *
+
+        FROM
+        ".$wpdb->prefix."bvg_clubs
+
+        ORDER BY
+        name ASC";
+    }else{
+        $query = "SELECT
+        *
+
+        FROM
+        ".$wpdb->prefix."bvg_clubs
+
+        WHERE
+        id=".$club_id;
+    }
+
+
+    $clubs = $wpdb->get_results( $query );
+
+    return $clubs;
+}
+
 /* Get all players */
 function db_get_all_players(){
 

@@ -219,3 +219,50 @@ jQuery('.pl_remove').on( 'click', function(){
 
 /* add datepicker to forms */
 jQuery('.datepicker').datepicker( {dateFormat: "dd/mm/yy"} );
+
+/* Set club as default */
+jQuery( '#club_player' ).on('change keypress', function(e){
+    if( jQuery( this ).val() > 0 ){
+        jQuery( this).after( '<img src="' + bvg_tournament_constants.badTournamentURI + 'icons/bad-tournament-ok-icon.png" id="edit_field_valid" class="edit_field_valid" />' );
+
+        var club_id = jQuery( this ).val();
+        jQuery( '#edit_field_valid' ).on( 'click', function(){
+
+                jQuery('#ajax_spinner_layer').fadeIn();
+                data = {
+                    action: 'set_club_default',
+                    club_id: club_id
+                };
+                jQuery.ajax({
+                    type: "POST",
+                    data : data,
+                    async: true,
+                    cache: false,
+                    url: ajaxurl,
+                    success: function(data) {
+                        console.log('Club ID: ' + club_id );
+
+                        if( jQuery( '#bvg_admin_msg' ).length > 0 ){
+                            jQuery( '#bvg_admin_msg').append( data );
+                        }else{
+                            jQuery( '#bad_tournament_maintitle' ).before( '<div id="bvg_admin_msg"><span id="bvg_admin_msg_close"></span>' + data + '</div>' );
+                            jQuery('#bvg_admin_msg_close').on( 'click', function(){
+                                console.log( 'Close admin msg...' );
+                                jQuery( '#bvg_admin_msg').animate({ height: 0, opacity: 0 }, 'slow');
+                            });
+                        }
+                        console.log(data);
+                        jQuery('#ajax_spinner_layer').fadeOut( 'slow' );
+                    }
+                });
+
+
+        })
+
+    }
+    var key = e.which;
+    if( key == 13 ){
+        jQuery('#edit_field_valid').click();
+        return false;
+    }
+});

@@ -72,10 +72,15 @@ $html .= '<div id="player_infos_extended" class="admin_block_extended">';
 
     $html .= '<label>'.__('Club:', 'bad-tournament').'</label>';
 
-    $club_name = 'BVG Goldbach/Laufach';
-    $club_id = 1;
-    $html .= '<select name="club_id">';
-    $html .= '<option value="'.$club_id.'" >'.$club_name.'</option>';
+    $html .= '<select name="club_id" id="club_player">';
+    $html .= '<option value="0" >'.__( 'Choose...' , 'bad-tournament' ).'</option>';
+    foreach( $clubs as $club ){
+        $selected = '';
+        if( isset( $_SESSION[ 'cl_id' ] ) && $_SESSION[ 'cl_id' ] == $club->id ){
+            $selected = 'selected="selected"';
+        }
+        $html .= '<option value="'.$club->id.'" '.$selected.'>'.$club->name.'</option>';
+    }
     $html .= '</select>';
 
     $html .= '<label>'.__('Player ID:', 'bad-tournament').'</label>';

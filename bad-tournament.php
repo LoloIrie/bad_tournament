@@ -5,7 +5,7 @@ Plugin Name: Bad Tournament
 Plugin URI: http://etalkers.org
 Description: Badminton / Tennis / Table tennis Tournament Plugin
 Author: Laurent Dorier
-Version: 1.0
+Version: 1.1
 Author URI: http://etalkers.org
 Text Domain: bad-tournament
 Domain Path: /languages
@@ -36,6 +36,7 @@ class bad_tournament
         add_action( 'wp_ajax_player_tooltip', array( $this, 'player_tooltip' ) );
         add_action( 'wp_ajax_player_remove', array( $this, 'player_remove_from_tournament' ) );
         add_action( 'wp_ajax_player_edit_field', array( $this, 'player_edit_field' ) );
+        add_action( 'wp_ajax_set_club_default', array( $this, 'set_club_default' ) );
 
 
         add_action( 'admin_head', array( $this, 'bvg_head_javascript_object' ) );
@@ -70,6 +71,7 @@ class bad_tournament
         );
 
         add_submenu_page( 'bad_tournament', 'Tournament', __('Tournament', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=tournament');
+        add_submenu_page( 'bad_tournament', 'Clubs', __('Clubs', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=clubs');
         add_submenu_page( 'bad_tournament', 'Players', __('Players', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=players');
         add_submenu_page( 'bad_tournament', 'Table', __('Table', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=table');
         add_submenu_page( 'bad_tournament', 'Matches', __('Matches', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=matches');
@@ -93,11 +95,14 @@ class bad_tournament
         if ( current_user_can('edit_pages') ) {
 
             include plugin_dir_path(__FILE__).'admin/install.php';
-            if( get_option( 'bad_tournament_installed' ) !== $bad_tournament_version ){
-                $bad_tournament_current_version = get_option( 'bad_tournament_installed' );
+
+            $bad_tournament_current_version = get_option( 'bad_tournament_installed' );
+            if( $bad_tournament_current_version !== $bad_tournament_version ){
+
                 /* Not yet installed ? */
                 $bvg_admin_msg = bad_tournament_install( $bad_tournament_version, $bad_tournament_current_version );
-                add_option('bad_tournament_installed', $bad_tournament_version  );
+                update_option('bad_tournament_installed', $bad_tournament_version  );
+
             }
 
             include plugin_dir_path(__FILE__).'admin/index.php';
@@ -127,7 +132,7 @@ class bad_tournament
         wp_die();
     }
 
-    //
+    // Ajax: Edit player infos
     function player_edit_field(){
         $html_ajax = '';
         include plugin_dir_path(__FILE__).'admin/action/player-edit-field.php';
@@ -135,6 +140,18 @@ class bad_tournament
         echo $html_ajax;
         wp_die();
     }
+
+
+
+    // Ajax: Set club as default
+    function set_club_default(){
+        $html_ajax = '';
+        include plugin_dir_path(__FILE__).'admin/action/club-set-default.php';
+
+        echo $html_ajax;
+        wp_die();
+    }
+
 
     function change_players_match(){
         $html_ajax = '';

@@ -68,6 +68,7 @@ if( !isset( $_SESSION['round'] ) ){
 /* GET DB CONTENT */
 include_once plugin_dir_path(__FILE__). 'db-get-content.php';
 $tournaments = db_get_tournaments();
+$clubs = db_get_clubs();
 $all_players = db_get_all_players();
 $players = db_get_players();
 $matches = db_get_matches( $_SESSION['t_id'], $_SESSION['round'] );
@@ -93,6 +94,9 @@ include plugin_dir_path(__FILE__). 'index_html/header.php';
 
 /* Tournament */
 include plugin_dir_path(__FILE__). 'index_html/tournament-config.php';
+
+/* Clubs */
+include plugin_dir_path(__FILE__). 'index_html/clubs.php';
 
 /* Players */
 include plugin_dir_path(__FILE__). 'index_html/player-config.php';
