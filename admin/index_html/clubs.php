@@ -18,7 +18,16 @@ echo '</pre>';
 $html .= '<div class="admin_block nav_club" id="block_add_clubs" '.( $ADMIN_VIEW == 'clubs' ? 'style="display: block;"' : '' ).'>';
 
 
-
+if( !empty( $clubs) ) {
+    $html .= '<div id="existing_clubs">';
+        $html .= '<h2>'.__( 'Existing clubs' , 'bad-tournament' ).'</h2>';
+        $html .= '<ul id="existing_clubs_list">';
+        foreach( $clubs as $club){
+            $html .= '<li>'.$club->name.'</li>';
+        }
+        $html .= '</ul>';
+    $html .= '</div>';
+}
 
 
 
@@ -38,14 +47,18 @@ $html .= '<input type="text" value="" placeholder="'.__('https://', 'bad-tournam
 
 
 $html .= '<label>'.__('Contact:', 'bad-tournament').'</label>';
-$player_name = 'Hans-Peter Schmidt';
-$player_id = 7;
+
 $html .= '<select name="contact_id">';
-$html .= '<option value="'.$player_id.'" >'.$player_name.'</option>';
+$html .= '<option value="0" >'.__( 'Choose...' , 'bad-tournament' ).'</option>';
+foreach( $all_players as $player ) {
+    $html .= '<option value="'.$player->id.'" >'.$player->player_firstname.' '.$player->player_lastname.'</option>';
+}
+
 $html .= '</select>';
 
 
-
+$html .= '<label>'.__('Set as default:', 'bad-tournament').'</label>';
+$html .= '<input type="checkbox" value="1" name="club_as_default" />';
 
 
 $html .= '<hr />';

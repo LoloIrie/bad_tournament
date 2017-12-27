@@ -37,6 +37,7 @@ class bad_tournament
         add_action( 'wp_ajax_player_remove', array( $this, 'player_remove_from_tournament' ) );
         add_action( 'wp_ajax_player_edit_field', array( $this, 'player_edit_field' ) );
         add_action( 'wp_ajax_set_club_default', array( $this, 'set_club_default' ) );
+        add_action( 'wp_ajax_set_player_form_default', array( $this, 'set_player_form_default' ) );
 
 
         add_action( 'admin_head', array( $this, 'bvg_head_javascript_object' ) );
@@ -147,6 +148,15 @@ class bad_tournament
     function set_club_default(){
         $html_ajax = '';
         include plugin_dir_path(__FILE__).'admin/action/club-set-default.php';
+
+        echo $html_ajax;
+        wp_die();
+    }
+
+    // Ajax: Set player form view as default
+    function set_player_form_default(){
+        $html_ajax = '';
+        include plugin_dir_path(__FILE__).'admin/action/player-form-set-default.php';
 
         echo $html_ajax;
         wp_die();

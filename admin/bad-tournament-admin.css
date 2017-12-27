@@ -1,20 +1,77 @@
-nav{
-    width: 100%;
-    display: flex;
+nav#main_nav{
+    position: fixed;
+    top: 60px;
+    margin-bottom: 10px;
 }
-nav li{
+nav#main_nav.transparent{
+    opacity: 0.1;
+
+    -webkit-transition: opacityr 1s;
+    -moz-transition: opacity 1s;
+    -ms-transition: opacity 1s;
+    -o-transition: opacity 1s;
+    transition: opacity 1s;
+}
+nav#main_nav.transparent:hover{
+    opacity: 1;
+
+    -webkit-transition: opacityr 0.5s;
+    -moz-transition: opacity 0.5s;
+    -ms-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s;
+    transition: opacity 0.5s;
+}
+nav#main_nav ul{
+    display: flex;
+    width: fit-content;
+    height: 28px;
+    margin: 0 !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    padding: 0 8px;
+
+    background: #ddd;
+    border: 1px solid #aaa;
+    border-radius: 8px;
+
+    line-height: 28px;
+}
+nav#main_nav li{
     float: left;
+    margin-top: 0;
+    margin-bottom: 0;
     margin-right: 16px;
+    padding-right: 3px;
+    padding-left: 3px;
+
     cursor: pointer;
     font-weight: bold;
     font-size: 16px;
+}
+nav#main_nav li:hover{
+    background-color: #666;
+    color: #fff;
+}
+nav#main_nav li.active{
+    background-color: #000;
+    color: #fff;
+    -webkit-transition: background-color 2s;
+    -moz-transition: background-color 2s;
+    -ms-transition: background-color 2s;
+    -o-transition: background-color 2s;
+    transition: background-color 2s;
+}
+#bad_tournament_maintitle{
+    margin-top: 75px;
 }
 hr{
     clear: both;
 }
 #bvg_admin_msg{
-    margin-top: 10px;
+    margin-top: 80px;
+    margin-bottom: -50px;
     padding: 15px;
+    position: relative;
     padding-left: 24px;
 
     background-color: #ddd;
@@ -22,7 +79,7 @@ hr{
     background-position: top left;
     background-repeat: no-repeat;
 
-    border: 0 0 0 4px solid #c00;
+    border-left: 4px solid #c00;
 
     font-weight: bold;
     color: #c00;
@@ -85,8 +142,8 @@ input[type=submit]{
 input[type=number]{
     min-width: 50px;
 }
-input[type=radio]{
-    margin-top: 2px;
+input[type=radio], input[type=checkbox]{
+    margin-top: 6px;
     line-height: 24px;
 }
 ul.table{

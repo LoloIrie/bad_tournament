@@ -66,9 +66,15 @@ $html .= '<input type="text" value="" placeholder="'.__('Firstname', 'bad-tourna
 $html .= '<label>'.__('Lastname:', 'bad-tournament').'</label>';
 $html .= '<input type="text" value="" placeholder="'.__('Lastname', 'bad-tournament').'" name="lastname" />';
 
-$html .= '<div class="plus_icon"></div><br />';
+if( !isset( $_SESSION[ 'player_form_extended' ] ) || $_SESSION[ 'player_form_extended' ] != 1 ){
+    $html .= '<div class="plus_icon"></div><br />';
+    $html .= '<div id="player_infos_extended" class="admin_block_extended">';
+}else{
+    //$html .= '<div id="player_infos_extended" class="admin_block_extended" style="display: block;">';
+}
 
-$html .= '<div id="player_infos_extended" class="admin_block_extended">';
+
+
 
     $html .= '<label>'.__('Club:', 'bad-tournament').'</label>';
 
@@ -98,8 +104,9 @@ $html .= '<div id="player_infos_extended" class="admin_block_extended">';
     $html .= '<label>'.__('Value (for swiss system):', 'bad-tournament').'</label>';
     $html .= '<input type="text" value="" placeholder="'.__('Points', 'bad-tournament').'" name="swiss_system_point" />';
 
-$html .= '</div>';
-
+if( !isset( $_SESSION[ 'player_form_extended' ] ) || $_SESSION[ 'player_form_extended' ] != 1 ) {
+    $html .= '</div>';
+}
 
 
 $html .= '<hr />';

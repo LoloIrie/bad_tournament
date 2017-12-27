@@ -6,7 +6,29 @@
  * Time: 09:12
  */
 
+$html .= '<nav id="main_nav">';
+$html .= '<ul>';
+$html .= '<li class="nav_item'.( $ADMIN_VIEW == 'tournament' ? ' active"' : '' ).'" id="nav_tournament">';
+$html .= __('Tournament', 'bad-tournament');
+$html .= '</li>';
 
+$html .= '<li class="nav_item'.( $ADMIN_VIEW == 'clubs' ? ' active"' : '' ).'" id="nav_club">';
+$html .= __('Clubs', 'bad-tournament');
+$html .= '</li>';
+
+$html .= '<li class="nav_item'.( $ADMIN_VIEW == 'players' ? ' active"' : '' ).'" id="nav_player">';
+$html .= __('Players', 'bad-tournament');
+$html .= '</li>';
+
+$html .= '<li class="nav_item'.( $ADMIN_VIEW == 'table' ? ' active"' : '' ).'" id="nav_table">';
+$html .= __('Table', 'bad-tournament');
+$html .= '</li>';
+
+$html .= '<li class="nav_item'.( $ADMIN_VIEW == 'matches' ? ' active"' : '' ).'" id="nav_match">';
+$html .= __('Matches', 'bad-tournament');
+$html .= '</li>';
+$html .= '</ul>';
+$html .= '</nav>';
 
 /* Msg */
 if( !empty( trim( $bvg_admin_msg ) ) ){
@@ -18,7 +40,6 @@ if( !empty( trim( $bvg_admin_msg ) ) ){
     */
 }
 
-$html .= '<h1 id="bad_tournament_maintitle">Bad Tournament Administration, Version '.get_option( 'bad_tournament_installed' ).' !!!</h1>';
 
 if( $_SESSION['current_tournament'] !== false ){
     /* Title */
@@ -32,7 +53,7 @@ if( $_SESSION['current_tournament'] !== false ){
         }
 
     }
-    $html .= '<h3 class="subtournament_name">'.$_SESSION['t_name'].' (ID:'.$_SESSION['current_tournament']['id'].')' .' ( '.__( 'Round', 'bad-tournament').': '.$_SESSION['round'].')</h3>';
+    $html .= '<h1 id="bad_tournament_maintitle" class="subtournament_name">'.$_SESSION['t_name'].' (ID:'.$_SESSION['current_tournament']['id'].')' .' ( '.__( 'Round', 'bad-tournament').': '.$_SESSION['round'].')</h1>';
     $html .= __('Matches played: ', 'bad-tournament').$nb_matchs;
 
     $html .= '<h4>'.$t_system[ $_SESSION['current_tournament']['system'] ].'</h4>';
@@ -42,29 +63,7 @@ if( $_SESSION['current_tournament'] !== false ){
 
 
 
-$html .= '<nav id="main_nav">';
-    $html .= '<ul>';
-        $html .= '<li class="nav_item" id="nav_tournament">';
-        $html .= __('Tournament', 'bad-tournament');
-        $html .= '</li>';
 
-        $html .= '<li class="nav_item" id="nav_club">';
-        $html .= __('Clubs', 'bad-tournament');
-        $html .= '</li>';
-
-        $html .= '<li class="nav_item" id="nav_player">';
-        $html .= __('Players', 'bad-tournament');
-        $html .= '</li>';
-
-        $html .= '<li class="nav_item" id="nav_table">';
-        $html .= __('Table', 'bad-tournament');
-        $html .= '</li>';
-
-        $html .= '<li class="nav_item" id="nav_match">';
-        $html .= __('Matches', 'bad-tournament');
-        $html .= '</li>';
-    $html .= '</ul>';
-$html .= '</nav>';
 /*
 echo '<pre>';
 var_dump( $players );

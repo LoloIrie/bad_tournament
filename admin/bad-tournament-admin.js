@@ -3,10 +3,26 @@ console.log( bvg_tournament_constants );
 
 /* Switching admin page */
 jQuery('.nav_item').on( 'click', function(){
+    jQuery('.nav_item').removeClass( 'active' );
+    jQuery( this ).addClass( 'active' );
     id_nav = jQuery( this ).attr( 'id' );
     id_block = '.admin_block.' + id_nav;
     jQuery('.admin_block').hide();
     jQuery( id_block ).slideDown( 'slow' );
+});
+
+/* Menu opacity effect */
+jQuery(document).ready(function() {
+    jQuery(function () {
+        jQuery(window).scroll(function () {
+            if( jQuery(window).scrollTop() >= 35 ) {
+                jQuery( 'nav#main_nav' ).addClass( 'transparent' );
+            } else {
+                jQuery( 'nav#main_nav' ).removeClass( 'transparent' );
+
+            }
+        });
+    });
 });
 
 /* Set match winner */
@@ -32,6 +48,22 @@ jQuery('#bvg_admin_msg_close').on( 'click', function(){
 /* Expand new player form */
 jQuery('.plus_icon').on( 'click', function(){
     jQuery( this).next().next().slideDown();
+
+    jQuery('#ajax_spinner_layer').fadeIn();
+    data = {
+        action: 'set_player_form_default'
+    };
+    jQuery.ajax({
+        type: "POST",
+        data : data,
+        async: true,
+        cache: false,
+        url: ajaxurl,
+        success: function(data) {
+            console.log( 'Player form extended by default now...' );
+            jQuery('#ajax_spinner_layer').fadeOut( 'slow' );
+        }
+    });
 });
 
 /* Change player for a match */

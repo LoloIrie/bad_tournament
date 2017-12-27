@@ -15,6 +15,9 @@ $data = array(
 );
 $wpdb->insert( $wpdb->prefix . 'bvg_clubs', $data );
 
-$_SESSION[ 'cl_id' ] = $wpdb->insert_id;
+if( $_POST['club_as_default'] === 1 ){
+    $_SESSION[ 'cl_id' ] = $wpdb->insert_id;
+}
+
 
 $bvg_admin_msg .= __( 'New club added...', 'bad-tournament' );
