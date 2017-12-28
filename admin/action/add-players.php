@@ -20,7 +20,9 @@ $data = array(
     'sex' => $_POST['sex']
 );
 $wpdb->insert( $wpdb->prefix . 'bvg_players', $data );
+$bvg_admin_msg .= __( 'New player added...', 'bad-tournament' );
 
+$player_id = $wpdb->insert_id;
 
 $data = array(
     'tournament_id' => $_SESSION['t_id'],
@@ -28,6 +30,16 @@ $data = array(
     'player_level_init' => $_POST['swiss_system_point']
 );
 $wpdb->insert( $wpdb->prefix . 'bvg_players_tournament', $data );
+$bvg_admin_msg .= '<br />'.__( 'Player added for the current tournament', 'bad-tournament' );
 
+if( isset( $_POST['club_contact'] ) && $_POST['club_contact'] == 1 ){
+    $data = array(
+        'contact_id' => $player_id
+    );
+    $wpdb->update( $wpdb->prefix . 'bvg_clubs',
+        $data,
+        array( 'id' => $_POST['club_id'] ) );
 
-$bvg_admin_msg .= __( 'New player added...', 'bad-tournament' );
+    $bvg_admin_msg .= '<br />'.__( 'Player added as contact for this club', 'bad-tournament' );
+}
+

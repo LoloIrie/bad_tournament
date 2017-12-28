@@ -23,7 +23,7 @@ if( !empty( $clubs) ) {
         $html .= '<h2>'.__( 'Existing clubs' , 'bad-tournament' ).'</h2>';
         $html .= '<ul id="existing_clubs_list">';
         foreach( $clubs as $club){
-            $html .= '<li>'.$club->name.'</li>';
+            $html .= '<li value="'.$club->id.'" class="clubs_name">'.$club->name.'</li>';
         }
         $html .= '</ul>';
     $html .= '</div>';
@@ -51,7 +51,7 @@ $html .= '<label>'.__('Contact:', 'bad-tournament').'</label>';
 $html .= '<select name="contact_id">';
 $html .= '<option value="0" >'.__( 'Choose...' , 'bad-tournament' ).'</option>';
 foreach( $all_players as $player ) {
-    $html .= '<option value="'.$player->id.'" >'.$player->player_firstname.' '.$player->player_lastname.'</option>';
+    $html .= '<option value="'.$player->player_id.'" >'.$player->player_firstname.' '.$player->player_lastname.'</option>';
 }
 
 $html .= '</select>';

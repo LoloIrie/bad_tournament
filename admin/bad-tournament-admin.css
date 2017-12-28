@@ -333,10 +333,23 @@ h1.topspace{
     padding: 3px;
     margin: 0 2px;
     vertical-align: middle;
-    float: right;
+    float: left;
 
     border: 1px solid #ddd;
     border-radius: 4px;
 
     cursor: pointer;
+}
+
+/* Clubs */
+#existing_clubs_list{
+    max-height: 150px;
+    overflow: auto;
+}
+.clubs_name{
+    float: left;
+    clear: both;
+
+    line-height: 24px;
+    font-weight: bold;
 }

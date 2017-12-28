@@ -253,9 +253,13 @@ jQuery('.pl_remove').on( 'click', function(){
 jQuery('.datepicker').datepicker( {dateFormat: "dd/mm/yy"} );
 
 /* Set club as default */
-jQuery( '#club_player' ).on('change keypress', function(e){
+jQuery( '#club_player, .clubs_name' ).on('change keypress click', function(e){
     if( jQuery( this ).val() > 0 ){
-        jQuery( this).after( '<img src="' + bvg_tournament_constants.badTournamentURI + 'icons/bad-tournament-ok-icon.png" id="edit_field_valid" class="edit_field_valid" />' );
+        if( jQuery( '#edit_field_valid' ).length > 0 ){
+            jQuery( '#edit_field_valid' ).remove();
+        }
+
+        jQuery( this ).after( '<img src="' + bvg_tournament_constants.badTournamentURI + 'icons/bad-tournament-ok-icon.png" id="edit_field_valid" class="edit_field_valid" />' );
 
         var club_id = jQuery( this ).val();
         jQuery( '#edit_field_valid' ).on( 'click', function(){
@@ -291,6 +295,8 @@ jQuery( '#club_player' ).on('change keypress', function(e){
 
         })
 
+    }else if( jQuery( this ).val() == 0 ){
+        jQuery( '#edit_field_valid' ).remove();
     }
     var key = e.which;
     if( key == 13 ){

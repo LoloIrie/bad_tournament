@@ -82,12 +82,15 @@ if( !isset( $_SESSION[ 'player_form_extended' ] ) || $_SESSION[ 'player_form_ext
     $html .= '<option value="0" >'.__( 'Choose...' , 'bad-tournament' ).'</option>';
     foreach( $clubs as $club ){
         $selected = '';
-        if( isset( $_SESSION[ 'cl_id' ] ) && $_SESSION[ 'cl_id' ] == $club->id ){
+        if( $cl_default_id == $club->id ){
             $selected = 'selected="selected"';
         }
         $html .= '<option value="'.$club->id.'" '.$selected.'>'.$club->name.'</option>';
     }
     $html .= '</select>';
+
+    $html .= '<label>'.__('Set as club contact:', 'bad-tournament').'</label>';
+    $html .= '<input type="checkbox" value="1" name="club_contact" />';
 
     $html .= '<label>'.__('Player ID:', 'bad-tournament').'</label>';
     $html .= '<input type="text" value="" placeholder="'.__('XXXXXXXXX', 'bad-tournament').'" name="player_id" />';

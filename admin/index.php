@@ -69,10 +69,12 @@ if( !isset( $_SESSION['round'] ) ){
 include_once plugin_dir_path(__FILE__). 'db-get-content.php';
 $tournaments = db_get_tournaments();
 $clubs = db_get_clubs();
+$cl_default_id = get_option( 'cl_default_id' );
 $all_players = db_get_all_players();
 $players = db_get_players();
 $matches = db_get_matches( $_SESSION['t_id'], $_SESSION['round'] );
 $nb_matchs = db_nb_matches( $_SESSION['t_id'] );
+
 
 //echo '<pre>';
 //var_dump( $players );
