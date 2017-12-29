@@ -7,7 +7,7 @@
  */
 
 /* Get all tournaments */
-function db_get_tournaments( $tournament_id = false ){
+function db_get_tournaments( $tournament_id = false, $get_last = false ){
 
     global $wpdb;
 
@@ -17,7 +17,7 @@ function db_get_tournaments( $tournament_id = false ){
         
         FROM
         ".$wpdb->prefix."bvg_tournaments";
-    }else{
+    }else if( !$get_last ){
         $query = "SELECT
         *
         
@@ -26,8 +26,19 @@ function db_get_tournaments( $tournament_id = false ){
         
         WHERE
         id=".$tournament_id;
+    }else{
+        $query = "SELECT
+        *
+        
+        FROM
+        ".$wpdb->prefix."bvg_tournaments
+        
+        ORDER BY
+        id DESC
+        
+        LIMIT
+        0,1";
     }
-
 
     $tournaments = $wpdb->get_results( $query  );
 
@@ -148,43 +159,62 @@ function db_nb_matches( $tournament_id = false, $round = false ){
 }
 
 /* Get matches */
-function db_get_matches( $tournament_id = false, $round = false ){
+function db_get_matches( $tournament_id = false, $round = false, $match_id = false ){
 
     global $wpdb;
 
-    if( !$tournament_id ){
-        $tournament_id = $_SESSION['t_id'];
-    }
-
-    if( !$round ){
+    if( $match_id ){
         $query = "SELECT
-        *
-
-        FROM
-        ".$wpdb->prefix."bvg_matches
-
-        WHERE
-        tournament_id = ".$tournament_id."
-
-        ORDER BY
-        round, id ASC
-        ";
+            *
+    
+            FROM
+            ".$wpdb->prefix."bvg_matches
+    
+            WHERE
+            id = ".$match_id."
+    
+            LIMIT
+            0,1
+            ";
     }else{
-        $query = "SELECT
-        *
 
-        FROM
-        ".$wpdb->prefix."bvg_matches
+        if( !$tournament_id ){
+            $tournament_id = $_SESSION['t_id'];
+        }
 
-        WHERE
-        tournament_id = ".$tournament_id."
-        AND
-        round = ".$round."
+        if( !$round ){
+            $query = "SELECT
+            *
+    
+            FROM
+            ".$wpdb->prefix."bvg_matches
+    
+            WHERE
+            tournament_id = ".$tournament_id."
+    
+            ORDER BY
+            round, id ASC
+            ";
+        }else{
+            $query = "SELECT
+            *
+    
+            FROM
+            ".$wpdb->prefix."bvg_matches
+    
+            WHERE
+            tournament_id = ".$tournament_id."
+            AND
+            round = ".$round."
+    
+            ORDER BY
+            id ASC
+            ";
 
-        ORDER BY
-        id ASC
-        ";
+        }
     }
+
+
 
 
     $matches = $wpdb->get_results( $query );

@@ -26,32 +26,28 @@ if( isset( $_GET['admin_view'] ) ){
 global $wpdb;
 $bvg_admin_msg = '';
 
+/* GET/SET CONTENT */
+include_once plugin_dir_path(__FILE__). 'db-get-content.php';
 
 /* ACTIONS */
 if( isset($_POST['form_action']) ){
     include plugin_dir_path(__FILE__). 'action/'.$_POST['form_action'].'.php';
 }
+
+
 //echo 'XXX'.$_SESSION['round'];
 if( !isset( $_SESSION['t_id'] ) ){
 
-    $query = "SELECT
-    *
-    
-    FROM
-    ".$wpdb->prefix."bvg_tournaments
-    
-    ORDER BY
-    id DESC
-    
-    LIMIT
-    0,1";
-    $last_tournament = $wpdb->get_results( $query  );
+    $last_tournament = db_get_tournaments( false , true );
 
     if( isset($last_tournament[0]->id) && is_numeric($last_tournament[0]->id) ){
         $_SESSION['t_id'] = $last_tournament[0]->id;
         $_SESSION['t_system'] = $last_tournament[0]->system;
         $_SESSION['t_name'] = $last_tournament[0]->name;
         $_SESSION['current_tournament'] = get_object_vars( $last_tournament[0] );
+        if( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] > 0 ){
+            $_SESSION[ 'current_tournament' ][ 'club_restriction_name' ] = db_get_clubs( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] )[0]->name;
+        }
     }else{
         $_SESSION['t_id'] = 1;
         $_SESSION['t_system'] = 1;
@@ -66,7 +62,6 @@ if( !isset( $_SESSION['round'] ) ){
 }
 
 /* GET DB CONTENT */
-include_once plugin_dir_path(__FILE__). 'db-get-content.php';
 $tournaments = db_get_tournaments();
 $clubs = db_get_clubs();
 $cl_default_id = get_option( 'cl_default_id' );
@@ -77,7 +72,7 @@ $nb_matchs = db_nb_matches( $_SESSION['t_id'] );
 
 
 //echo '<pre>';
-//var_dump( $players );
+//var_dump( $matches );
 
 /* Generate matches if required */
 if( empty($matches) || isset( $_POST['regenerate_matchs_now'] ) ){

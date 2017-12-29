@@ -8,7 +8,7 @@
 
 if ( !defined( 'ABSPATH' ) ) die();
 
-$bad_tournament_version = '1.1';
+$bad_tournament_version = '1.0';
 
 function bad_tournament_install( $bad_tournament_version, $bad_tournament_current_version = false ){
 
@@ -34,7 +34,7 @@ function bad_tournament_update( $bad_tournament_current_version ){
     $bvg_admin_msg = __( 'Plugin Bad Tournament updated with following version(s):' , 'bad-tournament' );
 
     $existing_updates = array(
-        '1.1'
+        //'1.1'
     );
 
     foreach( $existing_updates as $version ){
@@ -58,6 +58,17 @@ function bad_tournament_install_init(){
 
     global $wpdb;
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+    $nom_table = $wpdb->prefix . 'bvg_clubs';
+    $sql = "CREATE TABLE $nom_table (
+                  id bigint(20) unsigned NOT NULL auto_increment,
+                  name varchar(200) NOT NULL,
+                  club_id varchar(50) NOT NULL,
+                  url varchar(150) NOT NULL,
+                  contact_id bigint(20) unsigned NOT NULL,
+                  PRIMARY KEY (id)
+                ) ENGINE=InnoDB;";
+    dbDelta( $sql );
 
     $nom_table = $wpdb->prefix . 'bvg_matches';
     $sql = "CREATE TABLE $nom_table (
@@ -138,6 +149,7 @@ function bad_tournament_install_init(){
                   nb_sets int(11) NOT NULL,
                   points_set int(11) NOT NULL,
                   max_points_set int(11) NOT NULL,
+                  club_restriction int(11) unsigned NOT NULL,
                   PRIMARY KEY (id),
                   INDEX (parent_id)
                 ) ENGINE=InnoDB;";
@@ -145,6 +157,13 @@ function bad_tournament_install_init(){
 
 
     /* ADD FOREIGN KEYS */
+    $nom_table = $wpdb->prefix . 'bvg_clubs';
+    $sql = "ALTER TABLE ".$nom_table."
+                    ADD FOREIGN KEY (contact_id)
+                      REFERENCES ".$wpdb->prefix . "bvg_players(id)
+                      ON UPDATE NO ACTION ON DELETE NO ACTION;";
+    dbDelta( $sql );
+
     $nom_table = $wpdb->prefix . 'bvg_matches';
     $sql = "ALTER TABLE ".$nom_table."
                     ADD FOREIGN KEY (player1_id)
@@ -180,6 +199,9 @@ function bad_tournament_install_init(){
     $sql = "ALTER TABLE ".$nom_table."
                     ADD FOREIGN KEY (parent_id)
                       REFERENCES ".$wpdb->prefix . "bvg_tournaments(id)
+                      ON UPDATE NO ACTION ON DELETE NO ACTION,
+                    ADD FOREIGN KEY (club_restriction)
+                      REFERENCES ".$wpdb->prefix . "bvg_clubs(id)
                       ON UPDATE NO ACTION ON DELETE NO ACTION;";
     dbDelta( $sql );
 
@@ -191,16 +213,7 @@ function update_1_1(){
     global $wpdb;
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
-    $nom_table = $wpdb->prefix . 'bvg_clubs';
-    $sql = "CREATE TABLE $nom_table (
-                  id bigint(20) unsigned NOT NULL auto_increment,
-                  name varchar(200) NOT NULL,
-                  club_id varchar(50) NOT NULL,
-                  url varchar(150) NOT NULL,
-                  contact_id bigint(20) unsigned NOT NULL,
-                  PRIMARY KEY (id)
-                ) ENGINE=InnoDB;";
-    dbDelta( $sql );
+
 
     return true;
 }

@@ -11,6 +11,11 @@
 if( !is_numeric( $_POST['match_id'] ) ){
     $bvg_admin_msg .= 'Fehler: Match ID ist falsch...';
 }else{
+
+    /* Get match values before update */
+    $match_before_update = db_get_matches( false, false, $_POST['match_id'] )[0];
+    //var_dump( $match_before_update );
+
     $winner = 0;
 
     $m_id = $_POST['match_id'];
@@ -130,23 +135,62 @@ if( !is_numeric( $_POST['match_id'] ) ){
         $pl2_level_current_change = 0;
 
         /* Update tournament table */
-        $pl1_level_current_change = ( $winner == $pl1_id ? 1 : 0 );
-        $pl2_level_current_change = ( $winner == $pl2_id ? 1 : 0 );
-        $p = ( $winner == $pl1_id ? 1 : 0 );
-        $w = ( $winner == $pl1_id ? 1 : 0 );
-        $d = 0;
-        $l = ( $winner == $pl2_id ? 1 : 0 );
-        $s = $s1;
-        $s_opp = $s2;
-        $pt = ( $pl1_set1+ $pl1_set2 +$pl1_set3 + $pl1_set4 + $pl1_set5 );
-        $pt_opp = ( $pl2_set1+ $pl2_set2 +$pl2_set3 + $pl2_set4 + $pl2_set5 );
+        if( $match_before_update->winner > 0 ){
+            // Match was already updated...
+            $played = 0;
+            if( $match_before_update->winner == $pl1_id ){
+                $pl1_level_current_change = ( $winner == $pl1_id ? 0 : -1 );
+                $pl2_level_current_change = ( $winner == $pl1_id ? 0 : 1 );
+                $p = ( $winner == $pl1_id ? 0 : -1 );
+                $w = ( $winner == $pl1_id ? 0 : -1 );
+                $l = ( $winner == $pl2_id ? 1 : 0 );
+            }else{
+                $pl1_level_current_change = ( $winner == $pl1_id ? 1 : 0 );
+                $pl2_level_current_change = ( $winner == $pl1_id ? -1 : 0 );
+                $p = ( $winner == $pl1_id ? 1 : 0 );
+                $w = ( $winner == $pl1_id ? 1 : 0 );
+                $l = ( $winner == $pl2_id ? 0 : -1 );
+            }
+
+            $d = 0;
+
+            $s = $s1
+                - ( $match_before_update->pl1_set1 > $match_before_update->pl2_set1 ? 1 : 0 )
+                - ( $match_before_update->pl1_set2 > $match_before_update->pl2_set2 ? 1 : 0 )
+                - ( $match_before_update->pl1_set3 > $match_before_update->pl2_set3 ? 1 : 0 )
+                - ( $match_before_update->pl1_set4 > $match_before_update->pl2_set4 ? 1 : 0 )
+                - ( $match_before_update->pl1_set5 > $match_before_update->pl2_set5 ? 1 : 0 );
+
+            $s_opp = $s2
+                - ( $match_before_update->pl2_set1 > $match_before_update->pl1_set1 ? 1 : 0 )
+                - ( $match_before_update->pl2_set2 > $match_before_update->pl1_set2 ? 1 : 0 )
+                - ( $match_before_update->pl2_set3 > $match_before_update->pl1_set3 ? 1 : 0 )
+                - ( $match_before_update->pl2_set4 > $match_before_update->pl1_set4 ? 1 : 0 )
+                - ( $match_before_update->pl2_set5 > $match_before_update->pl1_set5 ? 1 : 0 );
+
+            $pt = ( $pl1_set1+ $pl1_set2 +$pl1_set3 + $pl1_set4 + $pl1_set5 ) - ( $match_before_update->pl1_set1 + $match_before_update->pl1_set2 + $match_before_update->pl1_set3 + $match_before_update->pl1_set4 + $match_before_update->pl1_set5 );
+            $pt_opp = ( $pl2_set1+ $pl2_set2 +$pl2_set3 + $pl2_set4 + $pl2_set5 ) - ( $match_before_update->pl2_set1 + $match_before_update->pl2_set2 + $match_before_update->pl2_set3 + $match_before_update->pl2_set4 + $match_before_update->pl2_set5 );
+        }else{
+            $played = 1;
+            $pl1_level_current_change = ( $winner == $pl1_id ? 1 : 0 );
+            $pl2_level_current_change = ( $winner == $pl2_id ? 1 : 0 );
+            $p = ( $winner == $pl1_id ? 1 : 0 );
+            $w = ( $winner == $pl1_id ? 1 : 0 );
+            $d = 0;
+            $l = ( $winner == $pl2_id ? 1 : 0 );
+            $s = $s1;
+            $s_opp = $s2;
+            $pt = ( $pl1_set1+ $pl1_set2 +$pl1_set3 + $pl1_set4 + $pl1_set5 );
+            $pt_opp = ( $pl2_set1+ $pl2_set2 +$pl2_set3 + $pl2_set4 + $pl2_set5 );
+        }
+
         $wpdb->query( $wpdb->prepare(
             "UPDATE
             ".$wpdb->prefix . 'bvg_players_tournament'."
             
             SET
             player_level_current=player_level_current+".$pl1_level_current_change.",
-            played=played+1,
+            played=played+%d,
             victory=victory+%d,
             draw=draw+%d,
             loss=loss+%d,
@@ -159,7 +203,7 @@ if( !is_numeric( $_POST['match_id'] ) ){
             WHERE
             id=".$pl1_id,
 
-            $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
+            $played, $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
             )
         );
 
@@ -171,7 +215,7 @@ if( !is_numeric( $_POST['match_id'] ) ){
                 
                 SET
                 player_level_current=player_level_current+".$pl1_level_current_change.",
-                played=played+1,
+                played=played+%d,
                 victory=victory+%d,
                 draw=draw+%d,
                 loss=loss+%d,
@@ -184,26 +228,63 @@ if( !is_numeric( $_POST['match_id'] ) ){
                 WHERE
                 id=".$pl1_id_bis,
 
-                    $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
+                $played, $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
                 )
             );
         }
 
-        $p = ( $winner == $pl2_id ? 1 : 0 );
-        $w = ( $winner == $pl2_id ? 1 : 0 );
-        $d = 0;
-        $l = ( $winner == $pl1_id ? 1 : 0 );
-        $s_opp = $s1;
-        $s = $s2;
-        $pt_opp = ( $pl1_set1+ $pl1_set2 +$pl1_set3 + $pl1_set4 + $pl1_set5 );
-        $pt = ( $pl2_set1+ $pl2_set2 +$pl2_set3 + $pl2_set4 + $pl2_set5 );
-        $wpdb->query( $wpdb->prepare(
+        if( $match_before_update->winner > 0 ) {
+            // Match was already updated...
+            $played = 0;
+            if( $match_before_update->winner == $pl2_id ){
+                $p = ( $winner == $pl2_id ? 0 : -1 );
+                $w = ( $winner == $pl2_id ? 0 : -1 );
+                $l = ( $winner == $pl1_id ? 1 : 0 );
+            }else{
+                $p = ( $winner == $pl2_id ? 1 : 0 );
+                $w = ( $winner == $pl2_id ? 1 : 0 );
+                $l = ( $winner == $pl1_id ? 0 : -1 );
+            }
+
+            $d = 0;
+
+            $s_opp = $s1
+                - ( $match_before_update->pl1_set1 > $match_before_update->pl2_set1 ? 1 : 0 )
+                - ( $match_before_update->pl1_set2 > $match_before_update->pl2_set2 ? 1 : 0 )
+                - ( $match_before_update->pl1_set3 > $match_before_update->pl2_set3 ? 1 : 0 )
+                - ( $match_before_update->pl1_set4 > $match_before_update->pl2_set4 ? 1 : 0 )
+                - ( $match_before_update->pl1_set5 > $match_before_update->pl2_set5 ? 1 : 0 );
+
+            $s = $s2
+                - ( $match_before_update->pl2_set1 > $match_before_update->pl1_set1 ? 1 : 0 )
+                - ( $match_before_update->pl2_set2 > $match_before_update->pl1_set2 ? 1 : 0 )
+                - ( $match_before_update->pl2_set3 > $match_before_update->pl1_set3 ? 1 : 0 )
+                - ( $match_before_update->pl2_set4 > $match_before_update->pl1_set4 ? 1 : 0 )
+                - ( $match_before_update->pl2_set5 > $match_before_update->pl1_set5 ? 1 : 0 );
+
+            $pt_opp = ( $pl1_set1+ $pl1_set2 +$pl1_set3 + $pl1_set4 + $pl1_set5 ) - ( $match_before_update->pl1_set1 + $match_before_update->pl1_set2 + $match_before_update->pl1_set3 + $match_before_update->pl1_set4 + $match_before_update->pl1_set5 );
+            $pt = ( $pl2_set1+ $pl2_set2 +$pl2_set3 + $pl2_set4 + $pl2_set5 ) - ( $match_before_update->pl2_set1 + $match_before_update->pl2_set2 + $match_before_update->pl2_set3 + $match_before_update->pl2_set4 + $match_before_update->pl2_set5 );
+            //echo 'XX: '.$pt.' ('.( $pl2_set1+ $pl2_set2 +$pl2_set3 + $pl2_set4 + $pl2_set5 ).' / '.( $match_before_update->pl2_set1 + $match_before_update->pl2_set2 + $match_before_update->pl2_set3 + $match_before_update->pl2_set4 + $match_before_update->pl2_set5 ).')<br />';
+            //echo 'YY: '.$pt_opp.' ('.( $pl1_set1+ $pl1_set2 +$pl1_set3 + $pl1_set4 + $pl1_set5 ).' / '.( $match_before_update->pl1_set1 + $match_before_update->pl1_set2 + $match_before_update->pl1_set3 + $match_before_update->pl1_set4 + $match_before_update->pl1_set5 ).')<br />';
+        }else{
+            $played = 1;
+            $p = ( $winner == $pl2_id ? 1 : 0 );
+            $w = ( $winner == $pl2_id ? 1 : 0 );
+            $d = 0;
+            $l = ( $winner == $pl1_id ? 1 : 0 );
+            $s_opp = $s1;
+            $s = $s2;
+            $pt_opp = ( $pl1_set1+ $pl1_set2 +$pl1_set3 + $pl1_set4 + $pl1_set5 );
+            $pt = ( $pl2_set1+ $pl2_set2 +$pl2_set3 + $pl2_set4 + $pl2_set5 );
+        }
+
+        /*echo $wpdb->prepare(
             "UPDATE
             ".$wpdb->prefix . 'bvg_players_tournament'."
             
             SET
             player_level_current=player_level_current+".$pl2_level_current_change.",
-            played=played+1,
+            played=played+%d,
             victory=victory+%d,
             draw=draw+%d,
             loss=loss+%d,
@@ -216,7 +297,28 @@ if( !is_numeric( $_POST['match_id'] ) ){
             WHERE
             id=".$pl2_id,
 
-            $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
+            $played, $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
+        );*/
+        $wpdb->query( $wpdb->prepare(
+            "UPDATE
+            ".$wpdb->prefix . 'bvg_players_tournament'."
+            
+            SET
+            player_level_current=player_level_current+".$pl2_level_current_change.",
+            played=played+%d,
+            victory=victory+%d,
+            draw=draw+%d,
+            loss=loss+%d,
+            points_major=points_major+%d,
+            sets=sets+%d,
+            sets_against=sets_against+%d,
+            points=points+%d,
+            points_against=points_against+%d
+            
+            WHERE
+            id=".$pl2_id,
+
+            $played, $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
             )
         );
 
@@ -228,7 +330,7 @@ if( !is_numeric( $_POST['match_id'] ) ){
                 
                 SET
                 player_level_current=player_level_current+".$pl2_level_current_change.",
-                played=played+1,
+                played=played+%d,
                 victory=victory+%d,
                 draw=draw+%d,
                 loss=loss+%d,
@@ -241,7 +343,7 @@ if( !is_numeric( $_POST['match_id'] ) ){
                 WHERE
                 id=".$pl2_id_bis,
 
-                $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
+                $played, $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
                 )
             );
         }

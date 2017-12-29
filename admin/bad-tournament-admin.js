@@ -45,6 +45,18 @@ jQuery('#bvg_admin_msg_close').on( 'click', function(){
     jQuery( '#bvg_admin_msg').animate({ height: 0, opacity: 0 }, 'slow');
 });
 
+/* Expand players list */
+jQuery('#player_select').on( 'focus mouseover' , function(){
+    if( jQuery( this ).children().length > 25 ){
+        jQuery( this ).height( 400 );
+    }else if( jQuery( this ).children().length > 8 ){
+        jQuery( this ).height( 250 );
+    }
+});
+jQuery('#player_select').on( 'blur mouseout' , function(){
+   jQuery( this ).height( 150 );
+});
+
 /* Expand new player form */
 jQuery('.plus_icon').on( 'click', function(){
     jQuery( this).next().next().slideDown();

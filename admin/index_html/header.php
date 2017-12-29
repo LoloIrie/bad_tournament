@@ -42,7 +42,9 @@ if( !empty( trim( $bvg_admin_msg ) ) ){
 
 
 if( $_SESSION['current_tournament'] !== false ){
-    /* Title */
+    /* Main Title */
+    $html .= '<h1 id="bad_tournament_maintitle" class="subtournament_name">'.$_SESSION['t_name'].' (ID:'.$_SESSION['current_tournament']['id'].')' .' ( '.__( 'Round', 'bad-tournament').': '.$_SESSION['round'].')</h1>';
+
     if( $_SESSION['current_tournament']['id'] != $_SESSION['current_tournament']['parent_id'] ){
         foreach( $tournaments as $k => $t ){
             if( $t->id == $_SESSION['current_tournament']['parent_id'] ){
@@ -53,7 +55,11 @@ if( $_SESSION['current_tournament'] !== false ){
         }
 
     }
-    $html .= '<h1 id="bad_tournament_maintitle" class="subtournament_name">'.$_SESSION['t_name'].' (ID:'.$_SESSION['current_tournament']['id'].')' .' ( '.__( 'Round', 'bad-tournament').': '.$_SESSION['round'].')</h1>';
+
+    if( $_SESSION['current_tournament']['club_restriction'] > 0 ){
+        $html .= '<h3>'.$_SESSION[ 'current_tournament' ][ 'club_restriction_name' ].'</h3>';
+    }
+
     $html .= __('Matches played: ', 'bad-tournament').$nb_matchs;
 
     $html .= '<h4>'.$t_system[ $_SESSION['current_tournament']['system'] ].'</h4>';

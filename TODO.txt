@@ -1,0 +1,6 @@
+Known Bugs
+- Match update add new game played to player_tournament
+
+
+TODOs
+- Restrict available players list for a club tournament

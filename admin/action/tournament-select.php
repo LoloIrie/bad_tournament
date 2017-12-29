@@ -31,6 +31,10 @@ LIMIT
     $new_t_system = $tournaments[0]->system;
     $_SESSION['round'] = $tournaments[0]->round;
     $_SESSION['current_tournament'] = get_object_vars( $tournaments[0] );
+
+    if( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] > 0 ){
+        $_SESSION[ 'current_tournament' ][ 'club_restriction_name' ] = db_get_clubs( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] )[0]->name;
+    }
 }else{
 
     // CREATE NEW TOURNAMENT
@@ -62,7 +66,8 @@ LIMIT
         'system' => $_POST['tournament_system'],
         'nb_sets' => $nb_sets,
         'points_set' => $points_sets,
-        'max_points_set' => $tournament_max_points_set
+        'max_points_set' => $tournament_max_points_set,
+        'club_restriction' => $_POST['club_restriction']
     );
     //$wpdb->show_errors();
     $wpdb->insert( $wpdb->prefix . 'bvg_tournaments', $data );
@@ -73,6 +78,10 @@ LIMIT
     $new_t_name = $_POST['tournament_name'];
     $new_t_system = $_POST['tournament_system'];
     $_SESSION['round'] = 1;
+
+    if( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] > 0 ){
+        $_SESSION[ 'current_tournament' ][ 'club_restriction_name' ] = db_get_clubs( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] )[0]->name;
+    }
 }
 
 /*

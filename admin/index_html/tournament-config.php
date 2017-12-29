@@ -54,16 +54,21 @@ $html .= '</div>';
 
 $html .= '<label>'.__('Nb sets to win:', 'bad-tournament').'</label>';
 $html .= '<input type="number" value="" name="tournament_nb_sets" min="1" max="3" />';
-$html .= '<br />';
 
 $html .= '<label>'.__('Points/Set:', 'bad-tournament').'</label>';
 $html .= '<input type="number" value="" name="tournament_points_set" min="11" max="21" />';
-$html .= '<br />';
 
 $html .= '<label>'.__('Max points per set:', 'bad-tournament').'</label>';
 $html .= '<input type="number" value="" name="tournament_max_points_set" min="11" max="30" />';
-$html .= '<br />';
 
+$html .= '<label>'.__('Club restriction:', 'bad-tournament').'</label>';
+
+$html .= '<select name="club_restriction" id="club_restriction">';
+$html .= '<option value="0" >'.__( 'Open' , 'bad-tournament' ).'</option>';
+foreach( $clubs as $club ){
+    $html .= '<option value="'.$club->id.'" '.$selected.'>'.$club->name.'</option>';
+}
+$html .= '</select>';
 
 $html .= '<input type="submit" value="'.__('Create tournament', 'bad-tournament').'" />';
 

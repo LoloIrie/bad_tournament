@@ -136,8 +136,8 @@ input, select{
     margin-top: 4px;
 }
 input[type=submit]{
-    float: none;
-    margin-top: 0;
+    clear: both;
+    margin-top: 10px;
 }
 input[type=number]{
     min-width: 50px;
@@ -146,6 +146,8 @@ input[type=radio], input[type=checkbox]{
     margin-top: 6px;
     line-height: 24px;
 }
+
+/* Table */
 ul.table{
     width: 100%;
 }
@@ -183,6 +185,7 @@ ul.table span{
     color: #fff;
 }
 
+/* Matches */
 input.set_score, input.match_winner{
     float: none;
     width: 30px;
@@ -352,4 +355,9 @@ h1.topspace{
 
     line-height: 24px;
     font-weight: bold;
+}
+
+/* Players */
+#player_select{
+    height: 150px;
 }
