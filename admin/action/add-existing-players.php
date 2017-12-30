@@ -158,7 +158,13 @@ if( isset( $_POST['player_tournament_remove'] ) ){
     ".$wpdb->prefix."bvg_players as pl
 
     WHERE
-    pl.status=1";
+    pl.status=1
+    ";
+
+    if( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] > 0 ){
+        $query .= "AND club_id=".$_SESSION[ 'current_tournament' ][ 'club_restriction' ];
+    }
+
     $all_players = $wpdb->get_results( $query, OBJECT_K  );
 
     foreach( $all_players as $pl ){

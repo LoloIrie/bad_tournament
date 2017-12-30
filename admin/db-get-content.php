@@ -77,10 +77,15 @@ function db_get_clubs( $club_id = false ){
 }
 
 /* Get all players */
-function db_get_all_players(){
+function db_get_all_players( $club_restriction = false ){
 
     global $wpdb;
 
+    $where = '';
+    if( is_numeric( $club_restriction ) ){
+        $where = 'AND
+        club_id = '.$club_restriction;
+    }
     $query = "SELECT
     pl.id as player_id,
     pl.firstname as player_firstname,
@@ -93,11 +98,13 @@ function db_get_all_players(){
     
     WHERE
     pl.status=1
+    ".$where."
     
     ORDER BY
     pl.lastname ASC, pl.firstname ASC
     ";
     $all_players = $wpdb->get_results( $query, OBJECT_K  );
+    //echo $query;
 
     return $all_players;
 }

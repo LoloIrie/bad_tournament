@@ -60,12 +60,16 @@ if( !isset( $_SESSION['round'] ) ){
     $round = $wpdb->get_results( "SELECT round FROM ".$wpdb->prefix."bvg_tournaments WHERE id=".$_SESSION['t_id']." LIMIT 0,1" );
     $_SESSION['round'] = $round[0]->round;
 }
+$club_restriction = false;
+if( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] > 0 ){
+    $club_restriction = $_SESSION[ 'current_tournament' ][ 'club_restriction' ];
+}
 
 /* GET DB CONTENT */
 $tournaments = db_get_tournaments();
 $clubs = db_get_clubs();
 $cl_default_id = get_option( 'cl_default_id' );
-$all_players = db_get_all_players();
+$all_players = db_get_all_players( $club_restriction );
 $players = db_get_players();
 $matches = db_get_matches( $_SESSION['t_id'], $_SESSION['round'] );
 $nb_matchs = db_nb_matches( $_SESSION['t_id'] );

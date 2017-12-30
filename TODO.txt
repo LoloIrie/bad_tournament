@@ -1,6 +1,13 @@
-Known Bugs
-- Match update add new game played to player_tournament
+Known Bugs(-)/Solved(+)
++ Match update add new game played to player_tournament
++ All players added => empty Sslect players displayed
+
+TODOs(-)/DONE(+)
++ Restrict available players list for a club tournament
 
 
-TODOs
-- Restrict available players list for a club tournament
+
+
+
+
+
