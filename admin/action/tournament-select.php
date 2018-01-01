@@ -7,9 +7,46 @@
  */
 
 $new_t_id = 1;
-$new_t_name = 'BVG Tournament 2027';
+$new_t_name = 'BVG Tournament';
 
-if( empty( $_POST['tournament_name'] ) && is_numeric( $_POST['tournament_select'] ) ){
+$parent_id = 0;
+if( $_POST['tournament_select_id'] > 0 ){
+    $parent_id = $_POST['tournament_select_id'];
+}
+
+$nb_sets = 2;
+if( isset( $_POST['tournament_nb_sets'] ) && is_numeric( $_POST['tournament_nb_sets'] ) ){
+    $nb_sets = $_POST['tournament_nb_sets'];
+}
+
+$points_sets = 21;
+if( isset( $_POST['tournament_points_set'] ) && is_numeric( $_POST['tournament_points_set'] ) ){
+    $points_sets = $_POST['tournament_points_set'];
+}
+
+$tournament_max_points_set = 30;
+if( isset( $_POST['tournament_max_points_set'] ) && is_numeric( $_POST['tournament_max_points_set'] ) ){
+    $tournament_max_points_set = $_POST['tournament_max_points_set'];
+}
+
+if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_select'] ) ){
+    /* EDIT EXISTING TOURNAMENt */
+
+    $data = array(
+        'parent_id' => $parent_id,
+        'name' => $_POST['tournament_name'],
+        //'round' => 1,
+        'system' => $_POST['tournament_system'],
+        'nb_sets' => $nb_sets,
+        'points_set' => $points_sets,
+        'max_points_set' => $tournament_max_points_set,
+        'club_restriction' => $_POST['club_restriction']
+    );
+    $where = array( 'id' => $_POST['tournament_select'] );
+    $wpdb->update( $wpdb->prefix . 'bvg_tournaments', $data, $where );
+
+    $bvg_admin_msg .= __( 'Tournament edited !' , 'bad-tournament' ).'<br />';
+}else if( empty( $_POST['tournament_name'] ) && is_numeric( $_POST['tournament_select'] ) ){
 
     // SELECT EXISTING TOURNAMENT
 
@@ -35,29 +72,12 @@ LIMIT
     if( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] > 0 ){
         $_SESSION[ 'current_tournament' ][ 'club_restriction_name' ] = db_get_clubs( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] )[0]->name;
     }
+
 }else{
 
     // CREATE NEW TOURNAMENT
 
-    $parent_id = 0;
-    if( $_POST['tournament_select_id'] > 0 ){
-        $parent_id = $_POST['tournament_select_id'];
-    }
 
-    $nb_sets = 2;
-    if( isset( $_POST['tournament_nb_sets'] ) && is_numeric( $_POST['tournament_nb_sets'] ) ){
-        $nb_sets = $_POST['tournament_nb_sets'];
-    }
-
-    $points_sets = 21;
-    if( isset( $_POST['tournament_points_set'] ) && is_numeric( $_POST['tournament_points_set'] ) ){
-        $points_sets = $_POST['tournament_points_set'];
-    }
-
-    $tournament_max_points_set = 30;
-    if( isset( $_POST['tournament_max_points_set'] ) && is_numeric( $_POST['tournament_max_points_set'] ) ){
-        $tournament_max_points_set = $_POST['tournament_max_points_set'];
-    }
 
     $data = array(
         'parent_id' => $parent_id,
@@ -82,6 +102,7 @@ LIMIT
     if( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] > 0 ){
         $_SESSION[ 'current_tournament' ][ 'club_restriction_name' ] = db_get_clubs( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] )[0]->name;
     }
+    $bvg_admin_msg .= __( 'New tournament' , 'bad-tournament' ).'<br />';
 }
 
 /*
@@ -91,4 +112,4 @@ $wpdb->print_error();
 $_SESSION['t_id'] = $new_t_id;
 $_SESSION['t_name'] = $new_t_name;
 $_SESSION['t_system'] = $new_t_system;
-$bvg_admin_msg .= 'Aktives Turnier: '.$_SESSION['t_name'].' !!!';
+$bvg_admin_msg .= __( 'Selected tournament: ' , 'bad-tournament' ).$_SESSION['t_name'].' !!!';

@@ -39,6 +39,30 @@ jQuery('#tournament_select_button').on( 'click', function(){
     jQuery( '#tournament_select_id' ).val( jQuery( '#tournament_select' ).val() );
 });
 
+/* Fill tournament form with existing values */
+jQuery('#tournament_select').on( 'change', function(){
+    jQuery( '#tournament_edit').fadeIn();
+    console.log( tournament[jQuery( '#tournament_select' ).val()] );
+    selected_tournament = JSON.parse( tournament[jQuery( '#tournament_select' ).val()] );
+
+    jQuery( '#tournament_name').val( selected_tournament.name );
+    jQuery( 'input[name=tournament_system]' ).each( function(){
+        if( jQuery( this).val() == selected_tournament.system ){
+            jQuery( this).attr( 'checked', 'checked' );
+        }
+    } );
+    jQuery( '#tournament_nb_sets').val( selected_tournament.nb_sets );
+    jQuery( '#tournament_points_set').val( selected_tournament.points_set );
+    jQuery( '#tournament_max_points_set').val( selected_tournament.max_points_set );
+    jQuery( '#club_restriction option' ).each( function(){
+        if( jQuery( this).val() == selected_tournament.club_restriction ){
+            jQuery( this).attr( 'selected', 'selected' );
+        }
+    } );
+
+    //jQuery( '#tournament_select_id' ).val( jQuery( '#tournament_select' ).val() );
+});
+
 /* Close admin message */
 jQuery('#bvg_admin_msg_close').on( 'click', function(){
     console.log( 'Close admin msg...' );

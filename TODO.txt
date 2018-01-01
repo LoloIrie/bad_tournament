@@ -4,7 +4,9 @@ Known Bugs(-)/Solved(+)
 
 TODOs(-)/DONE(+)
 + Restrict available players list for a club tournament
-
+- Tournament Edit
+- Tournament Date
+- Tournament KO System
 
 
 

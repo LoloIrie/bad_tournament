@@ -147,6 +147,15 @@ input[type=radio], input[type=checkbox]{
     line-height: 24px;
 }
 
+/* Tournament */
+#tournament_name{
+    width: 200px;
+}
+#tournament_edit{
+    display: none;
+    clear: none;
+}
+
 /* Table */
 ul.table{
     width: 100%;

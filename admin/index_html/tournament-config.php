@@ -17,7 +17,7 @@ $html .= '<input type="hidden" name="tournament_select_id" value="'.$_SESSION['t
 
 
 $html .= '<label>'.__('Choose tournament:', 'bad-tournament').'</label>';
-$html .= '<select type="text" value="" name="tournament_select">';
+$html .= '<select type="text" value="" name="tournament_select" id="tournament_select">';
 $html .= '<option value="0">'.__('Choose', 'bad-tournament').'</option>';
 foreach( $tournaments as $tournament ){
     $html .= '<option value="'.$tournament->id.'" '.( $tournament->id == $_SESSION['t_id'] ? 'selected="selected"' : '' ).'>'.$tournament->name.'</option>';
@@ -35,7 +35,7 @@ $html .= '<input type="submit" value="'.__('Choose tournament', 'bad-tournament'
 $html .= '<br />';
 $html .= '<br />';
 $html .= '<label>'.__('New tournament:', 'bad-tournament').'</label>';
-$html .= '<input type="text" value="" placeholder="'.__('Tournament Name', 'bad-tournament').'" name="tournament_name" />';
+$html .= '<input type="text" value="" placeholder="'.__('Tournament Name', 'bad-tournament').'" name="tournament_name" id="tournament_name" />';
 $html .= '<br />';
 
 
@@ -53,13 +53,13 @@ $html .= '</div>';
 
 
 $html .= '<label>'.__('Nb sets to win:', 'bad-tournament').'</label>';
-$html .= '<input type="number" value="" name="tournament_nb_sets" min="1" max="3" />';
+$html .= '<input type="number" value="" name="tournament_nb_sets" id="tournament_nb_sets" min="1" max="3" />';
 
 $html .= '<label>'.__('Points/Set:', 'bad-tournament').'</label>';
-$html .= '<input type="number" value="" name="tournament_points_set" min="11" max="21" />';
+$html .= '<input type="number" value="" name="tournament_points_set" id="tournament_points_set" min="11" max="21" />';
 
 $html .= '<label>'.__('Max points per set:', 'bad-tournament').'</label>';
-$html .= '<input type="number" value="" name="tournament_max_points_set" min="11" max="30" />';
+$html .= '<input type="number" value="" name="tournament_max_points_set" id="tournament_max_points_set" min="11" max="30" />';
 
 $html .= '<label>'.__('Club restriction:', 'bad-tournament').'</label>';
 
@@ -71,8 +71,17 @@ foreach( $clubs as $club ){
 $html .= '</select>';
 
 $html .= '<input type="submit" value="'.__('Create tournament', 'bad-tournament').'" />';
+$html .= '<input type="submit" value="'.__('Edit tournament', 'bad-tournament').'" name="tournament_edit" id="tournament_edit" />';
 
 $html .= '</form>';
 
 $html .= '</div>';
+
+$html .= '<script>
+tournament = [];
+';
+    foreach( $tournaments as $tournament ){
+        $html .= 'tournament['.$tournament->id.'] = \''.json_encode( $tournament ).'\';';
+    };
+$html .= '</script>';
 
