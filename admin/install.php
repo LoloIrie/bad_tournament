@@ -150,6 +150,10 @@ function bad_tournament_install_init(){
                   points_set int(11) NOT NULL,
                   max_points_set int(11) NOT NULL,
                   club_restriction int(11) unsigned NOT NULL,
+                  tournament_typ int(3) unsigned NOT NULL,
+                  date_start datetime NOT NULL,
+                  date_end datetime NOT NULL,
+                  localization varchar(250) NOT NULL,
                   PRIMARY KEY (id),
                   INDEX (parent_id)
                 ) ENGINE=InnoDB;";

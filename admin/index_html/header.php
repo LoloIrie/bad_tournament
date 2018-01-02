@@ -60,6 +60,9 @@ if( $_SESSION['current_tournament'] !== false ){
         $html .= '<h3>'.$_SESSION[ 'current_tournament' ][ 'club_restriction_name' ].'</h3>';
     }
 
+    $nb_players_tournament = count( $players );
+    $html .= __('Players: ', 'bad-tournament').$nb_players_tournament;
+    $html .= '<br />';
     $html .= __('Matches played: ', 'bad-tournament').$nb_matchs;
 
     $html .= '<h4>'.$t_system[ $_SESSION['current_tournament']['system'] ].'</h4>';

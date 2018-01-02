@@ -34,14 +34,43 @@ $html .= '</select>';
 $html .= '<input type="submit" value="'.__('Choose tournament', 'bad-tournament').'" id="tournament_select_button" />';
 $html .= '<br />';
 $html .= '<br />';
-$html .= '<label>'.__('New tournament:', 'bad-tournament').'</label>';
+
+
+
+
+$html .= '<label>'.__('Parent tournament:', 'bad-tournament').'</label>';
+$html .= '<select type="text" value="" name="tournament_parent_select" id="tournament_parent_select">';
+$html .= '<option value="0" selected="selected">'.__('Choose', 'bad-tournament').'</option>';
+$html .= '<option value="0">'.__('No parent', 'bad-tournament').'</option>';
+foreach( $tournaments as $tournament ){
+    $html .= '<option value="'.$tournament->id.'" '.( $tournament->id == $_SESSION['t_id'] ? 'selected="selected"' : '' ).'>'.$tournament->name.'</option>';
+}
+$html .= '</select>';
+
+$html .= '<label>'.__('Tournament name:', 'bad-tournament').'</label>';
 $html .= '<input type="text" value="" placeholder="'.__('Tournament Name', 'bad-tournament').'" name="tournament_name" id="tournament_name" />';
 $html .= '<br />';
 
+$html .= '<label>'.__('Localization:', 'bad-tournament').'</label>';
+$html .= '<input type="text" value="" placeholder="'.__('Tournament Name', 'bad-tournament').'" name="tournament_localization" id="tournament_localization" />';
+$html .= '<br />';
 
+$html .= '<label>'.__('Date:', 'bad-tournament').'</label>';
+$html .= '<input type="text" value="" placeholder="'.__('from...', 'bad-tournament').'" name="tournament_date_start" id="tournament_date_start" class="datetimepicker" />';
+$html .= '<input type="text" value="" placeholder="'.__('...to', 'bad-tournament').'" name="tournament_date_end" id="tournament_date_end" class="datetimepicker" />';
+$html .= '<br />';
 
 
 $html .= '<input type="hidden" name="form_action" value="tournament-select" />';
+
+$html .= '<label>'.__('Tournament System:', 'bad-tournament').'</label>';
+$html .= '<div class="radio_block">';
+$html .= '<span><input type="radio" id="tournament_typ1" name="tournament_typ" value="1" checked="checked" /> <label for="tournament_typ1" class="radio">'.__('Simple Men', 'bad-tournament').'</label></span>';
+$html .= '<span><input type="radio" id="tournament_typ2" name="tournament_typ" value="2" /> <label for="tournament_typ2" class="radio">'.__('Simple Women', 'bad-tournament').'</label></span>';
+$html .= '<span><input type="radio" id="tournament_typ3" name="tournament_typ" value="3" /> <label for="tournament_typ3" class="radio">'.__('Double Men', 'bad-tournament').'</label></span>';
+$html .= '<span><input type="radio" id="tournament_typ4" name="tournament_typ" value="4" /> <label for="tournament_typ4" class="radio">'.__('Double Women', 'bad-tournament').'</label></span>';
+$html .= '<span><input type="radio" id="tournament_typ5" name="tournament_typ" value="5" /> <label for="tournament_typ5" class="radio">'.__('Mixte', 'bad-tournament').'</label></span>';
+$html .= '</div>';
 
 $html .= '<label>'.__('Tournament System:', 'bad-tournament').'</label>';
 $html .= '<div class="radio_block">';

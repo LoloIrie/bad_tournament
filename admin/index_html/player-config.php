@@ -24,7 +24,7 @@ foreach( $players as $pl ){
     }
 }
 
-if( count( $all_players )  != count( $players ) - $nb_player_unactivated_for_this_tournament ){
+if( count( $all_players )  != count( $players ) - $nb_player_unactivated_for_this_tournament && count( $all_players ) > count( $players ) ){
     $html .= '<form method="post">';
     $html .= '<input type="hidden" name="form_action" value="add-existing-players" />';
     //$html .= '<input type="hidden" id="swiss_system_point" name="schweizer_system_punkte" value="0" />';

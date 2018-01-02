@@ -10,8 +10,10 @@ $new_t_id = 1;
 $new_t_name = 'BVG Tournament';
 
 $parent_id = 0;
-if( $_POST['tournament_select_id'] > 0 ){
+if( $_POST['tournament_select_id'] > 0 && ( !isset( $_POST['tournament_parent_select'] ) || $_POST['tournament_parent_select'] == 0 ) ){
     $parent_id = $_POST['tournament_select_id'];
+}else if( isset( $_POST['tournament_parent_select'] ) && $_POST['tournament_parent_select'] > 0 && is_numeric( $_POST['tournament_parent_select'] ) ){
+    $parent_id = $_POST['tournament_parent_select'];
 }
 
 $nb_sets = 2;
@@ -30,7 +32,7 @@ if( isset( $_POST['tournament_max_points_set'] ) && is_numeric( $_POST['tourname
 }
 
 if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_select'] ) ){
-    /* EDIT EXISTING TOURNAMENt */
+    /* EDIT EXISTING TOURNAMENT */
 
     $data = array(
         'parent_id' => $parent_id,
@@ -40,7 +42,8 @@ if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_select'
         'nb_sets' => $nb_sets,
         'points_set' => $points_sets,
         'max_points_set' => $tournament_max_points_set,
-        'club_restriction' => $_POST['club_restriction']
+        'club_restriction' => $_POST['club_restriction'],
+        'tournament_typ' => $_POST['tournament_typ']
     );
     $where = array( 'id' => $_POST['tournament_select'] );
     $wpdb->update( $wpdb->prefix . 'bvg_tournaments', $data, $where );
@@ -53,16 +56,16 @@ if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_select'
     $new_t_id = $_POST['tournament_select'];
 
     $query = "SELECT
-*
-
-FROM
-".$wpdb->prefix."bvg_tournaments
-
-WHERE
-id=".$new_t_id."
-
-LIMIT
-0,1";
+    *
+    
+    FROM
+    ".$wpdb->prefix."bvg_tournaments
+    
+    WHERE
+    id=".$new_t_id."
+    
+    LIMIT
+    0,1";
     $tournaments = $wpdb->get_results( $query );
     $new_t_name = $tournaments[0]->name;
     $new_t_system = $tournaments[0]->system;
@@ -87,7 +90,8 @@ LIMIT
         'nb_sets' => $nb_sets,
         'points_set' => $points_sets,
         'max_points_set' => $tournament_max_points_set,
-        'club_restriction' => $_POST['club_restriction']
+        'club_restriction' => $_POST['club_restriction'],
+        'tournament_typ' => $_POST['tournament_typ']
     );
     //$wpdb->show_errors();
     $wpdb->insert( $wpdb->prefix . 'bvg_tournaments', $data );

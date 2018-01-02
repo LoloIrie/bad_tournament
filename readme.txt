@@ -14,12 +14,13 @@ Tool to embed a tournament on your page with administration features
 == Description ==
 
 I need a tool to manage an internal tournament for our badminton club (BVG Goldbach/Laufach) and didn't find anything to fill exactly my need...
+Be careful with this first release, it's probably buggy like I didn't test it enough !
 
 This tool allows administrators to create and manage different tournaments like:
-- League
+- League (in Version 2.x)
 - Grinding tournament
 - Swiss System
-- KO System
+- KO System (in Version 2.x)
 
 Simple, double or mixed are allowed.
 

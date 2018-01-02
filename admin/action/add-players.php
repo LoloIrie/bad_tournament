@@ -9,6 +9,14 @@
 $dates = explode( '/', $_POST['birthdate'] );
 $birthdate = $dates[2].'-'.$dates[1].'-'.$dates[0];
 
+
+if( !isset( $_POST['swiss_system_point'] ) || empty( $_POST['swiss_system_point'] ) ){
+    $_POST['swiss_system_point'] = 0;
+}
+if( !isset( $_POST['sex'] ) || empty( $_POST['sex'] ) ){
+    $_POST['sex'] = 0;
+}
+
 $data = array(
     'firstname' => $_POST['firstname'],
     'lastname' => $_POST['lastname'],

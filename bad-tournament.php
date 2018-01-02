@@ -85,6 +85,11 @@ class bad_tournament
         wp_register_script('addons_script', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', array('jquery'), '');
         wp_enqueue_script('addons_script');
 
+        /* Datetime Picker */
+        wp_enqueue_style( 'addons2_style', plugin_dir_url(__FILE__).'admin/jquery-ui-timepicker-addon.css');
+        wp_register_script('addons2_script', plugins_url( 'admin/jquery-ui-timepicker-addon.js', __FILE__ ), array('jquery'), '');
+        wp_enqueue_script('addons2_script');
+
         wp_enqueue_style( 'bad_tournament_admin_style', plugin_dir_url(__FILE__).'admin/bad-tournament-admin.css');
         wp_register_script( 'bad_tournament_admin', plugins_url( 'admin/bad-tournament-admin.js', __FILE__ ) );
         $translation_array = array(
@@ -95,6 +100,7 @@ class bad_tournament
 
         if ( current_user_can('edit_pages') ) {
 
+            $bad_tournament_version = '1.0';
             include plugin_dir_path(__FILE__).'admin/install.php';
 
             $bad_tournament_current_version = get_option( 'bad_tournament_installed' );

@@ -364,6 +364,7 @@ h1.topspace{
 
     line-height: 24px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 /* Players */

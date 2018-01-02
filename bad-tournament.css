@@ -52,7 +52,7 @@ ul.table span{
     font-weight: bold;
 }
 .table_header span.pl_name{
-    width: 215px !important;
+    width: 265px !important;
 }
 .table_row span{
     min-width: 60px;
@@ -63,7 +63,7 @@ ul.table span{
     width: 40px;
 }
 .table span.pl_name{
-    width: 150px;
+    width: 200px;
 }
 
 input.set_score, input.match_winner{
