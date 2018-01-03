@@ -8,13 +8,14 @@ TODOs(-) / DONE(+)
 + Tournament Edit
 + Tournament Datetime + Localization
 + Display nbr players / tournament
-- Remove tournament feature
-- Limit nbr players / tournament in free version
++ Remove tournament feature
 - Tie Break (tennis option)
 - Restrict players list depending of tournament typ (Men vs Women vs Mixte)
 - Tournament KO System (v2)
 - Tournament League (v2)
 - Export features (Excel) (v2)
+- Form validator (v2)
+- Limit nbr players / tournament in free version (v2)
 
 
 

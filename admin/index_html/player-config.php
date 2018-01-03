@@ -43,11 +43,10 @@ if( count( $all_players )  != count( $players ) - $nb_player_unactivated_for_thi
     }
     $html .= '</select>';
 
-    $html .= '<hr />';
     $html .= '<input type="submit" value="'.__('Add player(s) to the tournament', 'bad-tournament').'" />';
-    $html .= '<input type="submit" value="'.__('Add all players', 'bad-tournament').'" id="all_players" name="all_players" />';
-    $html .= '<input type="submit" value="'.__('Remove all players for this Tournament', 'bad-tournament').'" id="player_tournament_remove" name="player_tournament_remove" />';
-    $html .= '<input type="submit" value="'.__('Set player(s) as inactive', 'bad-tournament').'" id="player_down" name="player_down" />';
+    $html .= '<input type="submit" class="submit2" value="'.__('Add all players', 'bad-tournament').'" id="all_players" name="all_players" />';
+    $html .= '<input type="submit" class="submit2" value="'.__('Remove all players for this Tournament', 'bad-tournament').'" id="player_tournament_remove" name="player_tournament_remove" />';
+    $html .= '<input type="submit" class="submit2" value="'.__('Set player(s) as inactive', 'bad-tournament').'" id="player_down" name="player_down" />';
 
     $html .= '</form>';
     $html .= '<hr />';

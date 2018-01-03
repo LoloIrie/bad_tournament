@@ -33,6 +33,9 @@ include_once plugin_dir_path(__FILE__). 'db-get-content.php';
 if( isset($_POST['form_action']) ){
     include plugin_dir_path(__FILE__). 'action/'.$_POST['form_action'].'.php';
 }
+if( !$ADMIN_VIEW ){
+    $ADMIN_VIEW = 'tournament';
+}
 
 
 //echo 'XXX'.$_SESSION['round'];

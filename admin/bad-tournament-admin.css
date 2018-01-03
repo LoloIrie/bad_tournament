@@ -138,6 +138,11 @@ input, select{
 input[type=submit]{
     clear: both;
     margin-top: 10px;
+    margin-bottom: 10px;
+}
+input[type=submit].submit2 {
+    clear: none;
+    margin-left: 8px;
 }
 input[type=number]{
     min-width: 50px;

@@ -6,6 +6,7 @@
  * Time: 09:12
  */
 
+/* MENU */
 $html .= '<nav id="main_nav">';
 $html .= '<ul>';
 $html .= '<li class="nav_item'.( $ADMIN_VIEW == 'tournament' ? ' active"' : '' ).'" id="nav_tournament">';
@@ -30,7 +31,7 @@ $html .= '</li>';
 $html .= '</ul>';
 $html .= '</nav>';
 
-/* Msg */
+/* MESSAGES */
 if( !empty( trim( $bvg_admin_msg ) ) ){
     $html .= '<div id="bvg_admin_msg"><span id="bvg_admin_msg_close"></span>'.$bvg_admin_msg.'</div>';
     /*
@@ -42,7 +43,7 @@ if( !empty( trim( $bvg_admin_msg ) ) ){
 
 
 if( $_SESSION['current_tournament'] !== false ){
-    /* Main Title */
+    /* MAIN TITLE */
     $html .= '<h1 id="bad_tournament_maintitle" class="subtournament_name">'.$_SESSION['t_name'].' (ID:'.$_SESSION['current_tournament']['id'].')' .' ( '.__( 'Round', 'bad-tournament').': '.$_SESSION['round'].')</h1>';
 
     if( $_SESSION['current_tournament']['id'] != $_SESSION['current_tournament']['parent_id'] ){
@@ -68,6 +69,8 @@ if( $_SESSION['current_tournament'] !== false ){
     $html .= '<h4>'.$t_system[ $_SESSION['current_tournament']['system'] ].'</h4>';
     $html .= '<h4>'.__( 'Sets to win:', 'bad-tournament').' '.$_SESSION['current_tournament']['nb_sets'].' '.__( 'Points/Set:', 'bad-tournament').' '.$_SESSION['current_tournament']['points_set'].' '.__( 'Max. points per set:', 'bad-tournament').' '.$_SESSION['current_tournament']['max_points_set'].'</h4>';
 
+}else{
+    $html .= '<h1 id="bad_tournament_maintitle" class="subtournament_name">'.__( 'You need to create or select a tournament' , 'bad-tournament' ).'</h1>';
 }
 
 

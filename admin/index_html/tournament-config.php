@@ -32,7 +32,7 @@ foreach( $tournaments as $tournament ){
 }
 $html .= '</select>';
 $html .= '<input type="submit" value="'.__('Choose tournament', 'bad-tournament').'" id="tournament_select_button" />';
-$html .= '<input type="submit" value="'.__('Remove tournament', 'bad-tournament').'" id="tournament_remove_button" name="tournament_remove_button" />';
+$html .= '<input type="submit" class="submit2" value="'.__('Remove tournament', 'bad-tournament').'" id="tournament_remove_button" name="tournament_remove_button" />';
 $html .= '<br />';
 $html .= '<br />';
 

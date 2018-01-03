@@ -31,7 +31,7 @@ if( isset( $_POST['tournament_max_points_set'] ) && is_numeric( $_POST['tourname
     $tournament_max_points_set = $_POST['tournament_max_points_set'];
 }
 
-if( isset( $_POST['tournament_date_start'] ) ){
+if( isset( $_POST['tournament_date_start'] ) && !empty( $_POST['tournament_date_start'] ) && $_POST['tournament_date_start'] != '00/00/0000 00:00:00' ){
     $date_start = $_POST['tournament_date_start'];
     if( !isset( $_POST['tournament_date_end'] ) || $_POST['tournament_date_end'] < $_POST['tournament_date_start'] ){
         $_POST['tournament_date_end'] = $_POST['tournament_date_start'];
@@ -45,12 +45,20 @@ if( isset( $_POST['tournament_date_start'] ) ){
     $datetimeend = explode( ' ', $date_end );
     $dateend = explode( '/', $datetimeend[0] );
     $date_end = $dateend[2].'-'.$dateend[1].'-'.$dateend[0].' '.$datetimeend[1].':00';
+}else{
+    $date_start = date('Y-m-d H:i:00');
+    $date_end = $date_start;
 }
+
 
 /* ACTIONS */
 
 if( isset( $_POST['tournament_remove_button'] ) && is_numeric( $_POST['tournament_select'] ) ){
-    var_dump( $_POST );
+    if( $_POST['tournament_select'] == $_SESSION['t_id'] ){
+        unset( $_SESSION['t_id'], $_SESSION['t_name'], $_SESSION['t_system'], $_SESSION['current_tournament'] );
+        $ADMIN_VIEW = 'tournament';
+    }
+
     /* Remove matches */
     $query = "DELETE FROM
     ".$wpdb->prefix."bvg_matches
@@ -58,6 +66,7 @@ if( isset( $_POST['tournament_remove_button'] ) && is_numeric( $_POST['tournamen
     WHERE
     tournament_id=".$_POST['tournament_select'];
     $wpdb->query( $query );
+    //echo $query.'<br />';
 
     /* Remove players */
     $query = "DELETE FROM
@@ -66,21 +75,21 @@ if( isset( $_POST['tournament_remove_button'] ) && is_numeric( $_POST['tournamen
     WHERE
     tournament_id=".$_POST['tournament_select'];
     $wpdb->query( $query );
+    //echo $query.'<br />';
 
     /* Remove tournament */
     $query = "DELETE FROM
     ".$wpdb->prefix."bvg_tournaments
 
     WHERE
-    tournament_id=".$_POST['tournament_select'];
+    id=".$_POST['tournament_select'];
     $wpdb->query( $query );
+    //echo $query.'<br />';
 
-    $bvg_admin_msg .= __( 'Selected tournament removed !' , 'bad-tournament' ).'<br />';
+    $bvg_admin_msg .= __( 'Tournament removed !' , 'bad-tournament' ).'<br />';
 }
 else if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_select'] ) ){
     /* EDIT EXISTING TOURNAMENT */
-
-
 
     $data = array(
         'parent_id' => $parent_id,
@@ -98,6 +107,9 @@ else if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_se
     );
     $where = array( 'id' => $_POST['tournament_select'] );
     $wpdb->update( $wpdb->prefix . 'bvg_tournaments', $data, $where );
+    $_SESSION['t_id'] = $_POST['tournament_select'];
+    $_SESSION['t_name'] = $_POST['tournament_name'];
+    $_SESSION['t_system'] = $_POST['tournament_system'];
 
     $bvg_admin_msg .= __( 'Tournament edited !' , 'bad-tournament' ).'<br />';
 }else if( empty( $_POST['tournament_name'] ) && is_numeric( $_POST['tournament_select'] ) ){
@@ -132,7 +144,11 @@ else if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_se
     // CREATE NEW TOURNAMENT
 
     $date_start = $_POST['tournament_date_start'];
-    $date_end = $_POST['tournament_date_end'];
+    $date_end = $date_start;
+    if( isset( $_POST['tournament_date_end'] ) ){
+        $date_end = $_POST['tournament_date_end'];
+    }
+
 
     $data = array(
         'parent_id' => $parent_id,
@@ -161,6 +177,10 @@ else if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_se
     if( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] > 0 ){
         $_SESSION[ 'current_tournament' ][ 'club_restriction_name' ] = db_get_clubs( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] )[0]->name;
     }
+
+    $_SESSION['t_id'] = $new_t_id;
+    $_SESSION['t_name'] = $new_t_name;
+    $_SESSION['t_system'] = $new_t_system;
     $bvg_admin_msg .= __( 'New tournament' , 'bad-tournament' ).'<br />';
 }
 
@@ -168,7 +188,6 @@ else if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_se
 $wpdb->show_errors();
 $wpdb->print_error();
 */
-$_SESSION['t_id'] = $new_t_id;
-$_SESSION['t_name'] = $new_t_name;
-$_SESSION['t_system'] = $new_t_system;
-$bvg_admin_msg .= __( 'Selected tournament: ' , 'bad-tournament' ).$_SESSION['t_name'].' !!!';
+if( isset( $_SESSION['t_id'] ) ){
+    $bvg_admin_msg .= __( 'Selected tournament: ' , 'bad-tournament' ).$_SESSION['t_name'].' !!!';
+}
