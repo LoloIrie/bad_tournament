@@ -32,6 +32,7 @@ foreach( $tournaments as $tournament ){
 }
 $html .= '</select>';
 $html .= '<input type="submit" value="'.__('Choose tournament', 'bad-tournament').'" id="tournament_select_button" />';
+$html .= '<input type="submit" value="'.__('Remove tournament', 'bad-tournament').'" id="tournament_remove_button" name="tournament_remove_button" />';
 $html .= '<br />';
 $html .= '<br />';
 
@@ -52,7 +53,7 @@ $html .= '<input type="text" value="" placeholder="'.__('Tournament Name', 'bad-
 $html .= '<br />';
 
 $html .= '<label>'.__('Localization:', 'bad-tournament').'</label>';
-$html .= '<input type="text" value="" placeholder="'.__('Tournament Name', 'bad-tournament').'" name="tournament_localization" id="tournament_localization" />';
+$html .= '<input type="text" value="" placeholder="'.__('Localization', 'bad-tournament').'" name="tournament_localization" id="tournament_localization" />';
 $html .= '<br />';
 
 $html .= '<label>'.__('Date:', 'bad-tournament').'</label>';
@@ -63,7 +64,7 @@ $html .= '<br />';
 
 $html .= '<input type="hidden" name="form_action" value="tournament-select" />';
 
-$html .= '<label>'.__('Tournament System:', 'bad-tournament').'</label>';
+$html .= '<label>'.__('Tournament Typ   :', 'bad-tournament').'</label>';
 $html .= '<div class="radio_block">';
 $html .= '<span><input type="radio" id="tournament_typ1" name="tournament_typ" value="1" checked="checked" /> <label for="tournament_typ1" class="radio">'.__('Simple Men', 'bad-tournament').'</label></span>';
 $html .= '<span><input type="radio" id="tournament_typ2" name="tournament_typ" value="2" /> <label for="tournament_typ2" class="radio">'.__('Simple Women', 'bad-tournament').'</label></span>';
@@ -110,6 +111,15 @@ $html .= '<script>
 tournament = [];
 ';
     foreach( $tournaments as $tournament ){
+
+        $datetime_start_arr = explode( ' ', $tournament->date_start );
+        $date_start_arr = explode( '-', $datetime_start_arr[0] );
+        $tournament->date_start = $date_start_arr[2].'/'.$date_start_arr[1].'/'.$date_start_arr[0].' '.$datetime_start_arr[1];
+
+        $datetime_end_arr = explode( ' ', $tournament->date_end );
+        $date_end_arr = explode( '-', $datetime_end_arr[0] );
+        $tournament->date_end = $date_end_arr[2].'/'.$date_end_arr[1].'/'.$date_end_arr[0].' '.$datetime_end_arr[1];
+
         $html .= 'tournament['.$tournament->id.'] = \''.json_encode( $tournament ).'\';';
     };
 $html .= '</script>';

@@ -54,6 +54,7 @@ class bad_tournament
                 "badTournamentURI": '<?php echo plugin_dir_url( __FILE__ ); ?>',
                 "badTournamentMale": '<?php echo __( 'Male' , 'bad-tournament' ); ?>',
                 "badTournamentFemale": '<?php echo __( 'Female' , 'bad-tournament' ); ?>',
+                "confirmRemoveTournament": '<?php echo __( 'Are you sure you want to remove this tournament ?' , 'bad-tournament' ); ?>',
             }
             console.log( bvg_tournament_constants );
         </script>

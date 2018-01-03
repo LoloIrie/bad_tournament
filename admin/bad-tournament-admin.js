@@ -39,6 +39,18 @@ jQuery('#tournament_select_button').on( 'click', function(){
     jQuery( '#tournament_select_id' ).val( jQuery( '#tournament_select' ).val() );
 });
 
+jQuery('#tournament_remove_button').on( 'click', function(){
+    if( jQuery( '#tournament_select' ).val() > 0 ){
+        if( !confirm( bvg_tournament_constants.confirmRemoveTournament ) ){
+            return false;
+        }
+    }else{
+        alert( 'Choose a tournament to remove' );
+        return false;
+    }
+
+});
+
 /* Fill tournament form with existing values */
 jQuery('#tournament_select').on( 'change', function(){
     if( jQuery( this ).val() > 0 ){
@@ -52,6 +64,17 @@ jQuery('#tournament_select').on( 'change', function(){
             }
         } );
         jQuery( '#tournament_name').val( selected_tournament.name );
+
+        jQuery( '#tournament_localization').val( selected_tournament.localization );
+        jQuery( '#tournament_date_start').val( selected_tournament.date_start );
+        jQuery( '#tournament_date_end').val( selected_tournament.date_end );
+
+        jQuery( 'input[name=tournament_typ]' ).each( function(){
+            if( jQuery( this).val() == selected_tournament.tournament_typ ){
+                jQuery( this).attr( 'checked', 'checked' );
+            }
+        } );
+
         jQuery( 'input[name=tournament_system]' ).each( function(){
             if( jQuery( this).val() == selected_tournament.system ){
                 jQuery( this).attr( 'checked', 'checked' );

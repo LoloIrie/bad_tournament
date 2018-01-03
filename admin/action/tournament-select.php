@@ -6,9 +6,9 @@
  * Time: 15:32
  */
 
-$new_t_id = 1;
-$new_t_name = 'BVG Tournament';
-
+/* SET VARIABLES */
+$new_t_id = 0;
+$new_t_name = 'Undefined tournament';
 $parent_id = 0;
 if( $_POST['tournament_select_id'] > 0 && ( !isset( $_POST['tournament_parent_select'] ) || $_POST['tournament_parent_select'] == 0 ) ){
     $parent_id = $_POST['tournament_select_id'];
@@ -31,8 +31,56 @@ if( isset( $_POST['tournament_max_points_set'] ) && is_numeric( $_POST['tourname
     $tournament_max_points_set = $_POST['tournament_max_points_set'];
 }
 
-if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_select'] ) ){
+if( isset( $_POST['tournament_date_start'] ) ){
+    $date_start = $_POST['tournament_date_start'];
+    if( !isset( $_POST['tournament_date_end'] ) || $_POST['tournament_date_end'] < $_POST['tournament_date_start'] ){
+        $_POST['tournament_date_end'] = $_POST['tournament_date_start'];
+    }
+    $date_end = $_POST['tournament_date_end'];
+
+    $datetimestart = explode( ' ', $date_start );
+    $datestart = explode( '/', $datetimestart[0] );
+    $date_start = $datestart[2].'-'.$datestart[1].'-'.$datestart[0].' '.$datetimestart[1].':00';
+
+    $datetimeend = explode( ' ', $date_end );
+    $dateend = explode( '/', $datetimeend[0] );
+    $date_end = $dateend[2].'-'.$dateend[1].'-'.$dateend[0].' '.$datetimeend[1].':00';
+}
+
+/* ACTIONS */
+
+if( isset( $_POST['tournament_remove_button'] ) && is_numeric( $_POST['tournament_select'] ) ){
+    var_dump( $_POST );
+    /* Remove matches */
+    $query = "DELETE FROM
+    ".$wpdb->prefix."bvg_matches
+
+    WHERE
+    tournament_id=".$_POST['tournament_select'];
+    $wpdb->query( $query );
+
+    /* Remove players */
+    $query = "DELETE FROM
+    ".$wpdb->prefix."bvg_players_tournament
+
+    WHERE
+    tournament_id=".$_POST['tournament_select'];
+    $wpdb->query( $query );
+
+    /* Remove tournament */
+    $query = "DELETE FROM
+    ".$wpdb->prefix."bvg_tournaments
+
+    WHERE
+    tournament_id=".$_POST['tournament_select'];
+    $wpdb->query( $query );
+
+    $bvg_admin_msg .= __( 'Selected tournament removed !' , 'bad-tournament' ).'<br />';
+}
+else if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_select'] ) ){
     /* EDIT EXISTING TOURNAMENT */
+
+
 
     $data = array(
         'parent_id' => $parent_id,
@@ -43,7 +91,10 @@ if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_select'
         'points_set' => $points_sets,
         'max_points_set' => $tournament_max_points_set,
         'club_restriction' => $_POST['club_restriction'],
-        'tournament_typ' => $_POST['tournament_typ']
+        'tournament_typ' => $_POST['tournament_typ'],
+        'localization' => $_POST['tournament_localization'],
+        'date_start' => $date_start,
+        'date_end' => $date_end,
     );
     $where = array( 'id' => $_POST['tournament_select'] );
     $wpdb->update( $wpdb->prefix . 'bvg_tournaments', $data, $where );
@@ -80,7 +131,8 @@ if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_select'
 
     // CREATE NEW TOURNAMENT
 
-
+    $date_start = $_POST['tournament_date_start'];
+    $date_end = $_POST['tournament_date_end'];
 
     $data = array(
         'parent_id' => $parent_id,
@@ -91,7 +143,10 @@ if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_select'
         'points_set' => $points_sets,
         'max_points_set' => $tournament_max_points_set,
         'club_restriction' => $_POST['club_restriction'],
-        'tournament_typ' => $_POST['tournament_typ']
+        'tournament_typ' => $_POST['tournament_typ'],
+        'localization' => $_POST['tournament_localization'],
+        'date_start' => $date_start,
+        'date_end' => $date_end,
     );
     //$wpdb->show_errors();
     $wpdb->insert( $wpdb->prefix . 'bvg_tournaments', $data );
