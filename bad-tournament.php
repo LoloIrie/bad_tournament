@@ -45,6 +45,7 @@ class bad_tournament
 
         add_shortcode( 'bad_tournament_table', array( $this, 'bad_tournament_table_shortcode' ) );
         add_shortcode( 'bad_tournament_matches', array( $this, 'bad_tournament_matches_shortcode' ) );
+        add_shortcode( 'bad_tournament_summary', array( $this, 'bad_tournament_summary_shortcode' ) );
     }
 
     function bvg_head_javascript_object(){
@@ -199,6 +200,15 @@ class bad_tournament
 
         return $html_shortcode;
     }
+
+    function bad_tournament_summary_shortcode( $atts ) {
+
+        $html_shortcode = '';
+        include plugin_dir_path( __FILE__ ).'shortcodes/shortcode-summary.php';
+
+        return $html_shortcode;
+    }
+
 }
 
 new bad_tournament();

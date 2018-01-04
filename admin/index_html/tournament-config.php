@@ -15,26 +15,29 @@ $html .= '<input type="hidden" name="form_action" value="tournament-select" />';
 $html .= '<input type="hidden" name="tournament_select_id" value="'.$_SESSION['t_id'].'" />';
 
 
-
-$html .= '<label>'.__('Choose tournament:', 'bad-tournament').'</label>';
-$html .= '<select type="text" value="" name="tournament_select" id="tournament_select">';
-$html .= '<option value="0">'.__('Choose', 'bad-tournament').'</option>';
-foreach( $tournaments as $tournament ){
-    $html .= '<option value="'.$tournament->id.'" '.( $tournament->id == $_SESSION['t_id'] ? 'selected="selected"' : '' ).'>'.$tournament->name.'</option>';
-    if( $tournament->id == $_SESSION['t_id'] ){
-        $_SESSION['t_name'] = $tournament->name;
-        $_SESSION['t_round'] = $tournament->round;
-        $_SESSION['t_system'] = $tournament->system;
-        $_SESSION['t_nb_sets'] = $tournament->nb_sets;
-        $_SESSION['t_points_set'] = $tournament->points_set;
-        $_SESSION['t_max_points_set'] = $tournament->max_points_set;
+if( !empty( $tournaments ) ){
+    $html .= '<label>'.__('Choose tournament:', 'bad-tournament').'</label>';
+    $html .= '<select type="text" value="" name="tournament_select" id="tournament_select">';
+    $html .= '<option value="0">'.__('Choose', 'bad-tournament').'</option>';
+    foreach( $tournaments as $tournament ){
+        $html .= '<option value="'.$tournament->id.'" '.( $tournament->id == $_SESSION['t_id'] ? 'selected="selected"' : '' ).'>'.$tournament->name.'</option>';
+        if( $tournament->id == $_SESSION['t_id'] ){
+            $_SESSION['t_name'] = $tournament->name;
+            $_SESSION['t_round'] = $tournament->round;
+            $_SESSION['t_system'] = $tournament->system;
+            $_SESSION['t_nb_sets'] = $tournament->nb_sets;
+            $_SESSION['t_points_set'] = $tournament->points_set;
+            $_SESSION['t_max_points_set'] = $tournament->max_points_set;
+        }
     }
+    $html .= '</select>';
+    $html .= '<input type="submit" value="'.__('Choose tournament', 'bad-tournament').'" id="tournament_select_button" />';
+    $html .= '<input type="submit" class="submit2" value="'.__('Remove tournament', 'bad-tournament').'" id="tournament_remove_button" name="tournament_remove_button" />';
+    $html .= '<br />';
+    $html .= '<br />';
 }
-$html .= '</select>';
-$html .= '<input type="submit" value="'.__('Choose tournament', 'bad-tournament').'" id="tournament_select_button" />';
-$html .= '<input type="submit" class="submit2" value="'.__('Remove tournament', 'bad-tournament').'" id="tournament_remove_button" name="tournament_remove_button" />';
-$html .= '<br />';
-$html .= '<br />';
+
+
 
 
 

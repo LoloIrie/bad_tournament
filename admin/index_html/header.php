@@ -70,7 +70,11 @@ if( $_SESSION['current_tournament'] !== false ){
     $html .= '<h4>'.__( 'Sets to win:', 'bad-tournament').' '.$_SESSION['current_tournament']['nb_sets'].' '.__( 'Points/Set:', 'bad-tournament').' '.$_SESSION['current_tournament']['points_set'].' '.__( 'Max. points per set:', 'bad-tournament').' '.$_SESSION['current_tournament']['max_points_set'].'</h4>';
 
 }else{
-    $html .= '<h1 id="bad_tournament_maintitle" class="subtournament_name">'.__( 'You need to create or select a tournament' , 'bad-tournament' ).'</h1>';
+    if( !empty( $tournaments ) ){
+        $html .= '<h1 id="bad_tournament_maintitle" class="subtournament_name">'.__( 'You need to create a new tournament or select an existing tournament' , 'bad-tournament' ).'</h1>';
+    }else{
+        $html .= '<h1 id="bad_tournament_maintitle" class="subtournament_name">'.__( 'You need to create your first tournament' , 'bad-tournament' ).'</h1>';
+    }
 }
 
 
