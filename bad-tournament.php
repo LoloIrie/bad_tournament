@@ -5,7 +5,7 @@ Plugin Name: Bad Tournament
 Plugin URI: http://etalkers.org
 Description: Badminton / Tennis / Table tennis Tournament Plugin
 Author: Laurent Dorier
-Version: 1.1
+Version: 1.0
 Author URI: http://etalkers.org
 Text Domain: bad-tournament
 Domain Path: /languages
