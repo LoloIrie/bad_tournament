@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: Bad Tournament
-Plugin URI: http://etalkers.org
+Plugin URI: http://etalkers.org/what/wordpress-development/bad-tournament-wp-plugin
 Description: Badminton / Tennis / Table tennis Tournament Plugin
 Author: Laurent Dorier
 Version: 1.0
