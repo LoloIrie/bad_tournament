@@ -6,6 +6,7 @@
  * Time: 09:12
  */
 
+$localization = str_replace( ' ', '+', $tournament->localization);
 
 /* Summary */
 $html = '';
@@ -18,7 +19,7 @@ $html .= '<div class="bad_tournament_block" id="tournament_summary">';
     $html .= '</div>';
 
     $html .= '<div class="bad_tournament_localization" id="tournament_summary_localization">';
-        $html .= '<a href="" target="_blank" >'.__( 'Where ?' , 'bad-tournament' ).'</a>';
+        $html .= '<a href="https://maps.google.com//maps/place/'.$localization.'" target="_blank" >'.__( 'Localize the tournament ?' , 'bad-tournament' ).'</a>';
     $html .= '</div>';
 
 $html .= '</div>';

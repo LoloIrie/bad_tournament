@@ -52,7 +52,7 @@ if( isset( $_POST['tournament_date_start'] ) && !empty( $_POST['tournament_date_
 
 
 /* ACTIONS */
-
+/* REMOVE TOURNAMENT */
 if( isset( $_POST['tournament_remove_button'] ) && is_numeric( $_POST['tournament_select'] ) ){
     if( $_POST['tournament_select'] == $_SESSION['t_id'] ){
         unset( $_SESSION['t_id'], $_SESSION['t_name'], $_SESSION['t_system'], $_SESSION['current_tournament'] );
@@ -88,6 +88,7 @@ if( isset( $_POST['tournament_remove_button'] ) && is_numeric( $_POST['tournamen
 
     $bvg_admin_msg .= __( 'Tournament removed !' , 'bad-tournament' ).'<br />';
 }
+/* EDIT TOURNAMENT */
 else if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_select'] ) ){
     /* EDIT EXISTING TOURNAMENT */
 
@@ -112,8 +113,9 @@ else if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_se
     $_SESSION['t_system'] = $_POST['tournament_system'];
 
     $bvg_admin_msg .= __( 'Tournament edited !' , 'bad-tournament' ).'<br />';
-}else if( empty( $_POST['tournament_name'] ) && is_numeric( $_POST['tournament_select'] ) ){
-
+}
+/* SELECT TOURNAMENT */
+else if( isset( $_POST['tournament_select_button'] ) && is_numeric( $_POST['tournament_select'] ) ){
     // SELECT EXISTING TOURNAMENT
 
     $new_t_id = $_POST['tournament_select'];
@@ -134,12 +136,16 @@ else if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_se
     $new_t_system = $tournaments[0]->system;
     $_SESSION['round'] = $tournaments[0]->round;
     $_SESSION['current_tournament'] = get_object_vars( $tournaments[0] );
-
+    $_SESSION['t_id'] = $new_t_id;
+    $_SESSION['t_name'] = $new_t_name;
+    $_SESSION['t_system'] = $new_t_system;
     if( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] > 0 ){
         $_SESSION[ 'current_tournament' ][ 'club_restriction_name' ] = db_get_clubs( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] )[0]->name;
     }
 
-}else{
+}
+/* CREATE TOURNAMENT */
+else{
 
     // CREATE NEW TOURNAMENT
 
