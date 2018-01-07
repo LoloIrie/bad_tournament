@@ -19,8 +19,8 @@ $atts = shortcode_atts(
 );
 
 include_once plugin_dir_path(__FILE__). '../admin/db-get-content.php';
-$tournament = db_get_tournaments( $atts['t_id'] );
-$players = db_get_players( $atts['t_id'] );
+$tournament = badt_db_get_tournaments( $atts['t_id'] );
+$players = badt_db_get_players( $atts['t_id'] );
 
 
 $html_shortcode .= '<h3>'.$tournament[0]->name.' / ' .'Round: '.$tournament[0]->round.'</h3>';

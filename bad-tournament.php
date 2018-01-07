@@ -10,12 +10,9 @@ Author URI: http://etalkers.org
 Text Domain: bad-tournament
 Domain Path: /languages
 */
-define( 'bad_tournament_DEBUG', true );
+
 if ( !defined( 'ABSPATH' ) ) die();
 
-if( bad-tournament_DEBUG ){
-    $wpdb->show_errors();
-}
 
 add_action('init', 'myStartSession', 1);
 function myStartSession() {
@@ -24,7 +21,7 @@ function myStartSession() {
     }
 }
 
-class bad_tournament
+class badt_Bad_Tournament
 {
     function __construct(){
         load_plugin_textdomain( 'bad-tournament' );
@@ -83,14 +80,20 @@ class bad_tournament
 
     function bad_tournament_admin(){
 
+        /* jQuery UI for datepicker
         wp_enqueue_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css');
         wp_register_script('addons_script', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', array('jquery'), '');
         wp_enqueue_script('addons_script');
+        */
+        wp_enqueue_script('jquery-ui-slider');
+        wp_enqueue_script('jquery-ui-datepicker');
 
-        /* Datetime Picker */
+        /* Datetime Picker Plugin */
         wp_enqueue_style( 'addons2_style', plugin_dir_url(__FILE__).'admin/jquery-ui-timepicker-addon.css');
         wp_register_script('addons2_script', plugins_url( 'admin/jquery-ui-timepicker-addon.js', __FILE__ ), array('jquery'), '');
         wp_enqueue_script('addons2_script');
+
+
 
         wp_enqueue_style( 'bad_tournament_admin_style', plugin_dir_url(__FILE__).'admin/bad-tournament-admin.css');
         wp_register_script( 'bad_tournament_admin', plugins_url( 'admin/bad-tournament-admin.js', __FILE__ ) );
@@ -109,7 +112,7 @@ class bad_tournament
             if( $bad_tournament_current_version !== $bad_tournament_version ){
 
                 /* Not yet installed ? */
-                $bvg_admin_msg = bad_tournament_install( $bad_tournament_version, $bad_tournament_current_version );
+                $bvg_admin_msg = badt_install( $bad_tournament_version, $bad_tournament_current_version );
                 update_option('bad_tournament_installed', $bad_tournament_version  );
 
             }
@@ -211,4 +214,4 @@ class bad_tournament
 
 }
 
-new bad_tournament();
+new badt_Bad_Tournament();

@@ -19,7 +19,7 @@ $atts = shortcode_atts(
 );
 
 include_once plugin_dir_path(__FILE__). '../admin/db-get-content.php';
-$tournament = db_get_tournaments( $atts['t_id'] )[0];
+$tournament = badt_db_get_tournaments( $atts['t_id'] )[0];
 $t_view = $atts[ 't_view' ];
 
 

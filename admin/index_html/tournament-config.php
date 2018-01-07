@@ -99,7 +99,7 @@ $html .= '<label>'.__('Club restriction:', 'bad-tournament').'</label>';
 $html .= '<select name="club_restriction" id="club_restriction">';
 $html .= '<option value="0" >'.__( 'Open' , 'bad-tournament' ).'</option>';
 foreach( $clubs as $club ){
-    $html .= '<option value="'.$club->id.'" '.$selected.'>'.$club->name.'</option>';
+    $html .= '<option value="'.$club->id.'" >'.$club->name.'</option>';
 }
 $html .= '</select>';
 
@@ -126,4 +126,7 @@ tournament = [];
         $html .= 'tournament['.$tournament->id.'] = \''.json_encode( $tournament ).'\';';
     };
 $html .= '</script>';
+
+$html .= '<h1 class="topspace">'.__('Shortcodes', 'bad-tournament').'</h1>';
+$html .= '<div class="shortcode_bvg"><h2>'.__('Tournament summary', 'bad-tournament').'</h2><input type="text" class="wp_style" value="[bad_tournament_summary t_id='.$_SESSION['t_id'].' t_view=full]" /></div>';
 

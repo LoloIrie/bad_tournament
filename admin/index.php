@@ -41,7 +41,7 @@ if( !$ADMIN_VIEW ){
 //echo 'XXX'.$_SESSION['round'];
 if( !isset( $_SESSION['t_id'] ) ){
 
-    $last_tournament = db_get_tournaments( false , true );
+    $last_tournament = badt_db_get_tournaments( false , true );
 
     if( isset($last_tournament[0]->id) && is_numeric($last_tournament[0]->id) ){
         $_SESSION['t_id'] = $last_tournament[0]->id;
@@ -49,7 +49,7 @@ if( !isset( $_SESSION['t_id'] ) ){
         $_SESSION['t_name'] = $last_tournament[0]->name;
         $_SESSION['current_tournament'] = get_object_vars( $last_tournament[0] );
         if( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] > 0 ){
-            $_SESSION[ 'current_tournament' ][ 'club_restriction_name' ] = db_get_clubs( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] )[0]->name;
+            $_SESSION[ 'current_tournament' ][ 'club_restriction_name' ] = badt_db_get_clubs( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] )[0]->name;
         }
     }else{
         $_SESSION['t_id'] = 1;
@@ -69,13 +69,13 @@ if( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] > 0 ){
 }
 
 /* GET DB CONTENT */
-$tournaments = db_get_tournaments();
-$clubs = db_get_clubs();
+$tournaments = badt_db_get_tournaments();
+$clubs = badt_db_get_clubs();
 $cl_default_id = get_option( 'cl_default_id' );
-$all_players = db_get_all_players( $club_restriction );
-$players = db_get_players();
-$matches = db_get_matches( $_SESSION['t_id'], $_SESSION['round'] );
-$nb_matchs = db_nb_matches( $_SESSION['t_id'] );
+$all_players = badt_db_get_all_players( $club_restriction );
+$players = badt_db_get_players();
+$matches = badt_db_get_matches( $_SESSION['t_id'], $_SESSION['round'] );
+$nb_matchs = badt_db_nb_matches( $_SESSION['t_id'] );
 
 
 //echo '<pre>';

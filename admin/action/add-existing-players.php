@@ -185,8 +185,8 @@ if( isset( $_POST['player_tournament_remove'] ) ){
 
     // Add player(s) to the tournament
     include_once plugin_dir_path(__FILE__). '../db-get-content.php';
-    $players = db_get_all_players();
-    $players_in_tournament = db_get_players();
+    $players = badt_db_get_all_players();
+    $players_in_tournament = badt_db_get_players();
     $nb_new_players = 0;
 
     //var_dump( $players );

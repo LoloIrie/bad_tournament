@@ -10,27 +10,27 @@ if ( !defined( 'ABSPATH' ) ) die();
 
 $bad_tournament_version = '1.0';
 
-function bad_tournament_install( $bad_tournament_version, $bad_tournament_current_version = false ){
+function badt_install( $bad_tournament_version, $bad_tournament_current_version = false ){
 
     $bvg_admin_msg = '';
 
     if( $bad_tournament_version == '1.0' ) {
         /* First version */
 
-        bad_tournament_install_init();
+        badt_install_init();
 
         $bvg_admin_msg .= __( 'Plugin Bad Tournament installed !' , 'bad-tournament' );
 
     }else{
         /* Update */
 
-        $bvg_admin_msg .= bad_tournament_update( $bad_tournament_current_version );
+        $bvg_admin_msg .= badt_update( $bad_tournament_current_version );
     }
 
     return $bvg_admin_msg;
 }
 
-function bad_tournament_update( $bad_tournament_current_version ){
+function badt_update( $bad_tournament_current_version ){
     $bvg_admin_msg = __( 'Plugin Bad Tournament updated with following version(s):' , 'bad-tournament' );
 
     $existing_updates = array(
@@ -40,7 +40,7 @@ function bad_tournament_update( $bad_tournament_current_version ){
     foreach( $existing_updates as $version ){
         if( $version > $bad_tournament_current_version ){
 
-            $func_name = 'update_'.str_replace( '.', '_', $version );
+            $func_name = 'badt_update_'.str_replace( '.', '_', $version );
             if( $func_name() ){
                 $bvg_admin_msg .= ' '.$version.',';
             }else{
@@ -54,7 +54,7 @@ function bad_tournament_update( $bad_tournament_current_version ){
     return $bvg_admin_msg;
 }
 
-function bad_tournament_install_init(){
+function badt_install_init(){
 
     global $wpdb;
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -213,7 +213,7 @@ function bad_tournament_install_init(){
 }
 
 
-function update_1_1(){
+function badt_update_1_1(){
     global $wpdb;
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 

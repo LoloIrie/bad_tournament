@@ -19,8 +19,8 @@ $atts = shortcode_atts(
 );
 
 include_once plugin_dir_path(__FILE__). '../admin/db-get-content.php';
-$tournament = db_get_tournaments( $atts['t_id'] );
-$players = db_get_players( $atts['t_id'] );
+$tournament = badt_db_get_tournaments( $atts['t_id'] );
+$players = badt_db_get_players( $atts['t_id'] );
 $round = $atts[ 'round' ];
 
 if( $round === 0){
@@ -28,7 +28,7 @@ if( $round === 0){
 }elseif( $round == '!' ){
     $round = $tournament[0]->round;
 }
-$matches = db_get_matches( $atts['t_id'], $round );
+$matches = badt_db_get_matches( $atts['t_id'], $round );
 
 $html_shortcode .= '<h3>Matches '.$tournament[0]->name.' / ' .'Round: '.( $round ? $round.' / ' : '' ).$tournament[0]->round.'</h3>';
 

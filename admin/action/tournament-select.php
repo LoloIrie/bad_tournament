@@ -140,7 +140,7 @@ else if( isset( $_POST['tournament_select_button'] ) && is_numeric( $_POST['tour
     $_SESSION['t_name'] = $new_t_name;
     $_SESSION['t_system'] = $new_t_system;
     if( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] > 0 ){
-        $_SESSION[ 'current_tournament' ][ 'club_restriction_name' ] = db_get_clubs( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] )[0]->name;
+        $_SESSION[ 'current_tournament' ][ 'club_restriction_name' ] = badt_db_get_clubs( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] )[0]->name;
     }
 
 }
@@ -181,7 +181,7 @@ else{
     $_SESSION['round'] = 1;
 
     if( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] > 0 ){
-        $_SESSION[ 'current_tournament' ][ 'club_restriction_name' ] = db_get_clubs( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] )[0]->name;
+        $_SESSION[ 'current_tournament' ][ 'club_restriction_name' ] = badt_db_get_clubs( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] )[0]->name;
     }
 
     $_SESSION['t_id'] = $new_t_id;

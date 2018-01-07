@@ -9,15 +9,16 @@ TODOs(-) / DONE(+)
 + Tournament Datetime + Localization
 + Display nbr players / tournament
 + Remove tournament feature
-- Tie Break (tennis option)
 - Restrict players list depending of tournament typ (Men vs Women vs Mixte)
 - Tournament KO System (v2)
 - Tournament League (v2)
 - Export features (Excel) (v2)
 - Form validator (v2)
 - Limit nbr players / tournament in free version (v2)
+- Tie Break (tennis option) (v3)
 
 
 
 DEV INFOS
 Js translations defined in bad-tournament.php:bvg_head_javascript_object(): Callable with bvg_tournament_constants.XXXXXXX
+Customize shortcodes css with your_theme/bad-tournament.css file

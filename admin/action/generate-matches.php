@@ -7,7 +7,7 @@
  */
 //$wpdb->show_errors();
 
-function get_free_opponent( $players_match, $k_pl1, $opponents ){
+function badt_get_free_opponent( $players_match, $k_pl1, $opponents ){
     $key = 0;
 
     foreach( $players_match as $k => $player_match ){
@@ -194,7 +194,7 @@ if( isset( $_POST['generate_matchs_now'] ) || $generate_matchs_now === true ){
                             }else{
                                 $bvg_admin_msg .= 'Game played: '.$players_match[$k_pl1]->id.'-'.$players_match[$k_pl2]->id.'<br />';
                                 /* Get an opponent in the rest of available players */
-                                $k_pl2 = get_free_opponent( $players_match, $k_pl1, $opponents );
+                                $k_pl2 = badt_get_free_opponent( $players_match, $k_pl1, $opponents );
                                 if( $k_pl2 > 0 ){
                                     $already_played = false;
                                 }

@@ -13,7 +13,7 @@ if( !is_numeric( $_POST['match_id'] ) ){
 }else{
 
     /* Get match values before update */
-    $match_before_update = db_get_matches( false, false, $_POST['match_id'] )[0];
+    $match_before_update = badt_db_get_matches( false, false, $_POST['match_id'] )[0];
     //var_dump( $match_before_update );
 
     $winner = 0;

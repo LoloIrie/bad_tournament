@@ -7,7 +7,7 @@
  */
 
 /* Get all tournaments */
-function db_get_tournaments( $tournament_id = false, $get_last = false ){
+function badt_db_get_tournaments( $tournament_id = false, $get_last = false ){
 
     global $wpdb;
 
@@ -46,7 +46,7 @@ function db_get_tournaments( $tournament_id = false, $get_last = false ){
 }
 
 /* Get all tournaments */
-function db_get_clubs( $club_id = false ){
+function badt_db_get_clubs( $club_id = false ){
 
     global $wpdb;
 
@@ -77,7 +77,7 @@ function db_get_clubs( $club_id = false ){
 }
 
 /* Get all players */
-function db_get_all_players( $club_restriction = false ){
+function badt_db_get_all_players( $club_restriction = false ){
 
     global $wpdb;
 
@@ -110,7 +110,7 @@ function db_get_all_players( $club_restriction = false ){
 }
 
 /* Get all players for the current tournament */
-function db_get_players( $tournament_id = false ){
+function badt_db_get_players( $tournament_id = false ){
 
     global $wpdb;
 
@@ -146,7 +146,7 @@ function db_get_players( $tournament_id = false ){
 }
 
 /* Get played matches for the current tournament */
-function db_nb_matches( $tournament_id = false, $round = false ){
+function badt_db_nb_matches( $tournament_id = false, $round = false ){
 
     global $wpdb;
 
@@ -166,7 +166,7 @@ function db_nb_matches( $tournament_id = false, $round = false ){
 }
 
 /* Get matches */
-function db_get_matches( $tournament_id = false, $round = false, $match_id = false ){
+function badt_db_get_matches( $tournament_id = false, $round = false, $match_id = false ){
 
     global $wpdb;
 
