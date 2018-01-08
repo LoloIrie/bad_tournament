@@ -248,6 +248,7 @@ input.wp_style{
     margin-bottom: 100px;
 }
 h1.topspace{
+    clear: both;
     padding-top: 50px;
 }
 

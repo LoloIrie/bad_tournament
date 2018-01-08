@@ -13,19 +13,21 @@ Domain Path: /languages
 
 if ( !defined( 'ABSPATH' ) ) die();
 
-
+/*
 add_action('init', 'myStartSession', 1);
 function myStartSession() {
     if(!session_id()) {
         session_start();
     }
 }
+*/
 
 class badt_Bad_Tournament
 {
     function __construct(){
         load_plugin_textdomain( 'bad-tournament' );
 
+        add_action( 'admin_init', array( $this, 'bad_tournament_start_session' ) );
         add_action( 'admin_menu', array( $this, 'bad_tournament_menu' ) );
 
         // Ajax
@@ -78,7 +80,13 @@ class badt_Bad_Tournament
 
     }
 
+    function bad_tournament_start_session(){
+        session_start();
+    }
+
     function bad_tournament_admin(){
+
+        var_dump( $_SESSION );
 
         /* jQuery UI for datepicker
         wp_enqueue_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css');
@@ -153,8 +161,6 @@ class badt_Bad_Tournament
         wp_die();
     }
 
-
-
     // Ajax: Set club as default
     function set_club_default(){
         $html_ajax = '';
@@ -173,7 +179,7 @@ class badt_Bad_Tournament
         wp_die();
     }
 
-
+    // Ajax: Change player in an existing match
     function change_players_match(){
         $html_ajax = '';
         include plugin_dir_path(__FILE__).'admin/action/change-player-match.php';
@@ -182,7 +188,8 @@ class badt_Bad_Tournament
         wp_die();
     }
 
-    // Add Shortcodes
+
+    /* Add Shortcodes */
     function bad_tournament_table_shortcode( $atts ) {
 
         wp_enqueue_style( 'bad_tournament_admin_style', plugin_dir_url(__FILE__).'bad-tournament.css');
