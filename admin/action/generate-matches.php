@@ -22,6 +22,7 @@ function badt_get_free_opponent( $players_match, $k_pl1, $opponents ){
     return $key;
 }
 
+$generate_matchs_now = false;
 if( isset( $_POST['regenerate_matchs_now'] ) ){
     /* Remove current matchs... */
     $matches = array();

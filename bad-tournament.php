@@ -86,8 +86,6 @@ class badt_Bad_Tournament
 
     function bad_tournament_admin(){
 
-        var_dump( $_SESSION );
-
         /* jQuery UI for datepicker
         wp_enqueue_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css');
         wp_register_script('addons_script', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', array('jquery'), '');

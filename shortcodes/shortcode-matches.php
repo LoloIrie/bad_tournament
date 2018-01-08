@@ -23,20 +23,23 @@ $tournament = badt_db_get_tournaments( $atts['t_id'] );
 $players = badt_db_get_players( $atts['t_id'] );
 $round = $atts[ 'round' ];
 
-if( $round === 0){
+if( $round === 0 ){
     $round = false;
-}elseif( $round == '!' ){
+}elseif( $round == '!' && isset( $tournament[0] ) ){
     $round = $tournament[0]->round;
 }
-$matches = badt_db_get_matches( $atts['t_id'], $round );
-
-$html_shortcode .= '<h3>Matches '.$tournament[0]->name.' / ' .'Round: '.( $round ? $round.' / ' : '' ).$tournament[0]->round.'</h3>';
 
 
+if( isset( $tournament[0] ) ){
+    $matches = badt_db_get_matches( $atts['t_id'], $round );
 
-$html = '';
-$ROUND = $round;
-$ROUND_MAX = $tournament[0]->round;
-include plugin_dir_path(__FILE__). 'sc_html/matches-view.php';
+    $html_shortcode .= '<h3>Matches '.$tournament[0]->name.' / ' .'Round: '.( $round ? $round.' / ' : '' ).$tournament[0]->round.'</h3>';
 
-$html_shortcode .= $html;
+    $html = '';
+    $ROUND = $round;
+    $ROUND_MAX = $tournament[0]->round;
+    include plugin_dir_path(__FILE__). 'sc_html/matches-view.php';
+
+    $html_shortcode .= $html;
+}
+

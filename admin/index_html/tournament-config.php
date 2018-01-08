@@ -108,6 +108,10 @@ $html .= '<input type="submit" value="'.__('Edit tournament', 'bad-tournament').
 
 $html .= '</form>';
 
+$html .= '<h1 class="topspace">'.__('Shortcodes', 'bad-tournament').'</h1>';
+$html .= '<div class="shortcode_bvg"><h2>'.__('Tournament summary', 'bad-tournament').'</h2><input type="text" class="wp_style" value="[bad_tournament_summary t_id='.$_SESSION['t_id'].' t_view=full]" /></div>';
+
+
 $html .= '</div>';
 
 $html .= '<script>
@@ -126,7 +130,4 @@ tournament = [];
         $html .= 'tournament['.$tournament->id.'] = \''.json_encode( $tournament ).'\';';
     };
 $html .= '</script>';
-
-$html .= '<h1 class="topspace">'.__('Shortcodes', 'bad-tournament').'</h1>';
-$html .= '<div class="shortcode_bvg"><h2>'.__('Tournament summary', 'bad-tournament').'</h2><input type="text" class="wp_style" value="[bad_tournament_summary t_id='.$_SESSION['t_id'].' t_view=full]" /></div>';
 

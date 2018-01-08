@@ -19,13 +19,13 @@ $atts = shortcode_atts(
 );
 
 include_once plugin_dir_path(__FILE__). '../admin/db-get-content.php';
-$tournament = badt_db_get_tournaments( $atts['t_id'] )[0];
-$t_view = $atts[ 't_view' ];
+if( isset( badt_db_get_tournaments( $atts['t_id'] )[0] ) ){
+    $tournament = badt_db_get_tournaments( $atts['t_id'] )[0];
+    $t_view = $atts[ 't_view' ];
 
+    $html = '';
 
+    include plugin_dir_path(__FILE__). 'sc_html/tournament-summary.php';
 
-$html = '';
-
-include plugin_dir_path(__FILE__). 'sc_html/tournament-summary.php';
-
-$html_shortcode .= $html;
+    $html_shortcode .= $html;
+}
