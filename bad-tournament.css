@@ -1,3 +1,11 @@
+/* Summary */
+#tournament_summary_title{
+    color: #2dff2a;
+    font-weight: bold;
+    font-size: 36px;
+}
+
+
 html, body{
     overflow: auto;
 }
@@ -167,3 +175,4 @@ select.player_name.winner, input.player_name.winner, div.winner{
 #round_select option{
     background-color: #115d9e;
 }
+
