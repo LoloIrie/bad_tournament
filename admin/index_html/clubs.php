@@ -34,36 +34,65 @@ if( !empty( $clubs) ) {
 $html .= '<form method="post">';
 $html .= '<input type="hidden" name="form_action" value="add-clubs" />';
 
+$html .= '<table class="form-table">';
 
+$html .= '<tr class="form-field form-required">';
+    $html .= '<th scope="row">';
+        $html .= '<label>'.__('Name:', 'bad-tournament').'</label>';
+    $html .= '</th>';
+    $html .= '<td>';
+        $html .= '<input type="text" value="" placeholder="'.__('Name', 'bad-tournament').'" name="club_name" />';
+    $html .= '</td>';
+$html .= '</tr>';
 
-$html .= '<label>'.__('Name:', 'bad-tournament').'</label>';
-$html .= '<input type="text" value="" placeholder="'.__('Name', 'bad-tournament').'" name="club_name" />';
+$html .= '<tr class="form-field form-required">';
+    $html .= '<th scope="row">';
+        $html .= '<label>'.__('Club ID:', 'bad-tournament').'</label>';
+    $html .= '</th>';
+    $html .= '<td>';
+        $html .= '<input type="text" value="" placeholder="'.__('XXXXXXXXX', 'bad-tournament').'" name="club_id" />';
+    $html .= '</td>';
+$html .= '</tr>';
 
-$html .= '<label>'.__('Club ID:', 'bad-tournament').'</label>';
-$html .= '<input type="text" value="" placeholder="'.__('XXXXXXXXX', 'bad-tournament').'" name="club_id" />';
+$html .= '<tr class="form-field form-required">';
+    $html .= '<th scope="row">';
+        $html .= '<label>'.__('Club URL:', 'bad-tournament').'</label>';
+    $html .= '</th>';
+    $html .= '<td>';
+        $html .= '<input type="text" value="" placeholder="'.__('https://', 'bad-tournament').'" name="club_url" />';
+    $html .= '</td>';
+$html .= '</tr>';
 
-$html .= '<label>'.__('Club URL:', 'bad-tournament').'</label>';
-$html .= '<input type="text" value="" placeholder="'.__('https://', 'bad-tournament').'" name="club_url" />';
+$html .= '<tr class="form-field form-required">';
+    $html .= '<th scope="row">';
+        $html .= '<label>'.__('Contact:', 'bad-tournament').'</label>';
+    $html .= '</th>';
+    $html .= '<td>';
+        $html .= '<select name="contact_id">';
+        $html .= '<option value="0" >'.__( 'Choose...' , 'bad-tournament' ).'</option>';
+        foreach( $all_players as $player ) {
+            $html .= '<option value="'.$player->player_id.'" >'.$player->player_firstname.' '.$player->player_lastname.'</option>';
+        }
+        $html .= '</select>';
+    $html .= '</td>';
+$html .= '</tr>';
 
+$html .= '<tr class="form-field form-required">';
+    $html .= '<th scope="row">';
+        $html .= '<label>'.__('Set as default:', 'bad-tournament').'</label>';
+    $html .= '</th>';
+    $html .= '<td>';
+        $html .= '<input type="checkbox" value="1" name="club_as_default" />';
+    $html .= '</td>';
+$html .= '</tr>';
 
-$html .= '<label>'.__('Contact:', 'bad-tournament').'</label>';
+$html .= '<tr class="form-field form-required">';
+    $html .= '<td colspan="2" >';
+        $html .= '<input type="submit" value="'.__('Add club', 'bad-tournament').'" class="button-primary button" />';
+    $html .= '</td>';
+$html .= '</tr>';
 
-$html .= '<select name="contact_id">';
-$html .= '<option value="0" >'.__( 'Choose...' , 'bad-tournament' ).'</option>';
-foreach( $all_players as $player ) {
-    $html .= '<option value="'.$player->player_id.'" >'.$player->player_firstname.' '.$player->player_lastname.'</option>';
-}
-
-$html .= '</select>';
-
-
-$html .= '<label>'.__('Set as default:', 'bad-tournament').'</label>';
-$html .= '<input type="checkbox" value="1" name="club_as_default" />';
-
-
-$html .= '<hr />';
-$html .= '<input type="submit" value="'.__('Add club', 'bad-tournament').'" />';
-$html .= '<hr />';
+$html .= '</table>';
 
 $html .= '</form>';
 

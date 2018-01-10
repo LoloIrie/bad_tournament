@@ -117,6 +117,7 @@ hr{
     font-weight: bold;
     font-size: 16px;
 }
+/*
 label{
     clear: left;
     display: block;
@@ -131,9 +132,13 @@ label{
 
     color: #c00;
 }
+*/
 input, select{
     float: left;
     margin-top: 4px;
+}
+input[type=text]{
+    width: 25em !important;
 }
 input[type=submit]{
     clear: both;
@@ -146,6 +151,7 @@ input[type=submit].submit2 {
 }
 input[type=number]{
     min-width: 50px;
+    width: 4em !important;
 }
 input[type=radio], input[type=checkbox]{
     margin-top: 6px;

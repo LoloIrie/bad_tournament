@@ -108,6 +108,8 @@ if( !empty( $matches ) ){
         $html .= '<div>';
         $html .= '<div>'.__( 'Match' , 'bad-tournament').' '.$m_id.': '.$players[$pl1_id]->player_firstname.' '.$players[$pl1_id]->player_lastname.( $_SESSION['t_system'] == 1 ? '('.$players[$pl1_id]->player_level_init.')' : '' ).' - '.$players[$pl2_id]->player_firstname.' '.$players[$pl2_id]->player_lastname.( $_SESSION['t_system'] == 1 ? '('.$players[$pl2_id]->player_level_init.')' : '' ).'</div>';
 
+        $html .= '<table class="form-table">';
+
         $html .= '<select name="pl1_m'.$m_id.'_name" id="pl1_m'.$m_id.'_name" data_pl_id="pl1_id" class="player_name '.( $winner == $pl1_id ? 'winner' : '' ).' '.( $winner == $pl2_id ? 'loser' : '' ).'" />';
         if( $player1_name == 'Inaktiv' ){
             $html .= '<option value="0" selected="selected">'.$player1_name.'</option>';
@@ -135,7 +137,7 @@ if( !empty( $matches ) ){
         $html .= '<input type="number" value="'.$pl1_set3.'" name="pl1_m'.$m_id.'_set3" class="set_score" min="0" max="'.$_SESSION['current_tournament']['max_points_set'].'" tabindex='.($tabindex+5).' />';
         $html .= '<input type="number" value="'.$pl1_set4.'" name="pl1_m'.$m_id.'_set4" class="set_score" '.( $_SESSION['current_tournament']['nb_sets'] < 3 ? 'disabled="disabled"' : '' ).'tabindex='.($tabindex+7).' />';
         $html .= '<input type="number" value="'.$pl1_set5.'" name="pl1_m'.$m_id.'_set5" class="set_score" '.( $_SESSION['current_tournament']['nb_sets'] < 3 ? 'disabled="disabled"' : '' ).'tabindex='.($tabindex+9).' />';
-        $html .= '<input type="submit" value="'.__('Winner', 'bad-tournament').'" class="match_winner" data="'.$pl1_id.'" data_m_id="'.$m_id.'" />';
+        $html .= '<input type="submit" value="'.__('Winner', 'bad-tournament').'" class="match_winner button" data="'.$pl1_id.'" data_m_id="'.$m_id.'" />';
         $html .= '</div>';
 
 
@@ -170,13 +172,13 @@ if( !empty( $matches ) ){
         $html .= '<input type="number" value="'.$pl2_set3.'" name="pl2_m'.$m_id.'_set3" class="set_score" min="0" max="'.$_SESSION['current_tournament']['max_points_set'].'" tabindex='.($tabindex+6).' />';
         $html .= '<input type="number" value="'.$pl2_set4.'" name="pl2_m'.$m_id.'_set4" class="set_score" '.( $_SESSION['current_tournament']['nb_sets'] < 3 ? 'disabled="disabled"' : '' ).'tabindex='.($tabindex+8).' />';
         $html .= '<input type="number" value="'.$pl2_set5.'" name="pl2_m'.$m_id.'_set5" class="set_score" '.( $_SESSION['current_tournament']['nb_sets'] < 3 ? 'disabled="disabled"' : '' ).'tabindex='.($tabindex+10).' />';
-        $html .= '<input type="submit" value="'.__('Winner', 'bad-tournament').'" class="match_winner" data="'.$pl2_id.'" data_m_id="'.$m_id.'" />';
+        $html .= '<input type="submit" value="'.__('Winner', 'bad-tournament').'" class="match_winner button" data="'.$pl2_id.'" data_m_id="'.$m_id.'" />';
         $html .= '</div>';
 
 
         $html .= '<br />';
 
-        $html .= '<input type="submit" value="'.__('Update match', 'bad-tournament').'" />';
+        $html .= '<input type="submit" value="'.__('Update match', 'bad-tournament').'" class="button button-primary" />';
 
         $html .= '<br /><br /><hr />';
 
@@ -189,7 +191,7 @@ if( !empty( $matches ) ){
 
     if( !$winner_exists ){
         $html .= '<form method="post" action="admin.php?page=bad_tournament&admin_view=matches">';
-        $html .= '<input name="regenerate_matchs_now" type="submit" value="'.__('Regenerate matches', 'bad-tournament').'" />';
+        $html .= '<input name="regenerate_matchs_now" type="submit" value="'.__('Regenerate matches', 'bad-tournament').'" class="button button-primary" />';
         $html .= '</form>';
     }
 
@@ -201,7 +203,7 @@ if( !empty( $matches ) ){
 }else{
 
     $html .= '<form method="post" action="admin.php?page=bad_tournament&admin_view=matches">';
-    $html .= '<input name="generate_matchs_now" type="submit" value="'.__('Create matches', 'bad-tournament').'" />';
+    $html .= '<input name="generate_matchs_now" type="submit" value="'.__('Create matches', 'bad-tournament').'" class="button button-primary" />';
     $html .= '</form>';
 }
 
