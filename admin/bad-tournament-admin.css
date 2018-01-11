@@ -212,6 +212,8 @@ input.set_score, input.match_winner{
 }
 input.match_winner{
     width: 60px;
+    height: 28px;
+    margin: 4px 0 1px 8px !important;
 }
 select.player_name, input.player_name{
     background-color: #fffa90;
