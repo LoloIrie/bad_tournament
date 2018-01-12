@@ -27,20 +27,23 @@ jQuery('.table_row').on( 'click', function(){
 });
 
 jQuery('#round_select').on( 'change', function(){
-    console.log('Change round...');
+    //console.log('Change round...');
     round_display = jQuery( this ).val();
+    round_available = jQuery( this).attr( 'data-round' );
+    jRound_available = '#block_game' + round_available;
     if( round_display == 0 ){
-        jQuery('.match_round_header').fadeIn();
-        jQuery('.match_row').fadeIn();
+        jQuery(jRound_available + ' .match_round_header').fadeIn();
+        jQuery(jRound_available + ' .match_row').fadeIn();
     }else{
-        jQuery('.match_round_header').each(function(){
+        //console.log( 'jRound_available:' + jRound_available );
+        jQuery(jRound_available + ' .match_round_header').each(function(){
             jQuery( this ).fadeOut();
-            jQuery( '.match_row' ).fadeOut();
+            jQuery( jRound_available + ' .match_row' ).fadeOut();
         });
-        jQuery('.match_round_header').each(function(){
+        jQuery(jRound_available + ' match_round_header').each(function(){
             if( jQuery( this).attr( 'data-round' ) == round_display ){
                 jQuery( this ).slideDown();
-                jQuery('.match_row').each(function(){
+                jQuery(jRound_available + ' .match_row').each(function(){
                     if( jQuery( this).attr( 'data-round' ) == round_display ){
                         jQuery( this ).slideDown( 'slow' );
                     }

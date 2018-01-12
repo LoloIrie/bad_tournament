@@ -3,7 +3,7 @@ Contributors: loloirie
 Tags: tournament, club, shortcode, administration, badminton, tennis, table tennis
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 
@@ -88,6 +88,12 @@ But please, describe correctly your issue and be patient...
 
 
 == Changelog ==
+
+= 1.0.1 - 13.01.2018 =
+* Wordpress admin layout
+* Phone view
+* Minor bugs fix for matches shortcodes
+* Shortcode tournament summary enhanced (logo + layout)
 
 = 1.0 - 09.01.2018 =
 * Initial release: basic features

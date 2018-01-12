@@ -47,48 +47,51 @@ if( !is_numeric($table_view) || $table_view == 0 ){
 }
 $nb_row = 0;
 foreach( $players as $k => $player ){
-    $nb_row++;
-    if( $nb_row > $table_view ){
-        break;
+    if( $player->status != 2 ) {
+
+        $nb_row++;
+        if ($nb_row > $table_view) {
+            break;
+        }
+
+        $html .= '<li class="table_row"><span class="pl_rang">' . $nb_row . '.</span>';
+        $html .= '<span class="pl_name">';
+        $html .= $player->player_firstname . ' ' . $player->player_lastname;
+        $html .= "</span>";
+
+        $html .= '<span class="pl_played">';
+        $html .= $player->played;
+        $html .= "</span>";
+
+        $html .= '<span class="pl_victory">';
+        $html .= $player->victory;
+        $html .= "</span>";
+
+        $html .= '<span class="pl_draw">';
+        $html .= $player->draw;
+        $html .= "</span>";
+
+        $html .= '<span class="pl_loss">';
+        $html .= $player->loss;
+        $html .= "</span>";
+
+        $html .= '<span class="pl_points_major">';
+        $html .= $player->points_major;
+        $html .= "</span>";
+
+        $html .= '<span class="pl_sets">';
+        $html .= $player->sets;
+        $html .= ' - ';
+        $html .= $player->sets_against;
+        $html .= "</span>";
+
+        $html .= '<span class="pl_points">';
+        $html .= $player->points;
+        $html .= ' - ';
+        $html .= $player->points_against;
+        $html .= "</span>";
+        $html .= '</li>';
     }
-
-    $html .= '<li class="table_row"><span class="pl_rang">'.$nb_row.'.</span>';
-    $html .= '<span class="pl_name">';
-    $html .= $player->player_firstname.' '.$player->player_lastname;
-    $html .= "</span>";
-
-    $html .= '<span class="pl_played">';
-    $html .= $player->played;
-    $html .= "</span>";
-
-    $html .= '<span class="pl_victory">';
-    $html .= $player->victory;
-    $html .= "</span>";
-
-    $html .= '<span class="pl_draw">';
-    $html .= $player->draw;
-    $html .= "</span>";
-
-    $html .= '<span class="pl_loss">';
-    $html .= $player->loss;
-    $html .= "</span>";
-
-    $html .= '<span class="pl_points_major">';
-    $html .= $player->points_major;
-    $html .= "</span>";
-
-    $html .= '<span class="pl_sets">';
-    $html .= $player->sets;
-    $html .= ' - ';
-    $html .= $player->sets_against;
-    $html .= "</span>";
-
-    $html .= '<span class="pl_points">';
-    $html .= $player->points;
-    $html .= ' - ';
-    $html .= $player->points_against;
-    $html .= "</span>";
-    $html .= '</li>';
 }
 $html .= '</ul>';
 

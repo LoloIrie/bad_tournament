@@ -36,14 +36,14 @@ $html .= '<div class="bad_tournament_block" id="tournament_summary">';
 
     if( $tournament->club_restriction > 0 ){
         $club_name = badt_db_get_clubs( $tournament->club_restriction )[0]->name;
-        $html .= '<div class="bad_tournament_club_restriction" id="tournament_club_restriction">';
+        $html .= '<div class="tournament_summary_row" id="tournament_club_restriction">';
             $html .= '<span>'.__( 'Tournament restricted to players from:' , 'bad-tournament' ).'</span>';
             $html .= $club_name;
         $html .= '</div>';
     }
 
 
-    $html .= '<div class="bad_tournament_system" id="tournament_summary_system">';
+    $html .= '<div class="tournament_summary_row" id="tournament_summary_system">';
         $html .= '<span>'.__( 'System: ' , 'bad-tournament' ).'</span>';
         switch( $tournament->system ){
             case 1:
@@ -62,27 +62,27 @@ $html .= '<div class="bad_tournament_block" id="tournament_summary">';
     $html .= '</div>';
 
 
-    $html .= '<div class="bad_tournament_typ" id="tournament_summary_typ">';
+    $html .= '<div class="tournament_summary_row" id="tournament_summary_typ">';
         $html .= '<span>'.__( 'Tournament typ:' , 'bad-tournament' ).'</span>'.$tournament->tournament_typ;
     $html .= '</div>';
 
 
-    $html .= '<div class="bad_tournament_nb_sets" id="tournament_summary_nb_sets">';
+    $html .= '<div class="tournament_summary_row" id="tournament_summary_nb_sets">';
         $html .= '<span>'.__( 'Nb sets to win:' , 'bad-tournament' ).'</span>'.$tournament->nb_sets;
     $html .= '</div>';
 
 
-    $html .= '<div class="bad_tournament_points_set" id="tournament_summary_points_set">';
+    $html .= '<div class="tournament_summary_row" id="tournament_summary_points_set">';
         $html .= '<span>'.__( 'Points/Set:' , 'bad-tournament' ).'</span>'.$tournament->points_set;
     $html .= '</div>';
 
 
-    $html .= '<div class="bad_tournament_max_points_set" id="tournament_summary_max_points_set">';
+    $html .= '<div class="tournament_summary_row" id="tournament_summary_max_points_set">';
         $html .= '<span>'.__( 'Max points per set:' , 'bad-tournament' ).'</span>'.$tournament->max_points_set;
     $html .= '</div>';
 
     if( !empty( $tournament->date_start ) ){
-        $html .= '<div class="bad_tournament_localization" id="tournament_summary_date_start">';
+        $html .= '<div class="tournament_summary_row" id="tournament_summary_date_start">';
         $html .= '<span>'.__( 'Date:' , 'bad-tournament' ).'</span>'.$tournament->date_start;
 
 
@@ -93,7 +93,7 @@ $html .= '<div class="bad_tournament_block" id="tournament_summary">';
     }
 
     if( !empty( $localization ) ){
-        $html .= '<div class="bad_tournament_localization" id="tournament_summary_localization">';
+        $html .= '<div class="tournament_summary_row" id="tournament_summary_localization">';
             $html .= '<span>'.__( 'Where: ' , 'bad-tournament' ).'</span><a href="https://maps.google.com//maps/place/'.$localization.'" target="_blank" >'.$tournament->localization.'</a>';
         $html .= '</div>';
     }
