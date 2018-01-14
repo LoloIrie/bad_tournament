@@ -236,6 +236,7 @@ select.player_name.winner, input.player_name.winner{
     border: 0;
     float: none;
     display: inline;
+    margin-right: 32px;
 }
 .radio_block span {
     float: left;
