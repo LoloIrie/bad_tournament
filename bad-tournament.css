@@ -1,10 +1,28 @@
 /* Summary */
+#tournament_summary{
+    text-align: center;
+}
+#tournament_summary div{
+    text-align: left;
+}
 #tournament_summary_title{
+    margin: 10px 0;
     color: #2dff2a;
     font-weight: bold;
     font-size: 36px;
 }
-
+#tournament_summary_logo{
+    min-width: 120px;
+    min-height: 120px;
+    display: inline-block;
+    margin: auto;
+    padding: 4px;
+    background-color: rgba( 255, 255, 255, 0.8);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center !important;
+    line-height: 120px;
+}
 
 html, body{
     overflow: auto;

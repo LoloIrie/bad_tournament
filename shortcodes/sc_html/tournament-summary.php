@@ -22,13 +22,19 @@ if( !empty( $tournament->date_start ) ){
     $tournament->date_end = substr( $tournament->date_end, 0, -3 );
 }
 
-
+if( is_numeric( $tournament->logo ) ){
+    $tournament->logo = wp_get_attachment_url( $tournament->logo );
+}
 
 /* Summary */
 $html = '';
 
 //$html .= '<div class="admin_block_label">Spiele</div>';
 $html .= '<div class="bad_tournament_block" id="tournament_summary">';
+
+    $html .= '<div class="bad_tournament_logo" id="tournament_summary_logo">';
+        $html .= '<img src="'.$tournament->logo.'" class="bad_tournament_logo" />';
+    $html .= '</div>';
 
     $html .= '<div class="bad_tournament_maintitle" id="tournament_summary_title">';
         $html .= $tournament->name;
