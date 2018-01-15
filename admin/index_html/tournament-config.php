@@ -71,6 +71,39 @@ $html .= '<input type="hidden" name="tournament_select_id" value="'.$_SESSION['t
         $html .= '</td>';
     $html .= '</tr>';
 
+
+    wp_enqueue_media();
+
+
+    $logo_src = '';
+    $logo_src_id = '';
+
+    /*
+    $logo = $tournament->logo;
+    if( is_numeric( $logo ) && $logo > 0 ){
+        $logo_src_id = $logo;
+        $logo_src = wp_get_attachment_url( $logo );
+    }else if( !empty( $logo ) ){
+        $logo_src = $logo;
+    }
+    */
+
+    $html .= '<tr class="form-field form-required">';
+        $html .= '<th scope="row">';
+            $html .= '<label>'.__('Tournament logo:', 'bad-tournament').'</label>';
+        $html .= '</th>';
+        $html .= '<td>';
+            $html .= '<div class="image-preview-wrapper">';
+                $html .= '<img id="image-preview" src="'.$logo_src.'" height="100">';
+            $html .= '</div>';
+            $html .= '<input id="upload_image_button" type="button" class="button" value="'.__( 'Choose image' , 'bad-tournament' ).'">';
+            $html .= '<input type="hidden" name="image_attachment_id" id="image_attachment_id" value="'.$logo_src_id.'">';
+
+            $html .= '<label class="new_line">'.__('or use external URL:', 'bad-tournament').'</label>';
+            $html .= '<input type="text" value="'.$logo_src.'" placeholder="http://" name="tournament_logo_url" id="tournament_logo_url" />';
+        $html .= '</td>';
+    $html .= '</tr>';
+
     $html .= '<tr class="form-field form-required">';
         $html .= '<th scope="row">';
             $html .= '<label>'.__('Localization:', 'bad-tournament').'</label>';
@@ -189,6 +222,11 @@ tournament = [];
         $datetime_end_arr = explode( ' ', $tournament->date_end );
         $date_end_arr = explode( '-', $datetime_end_arr[0] );
         $tournament->date_end = $date_end_arr[2].'/'.$date_end_arr[1].'/'.$date_end_arr[0].' '.$datetime_end_arr[1];
+
+        $tournament->logo_url = $tournament->logo;
+        if( is_numeric( $tournament->logo ) ){
+            $tournament->logo_url = wp_get_attachment_url( $tournament->logo );
+        }
 
         $html .= 'tournament['.$tournament->id.'] = \''.json_encode( $tournament ).'\';';
     };

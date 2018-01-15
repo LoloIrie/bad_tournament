@@ -92,6 +92,11 @@ if( isset( $_POST['tournament_remove_button'] ) && is_numeric( $_POST['tournamen
 else if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_select'] ) ){
     /* EDIT EXISTING TOURNAMENT */
 
+    $logo = $_POST['image_attachment_id'];
+    if( isset( $_POST['tournament_logo_url'] ) && !empty( $_POST['tournament_logo_url'] ) ){
+        $logo = $_POST['tournament_logo_url'];
+    }
+
     $data = array(
         'parent_id' => $parent_id,
         'name' => $_POST['tournament_name'],
@@ -105,6 +110,7 @@ else if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_se
         'localization' => $_POST['tournament_localization'],
         'date_start' => $date_start,
         'date_end' => $date_end,
+        'logo' => $logo
     );
     $where = array( 'id' => $_POST['tournament_select'] );
     $wpdb->update( $wpdb->prefix . 'bvg_tournaments', $data, $where );
@@ -155,6 +161,12 @@ else{
         $date_end = $_POST['tournament_date_end'];
     }
 
+    $logo = $_POST['image_attachment_id'];
+    if( isset( $_POST['tournament_logo_url'] ) && !empty( $_POST['tournament_logo_url'] ) ){
+        $logo = $_POST['tournament_logo_url'];
+    }
+
+
 
     $data = array(
         'parent_id' => $parent_id,
@@ -169,6 +181,7 @@ else{
         'localization' => $_POST['tournament_localization'],
         'date_start' => $date_start,
         'date_end' => $date_end,
+        'logo' => $logo
     );
     //$wpdb->show_errors();
     $wpdb->insert( $wpdb->prefix . 'bvg_tournaments', $data );
