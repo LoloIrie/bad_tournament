@@ -8,8 +8,8 @@
 
 /*
 echo '<pre>';
-var_dump( $all_players );
-var_dump( $players );
+var_dump( $_SESSION['current_tournament'] );
+var_dump( $tournaments );
 echo '</pre>';
 */
 
@@ -38,7 +38,21 @@ if( count( $all_players )  != count( $players ) - $nb_player_unactivated_for_thi
     $html .= '<td>';
     $html .= '<select type="text" value="" name="player_select[]" id="player_select" multiple="multiple" >';
     //$html .= '<option value="0">'.__('Choose', 'bad-tournament').'</option>';
+
+    /*
+    echo '<pre>';
+    var_dump( $all_players );
+    var_dump( $players );
+    echo '</pre>';
+    */
     foreach( $all_players as $k => $all_player ){
+        if( ( $_SESSION['current_tournament']['tournament_typ'] == 1 || $_SESSION['current_tournament']['tournament_typ'] == 3 ) && $all_player->player_sex == 2 ){
+            continue;
+        }
+        if( ( $_SESSION['current_tournament']['tournament_typ'] == 2 || $_SESSION['current_tournament']['tournament_typ'] ==4 ) && $all_player->player_sex == 1 ){
+            continue;
+        }
+
         foreach( $players as $player ){
             if( $player->players_id == $k && $player->status != 2 ){
                 continue 2;
@@ -147,14 +161,20 @@ $html .= '<tr class="form-field form-required">';
     $html .= '</td>';
 $html .= '</tr>';
 
+$selected = 0;
+if( $_SESSION['current_tournament']['tournament_typ'] == 1 || $_SESSION['current_tournament']['tournament_typ'] == 3 ){
+    $selected = 1;
+}else if( $_SESSION['current_tournament']['tournament_typ'] == 2 || $_SESSION['current_tournament']['tournament_typ'] ==4 ){
+    $selected = 2;
+}
 $html .= '<tr class="form-field form-required">';
     $html .= '<th scope="row">';
         $html .= '<label>'.__('Sex:', 'bad-tournament').'</label>';
     $html .= '</th>';
     $html .= '<td>';
         $html .= '<div class="radio_block">';
-        $html .= '<span><input type="radio" value="1" placeholder="'.__('Man', 'bad-tournament').'" name="sex" id="sex1" /><label for="sex1" class="radio">'.__('Male', 'bad-tournament').'</label></span>';
-        $html .= '<span><input type="radio" value="2" placeholder="'.__('Woman', 'bad-tournament').'" name="sex" id="sex2" /><label for="sex2" class="radio">'.__('Female', 'bad-tournament').'</label></span>';
+        $html .= '<span><input type="radio" value="1" placeholder="'.__('Man', 'bad-tournament').'" name="sex" id="sex1" '.( $selected == 1 ? 'checked="checked" ' : '' ).'/><label for="sex1" class="radio">'.__('Male', 'bad-tournament').'</label></span>';
+        $html .= '<span><input type="radio" value="2" placeholder="'.__('Woman', 'bad-tournament').'" name="sex" id="sex2" '.( $selected == 2 ? 'checked="checked" ' : '' ).'/><label for="sex2" class="radio">'.__('Female', 'bad-tournament').'</label></span>';
         $html .= '</div>';
     $html .= '</td>';
 $html .= '</tr>';

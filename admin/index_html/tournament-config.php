@@ -24,7 +24,7 @@ $html .= '<input type="hidden" name="tournament_select_id" value="'.$_SESSION['t
                 $html .= '<select type="text" value="" name="tournament_select" id="tournament_select">';
                 $html .= '<option value="0">'.__('Choose', 'bad-tournament').'</option>';
                 foreach( $tournaments as $tournament ){
-                    $html .= '<option value="'.$tournament->id.'" '.( $tournament->id == $_SESSION['t_id'] ? 'selected="selected"' : '' ).'>'.$tournament->name.'</option>';
+                    $html .= '<option value="'.$tournament->id.'" >'.$tournament->name.'</option>';
                     if( $tournament->id == $_SESSION['t_id'] ){
                         $_SESSION['t_name'] = $tournament->name;
                         $_SESSION['t_round'] = $tournament->round;
@@ -135,6 +135,8 @@ $html .= '<tr class="form-field form-required">';
         $html .= '<span><input type="radio" id="tournament_typ3" name="tournament_typ" value="3" /> <label for="tournament_typ3" class="radio">'.__('Double Men', 'bad-tournament').'</label></span>';
         $html .= '<span><input type="radio" id="tournament_typ4" name="tournament_typ" value="4" /> <label for="tournament_typ4" class="radio">'.__('Double Women', 'bad-tournament').'</label></span>';
         $html .= '<span><input type="radio" id="tournament_typ5" name="tournament_typ" value="5" /> <label for="tournament_typ5" class="radio">'.__('Mixte', 'bad-tournament').'</label></span>';
+        $html .= '<span><input type="radio" id="tournament_typ6" name="tournament_typ" value="6" /> <label for="tournament_typ5" class="radio">'.__('Simple Free', 'bad-tournament').'</label></span>';
+        $html .= '<span><input type="radio" id="tournament_typ7" name="tournament_typ" value="7" /> <label for="tournament_typ5" class="radio">'.__('Double Free', 'bad-tournament').'</label></span>';
         $html .= '</div>';
     $html .= '</td>';
 $html .= '</tr>';

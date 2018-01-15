@@ -155,12 +155,6 @@ else{
 
     // CREATE NEW TOURNAMENT
 
-    $date_start = $_POST['tournament_date_start'];
-    $date_end = $date_start;
-    if( isset( $_POST['tournament_date_end'] ) ){
-        $date_end = $_POST['tournament_date_end'];
-    }
-
     $logo = $_POST['image_attachment_id'];
     if( isset( $_POST['tournament_logo_url'] ) && !empty( $_POST['tournament_logo_url'] ) ){
         $logo = $_POST['tournament_logo_url'];

@@ -91,6 +91,7 @@ function badt_db_get_all_players( $club_restriction = false ){
     pl.firstname as player_firstname,
     pl.lastname as player_lastname,
     pl.player_level as player_level,
+    pl.sex as player_sex,
     pl.status as status
     
     FROM
@@ -123,6 +124,7 @@ function badt_db_get_players( $tournament_id = false ){
     pl.id as player_id,
     pl.firstname as player_firstname,
     pl.lastname as player_lastname,
+    pl.sex as player_sex,
     pl_t.*
     
     FROM

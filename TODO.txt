@@ -9,7 +9,7 @@ TODOs(-) / DONE(+)
 + Tournament Datetime + Localization
 + Display nbr players / tournament
 + Remove tournament feature
-- Restrict players list depending of tournament typ (Men vs Women vs Mixte)
++ Restrict players list depending of tournament typ (Men vs Women vs Mixte)
 - Tournament KO System (v2)
 - Tournament League (v2)
 - Export features (Excel) (v2)
