@@ -24,7 +24,7 @@ if( isset( $_GET['admin_view'] ) ){
 
 
 global $wpdb;
-$bvg_admin_msg = '';
+
 
 /* GET/SET CONTENT */
 include_once plugin_dir_path(__FILE__). 'db-get-content.php';

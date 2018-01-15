@@ -86,6 +86,8 @@ class badt_Bad_Tournament
 
     function bad_tournament_admin(){
 
+        $bvg_admin_msg = '';
+        
         /* jQuery UI for datepicker
         wp_enqueue_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css');
         wp_register_script('addons_script', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', array('jquery'), '');
@@ -111,13 +113,13 @@ class badt_Bad_Tournament
 
         if ( current_user_can('edit_pages') ) {
 
-            $bad_tournament_version = '1.0.1';
+            //$bad_tournament_version = '1.0.1';
             include plugin_dir_path(__FILE__).'admin/install.php';
 
             $bad_tournament_current_version = get_option( 'bad_tournament_installed' );
             if( $bad_tournament_current_version !== $bad_tournament_version ){
 
-                /* Not yet installed ? */
+                /* Not yet installed or need update */
                 $bvg_admin_msg = badt_install( $bad_tournament_version, $bad_tournament_current_version );
                 update_option('bad_tournament_installed', $bad_tournament_version  );
 

@@ -20,7 +20,6 @@ function badt_install( $bad_tournament_version, $bad_tournament_current_version 
         badt_install_init();
 
         $bvg_admin_msg .= __( 'Plugin Bad Tournament installed !' , 'bad-tournament' );
-
     }else{
         /* Update */
 
@@ -48,7 +47,7 @@ function badt_update( $bad_tournament_current_version ){
             if( $func_name() ){
                 $bvg_admin_msg .= ' '.$version.',';
             }else{
-                $bvg_admin_msg .= ' '.$version.' ('.__( 'ERROR' , 'bad-tournament' ).'),';
+                $bvg_admin_msg .= ' '.$version.' ('.__( 'ERROR: function '.$func_name.' is missing...' , 'bad-tournament' ).'),';
             }
 
         }
@@ -170,7 +169,7 @@ function badt_install_init(){
                     ADD FOREIGN KEY (contact_id)
                       REFERENCES ".$wpdb->prefix . "bvg_players(id)
                       ON UPDATE NO ACTION ON DELETE NO ACTION;";
-    dbDelta( $sql );
+    $wpdb->query( $sql );
 
     $nom_table = $wpdb->prefix . 'bvg_matches';
     $sql = "ALTER TABLE ".$nom_table."
@@ -189,7 +188,7 @@ function badt_install_init(){
                     ADD FOREIGN KEY (tournament_id)
                       REFERENCES ".$wpdb->prefix . "bvg_tournaments(id)
                       ON UPDATE NO ACTION ON DELETE NO ACTION;";
-    dbDelta( $sql );
+    $wpdb->query( $sql );
 
 
     $nom_table = $wpdb->prefix . 'bvg_players_tournament';
@@ -200,7 +199,7 @@ function badt_install_init(){
                     ADD FOREIGN KEY (players_id)
                       REFERENCES ".$wpdb->prefix . "bvg_players(id)
                       ON UPDATE NO ACTION ON DELETE NO ACTION;";
-    dbDelta( $sql );
+    $wpdb->query( $sql );
 
 
     $nom_table = $wpdb->prefix . 'bvg_tournaments';
@@ -211,7 +210,7 @@ function badt_install_init(){
                     ADD FOREIGN KEY (club_restriction)
                       REFERENCES ".$wpdb->prefix . "bvg_clubs(id)
                       ON UPDATE NO ACTION ON DELETE NO ACTION;";
-    dbDelta( $sql );
+    $wpdb->query( $sql );
 
     return true;
 }
@@ -223,8 +222,10 @@ function badt_update_1_0_1(){
 
     $nom_table = $wpdb->prefix . 'bvg_tournaments';
     $sql = "ALTER TABLE ".$nom_table."
-                    ADD `logo` VARCHAR(255) NOT NULL AFTER `localization`;";
-    dbDelta( $sql );
+                    ADD logo VARCHAR(255) NOT NULL AFTER localization;";
+
+    $wpdb->query( $sql );
+
 
     return true;
 }
