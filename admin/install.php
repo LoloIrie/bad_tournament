@@ -24,6 +24,10 @@ function badt_install( $bad_tournament_version, $bad_tournament_current_version 
     }else{
         /* Update */
 
+        if( $bad_tournament_current_version == false || $bad_tournament_current_version < 1 ){
+            badt_install_init();
+        }
+
         $bvg_admin_msg .= badt_update( $bad_tournament_current_version );
     }
 
