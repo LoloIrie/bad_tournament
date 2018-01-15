@@ -24,7 +24,7 @@ if( isset( $_GET['admin_view'] ) ){
 
 
 global $wpdb;
-$bvg_admin_msg = '';
+
 
 /* GET/SET CONTENT */
 include_once plugin_dir_path(__FILE__). 'db-get-content.php';
@@ -75,7 +75,7 @@ $cl_default_id = get_option( 'cl_default_id' );
 $all_players = badt_db_get_all_players( $club_restriction );
 $players = badt_db_get_players();
 $matches = badt_db_get_matches( $_SESSION['t_id'], $_SESSION['round'] );
-$nb_matchs = badt_db_nb_matches( $_SESSION['t_id'] );
+$nb_matchs = badt_db_nb_matches( $_SESSION['t_id'], false, true );
 
 
 //echo '<pre>';

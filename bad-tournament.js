@@ -9,14 +9,14 @@ jQuery('.admin_block_label').on( 'click', function(){
 
 jQuery('.table_row').on( 'click', function(){
     player_name_tosearch = jQuery( this ).find( '.pl_name').html();
-    if( jQuery( '#block_game' ).length > 0 ){
-        jQuery( '#block_game .match_pl1_name').each( function(){
+    if( jQuery( '.nav_match' ).length > 0 ){
+        jQuery( '.nav_match .match_pl1_name').each( function(){
             var text = jQuery(this).html();
             jQuery(this).html(text.replace( '<span style="color: #ff0; background-color: rgba( 0, 0, 0, 0.4); padding-right: 4px; padding-left: 4px;">(.*)</span>' , '$1'));
             text = jQuery(this).text();
             jQuery(this).html(text.replace( player_name_tosearch , '<span style="color: #ff0; background-color: rgba( 0, 0, 0, 0.4); padding-right: 4px; padding-left: 4px;">'+player_name_tosearch+'</span>'));
         });
-        jQuery( '#block_game .match_pl2_name').each( function(){
+        jQuery( '.nav_match .match_pl2_name').each( function(){
             var text = jQuery(this).html();
             jQuery(this).html(text.replace( '<span style="color: #ff0; background-color: rgba( 0, 0, 0, 0.4); padding-right: 4px; padding-left: 4px;">(.*)</span>' , '$1'));
             text = jQuery(this).text();

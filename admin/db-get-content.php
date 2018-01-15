@@ -91,6 +91,7 @@ function badt_db_get_all_players( $club_restriction = false ){
     pl.firstname as player_firstname,
     pl.lastname as player_lastname,
     pl.player_level as player_level,
+    pl.sex as player_sex,
     pl.status as status
     
     FROM
@@ -123,6 +124,7 @@ function badt_db_get_players( $tournament_id = false ){
     pl.id as player_id,
     pl.firstname as player_firstname,
     pl.lastname as player_lastname,
+    pl.sex as player_sex,
     pl_t.*
     
     FROM
@@ -146,11 +148,23 @@ function badt_db_get_players( $tournament_id = false ){
 }
 
 /* Get played matches for the current tournament */
-function badt_db_nb_matches( $tournament_id = false, $round = false ){
+function badt_db_nb_matches( $tournament_id = false, $round = false, $completed = false ){
 
     global $wpdb;
 
-    $query = "SELECT
+    if( $completed === true ){
+        $query = "SELECT
+        count(*) as nb
+
+        FROM
+        ".$wpdb->prefix."bvg_matches
+
+        WHERE
+        tournament_id = ".$tournament_id."
+        AND
+        winner != 0";
+    }else{
+        $query = "SELECT
         count(*) as nb
 
         FROM
@@ -158,6 +172,8 @@ function badt_db_nb_matches( $tournament_id = false, $round = false ){
 
         WHERE
         tournament_id = ".$tournament_id;
+    }
+
 
 
     $nb_matches = $wpdb->get_results( $query );
