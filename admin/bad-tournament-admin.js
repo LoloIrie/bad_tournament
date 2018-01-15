@@ -88,10 +88,30 @@ jQuery('#tournament_select').on( 'change', function(){
                 jQuery( this).attr( 'selected', 'selected' );
             }
         } );
+
+        if( isNaN( selected_tournament.logo ) ){
+            jQuery( '#tournament_logo_url').val( selected_tournament.logo );
+            jQuery( '#image_attachment_id').val( '' );
+            jQuery( '#image-preview').attr( 'src' , selected_tournament.logo_url );
+        }else{
+            jQuery( '#tournament_logo_url').val( '' );
+            jQuery( '#image_attachment_id').val( selected_tournament.logo );
+            jQuery( '#image-preview').attr( 'src' , selected_tournament.logo_url );
+        }
     }
 
 
     //jQuery( '#tournament_select_id' ).val( jQuery( '#tournament_select' ).val() );
+});
+
+jQuery( '#upload_image_button').on( 'click', function(){
+    jQuery( '#tournament_logo_url').val( '' );
+});
+jQuery( '#tournament_logo_url').on( 'blur', function(){
+    if( jQuery( this ).val() != '' ){
+        console.log( jQuery( this ).val() );
+        jQuery( '#image-preview').attr( 'src' , jQuery( this ).val() );
+    }
 });
 
 /* Close admin message */
