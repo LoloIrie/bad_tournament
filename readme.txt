@@ -89,7 +89,7 @@ But please, describe correctly your issue and be patient...
 
 == Changelog ==
 
-= 1.0.1 - 13.01.2018 =
+= 1.0.1 - 16.01.2018 =
 * Wordpress admin layout
 * Phone view
 * Minor bugs fix for matches shortcodes
