@@ -94,6 +94,10 @@ But please, describe correctly your issue and be patient...
 * Phone view
 * Minor bugs fix for matches shortcodes
 * Shortcode tournament summary enhanced (logo + layout)
+* Grid tournament for Simple games (not only double or mixed)
+* Restrict players based on sex
+* Display number of selected players
+* Uninstall process ( delete options, DB cleanup )
 
 = 1.0 - 09.01.2018 =
 * Initial release: basic features

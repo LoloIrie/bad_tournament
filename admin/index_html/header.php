@@ -62,7 +62,7 @@ if( $_SESSION['current_tournament'] !== false ){
     }
 
     $nb_players_tournament = count( $players );
-    $html .= __('Players: ', 'bad-tournament').$nb_players_tournament;
+    $html .= __('Players: ', 'bad-tournament').'<span id="nb_players_tournament" data-init="'.$nb_players_tournament.'">'.$nb_players_tournament.'</span>';
     $html .= '<br />';
     $html .= __('Matches played: ', 'bad-tournament').$nb_matchs;
 

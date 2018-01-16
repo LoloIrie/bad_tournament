@@ -132,6 +132,16 @@ jQuery('#player_select').on( 'blur mouseout' , function(){
    jQuery( this ).height( 150 );
 });
 
+/* Display nb players in the current tournament */
+jQuery('#player_select').on( 'change' , function(){
+    nb_players_init = jQuery( '#nb_players_tournament' ).data( 'init' );
+    nb_players_added = jQuery("#player_select :selected").length;
+    nb_players_total = nb_players_init + nb_players_added ;
+    console.log( 'Nb players: ' + nb_players_init );
+    console.log( 'Nb players added: ' + nb_players_added );
+    jQuery('#nb_players_tournament').html( nb_players_init + ' (+' + nb_players_added + ') ' + nb_players_total );
+});
+
 /* Expand new player form */
 jQuery('.plus_icon').on( 'click', function(){
     jQuery( this).next().next().slideDown();

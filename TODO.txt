@@ -20,27 +20,6 @@ TODOs(-) / DONE(+)
 
 
 DEV INFOS
-- Js translations defined in bad-tournament.php:bvg_head_javascript_object(): Callable with bvg_tournament_constants.XXXXXXX
-- Customize shortcodes css with your_theme/bad-tournament.css file
++ Js translations defined in bad-tournament.php:bvg_head_javascript_object(): Callable with bvg_tournament_constants.XXXXXXX
++ Customize shortcodes css with your_theme/bad-tournament.css file
 
-/* Summary */
-#tournament_summary{
-    color: #000;
-}
-#tournament_summary_title{
-    color: #ffff3a;
-    font-weight: bold;
-    font-size: 36px;
-}
-
-
-/* Table */
-#block_table{
-    color: #000;
-}
-
-
-/* Matches */
-#block_game{
-    color: #000;
-}

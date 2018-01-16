@@ -24,6 +24,16 @@ foreach( $players as $pl ){
     }
 }
 
+/* Remove players depending of sex if required */
+foreach( $all_players as $k => $all_player ){
+    if( ( $_SESSION['current_tournament']['tournament_typ'] == 1 || $_SESSION['current_tournament']['tournament_typ'] == 3 ) && $all_player->player_sex == 2 ){
+        unset( $all_players[$k] );
+    }
+    if( ( $_SESSION['current_tournament']['tournament_typ'] == 2 || $_SESSION['current_tournament']['tournament_typ'] ==4 ) && $all_player->player_sex == 1 ){
+        unset( $all_players[$k] );
+    }
+}
+
 if( count( $all_players )  != count( $players ) - $nb_player_unactivated_for_this_tournament && count( $all_players ) > count( $players ) ){
     $html .= '<form method="post">';
     $html .= '<input type="hidden" name="form_action" value="add-existing-players" />';
@@ -45,13 +55,16 @@ if( count( $all_players )  != count( $players ) - $nb_player_unactivated_for_thi
     var_dump( $players );
     echo '</pre>';
     */
+
     foreach( $all_players as $k => $all_player ){
+        /*
         if( ( $_SESSION['current_tournament']['tournament_typ'] == 1 || $_SESSION['current_tournament']['tournament_typ'] == 3 ) && $all_player->player_sex == 2 ){
             continue;
         }
         if( ( $_SESSION['current_tournament']['tournament_typ'] == 2 || $_SESSION['current_tournament']['tournament_typ'] ==4 ) && $all_player->player_sex == 1 ){
             continue;
         }
+        */
 
         foreach( $players as $player ){
             if( $player->players_id == $k && $player->status != 2 ){

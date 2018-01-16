@@ -7,6 +7,7 @@
  */
 //$wpdb->show_errors();
 
+/* Try to find a free opponent */
 function badt_get_free_opponent( $players_match, $k_pl1, $opponents ){
     $key = 0;
 
