@@ -120,7 +120,7 @@ if( !empty( $matches ) ){
         $html .= '</select>';
 
         //$html .= '<input type="text" value="'.$player1_name.'" name="pl1_m'.$m_id.'_name" class="player_name '.( $winner == $pl1_id ? 'winner' : '' ).' '.( $winner == $pl2_id ? 'loser' : '' ).'" />';
-        if( !empty( trim( $player1_name_bis ) ) ){
+        if( !empty( $player1_name_bis ) ){
             //$html .= '<input type="text" value="'.$player1_name_bis.'" name="pl1_m'.$m_id.'_name_bis" class="player_name '.( $winner == $pl1_id ? 'winner' : '' ).' '.( $winner == $pl2_id ? 'loser' : '' ).'" />';
 
             $html .= '<select name="pl1_m'.$m_id.'_name_bis" id="pl1_m'.$m_id.'_name_bis" data_pl_id="pl1_id_bis" class="player_name '.( $winner == $pl1_id ? 'winner' : '' ).' '.( $winner == $pl2_id ? 'loser' : '' ).'" />';
@@ -155,7 +155,7 @@ if( !empty( $matches ) ){
         $html .= '</select>';
 
         //$html .= '<input type="text" value="'.$player2_name.'" name="pl2_m'.$m_id.'_name" class="player_name '.( $winner == $pl2_id ? 'winner' : '' ).' '.( $winner == $pl1_id ? 'loser' : '' ).'" />';
-        if( !empty( trim( $player2_name_bis ) ) ){
+        if( !empty( $player2_name_bis ) ){
             //$html .= '<input type="text" value="'.$player2_name_bis.'" name="pl2_m'.$m_id.'_name_bis" class="player_name '.( $winner == $pl2_id ? 'winner' : '' ).' '.( $winner == $pl1_id ? 'loser' : '' ).'" />';
 
             $html .= '<select name="pl2_m'.$m_id.'_name_bis" id="pl2_m'.$m_id.'_name_bis" data_pl_id="pl2_id_bis" class="player_name '.( $winner == $pl2_id ? 'winner' : '' ).' '.( $winner == $pl1_id ? 'loser' : '' ).'" />';

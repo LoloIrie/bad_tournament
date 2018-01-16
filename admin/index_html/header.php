@@ -32,7 +32,7 @@ $html .= '</ul>';
 $html .= '</nav>';
 
 /* MESSAGES */
-if( !empty( trim( $bvg_admin_msg ) ) ){
+if( !empty( $bvg_admin_msg ) ){
     $html .= '<div id="bvg_admin_msg"><span id="bvg_admin_msg_close"></span>'.$bvg_admin_msg.'</div>';
     /*
         echo '<div><pre>';
