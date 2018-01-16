@@ -340,7 +340,7 @@ if( isset( $_POST['generate_matchs_now'] ) || $generate_matchs_now === true ){
                     'round' => $_SESSION['round']
                 );
             }
-            $wpdb->show_errors();
+            //$wpdb->show_errors();
             $wpdb->query( 'SET foreign_key_checks = 0;' );
             $wpdb->insert( $wpdb->prefix . 'bvg_matches', $data );
             $wpdb->query( 'SET foreign_key_checks = 1;' );

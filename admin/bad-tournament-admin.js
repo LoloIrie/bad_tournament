@@ -166,6 +166,7 @@ jQuery('.plus_icon').on( 'click', function(){
 /* Change player for a match */
 jQuery( 'select.player_name' ).on('change', function() {
         if (confirm('Wollen Sie wirklich die Spieleinstellung ändern ? ')) {
+            jQuery('#ajax_spinner_layer').fadeIn();
             the_form = jQuery(this).closest('form');
             pl_select = the_form.find( '.player_name' );
             players_id = [];
@@ -192,7 +193,7 @@ jQuery( 'select.player_name' ).on('change', function() {
                 url: ajaxurl,
                 success: function(data) {
                     console.log(data);
-
+                    jQuery('#ajax_spinner_layer').fadeOut();
                 }
             });
 
