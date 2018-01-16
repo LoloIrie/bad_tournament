@@ -14,7 +14,7 @@ function badt_install( $bad_tournament_version, $bad_tournament_current_version 
 
     $bvg_admin_msg = '';
 
-    if( $bad_tournament_version == '1.0' || $bad_tournament_current_version === false ) {
+    if( $bad_tournament_version == '1.0' ) {
         /* First version */
 
         badt_install_init();
