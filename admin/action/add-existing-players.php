@@ -150,6 +150,16 @@ if( isset( $_POST['player_tournament_remove'] ) ){
 
 }else if( isset( $_POST['all_players'] ) ){
 
+    $where = '';
+    if( $_SESSION['current_tournament']['tournament_typ'] == 1 || $_SESSION['current_tournament']['tournament_typ'] == 3 ){
+        $where = '
+        AND
+        pl.sex = 1';
+    }else if( $_SESSION['current_tournament']['tournament_typ'] == 2 || $_SESSION['current_tournament']['tournament_typ'] ==4 ){
+        $where = '
+        AND
+        pl.sex = 2';
+    }
     $query = "SELECT
     pl.id as player_id,
     pl.player_level as player_level_init
@@ -159,7 +169,7 @@ if( isset( $_POST['player_tournament_remove'] ) ){
 
     WHERE
     pl.status=1
-    ";
+    ".$where;
 
     if( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] > 0 ){
         $query .= "AND club_id=".$_SESSION[ 'current_tournament' ][ 'club_restriction' ];
