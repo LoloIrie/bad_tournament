@@ -19,8 +19,15 @@ $atts = shortcode_atts(
 );
 
 include_once plugin_dir_path(__FILE__). '../admin/db-get-content.php';
-$tournament = badt_db_get_tournaments( $atts['t_id'] );
-$players = badt_db_get_players( $atts['t_id'] );
+
+
+if( isset( $_SESSION['tournament_to_display'] ) && is_numeric( $_SESSION['tournament_to_display'] ) ){
+    $tournament = badt_db_get_tournaments( $_SESSION['tournament_to_display'] );
+    $players = badt_db_get_players( $_SESSION['tournament_to_display'] );
+}else{
+    $tournament = badt_db_get_tournaments( $atts['t_id'] );
+    $players = badt_db_get_players( $atts['t_id'] );
+}
 
 if( isset( $tournament[0] ) ){
     $html_shortcode .= '<h3>'.$tournament[0]->name.' / ' .'Round: '.$tournament[0]->round.'</h3>';

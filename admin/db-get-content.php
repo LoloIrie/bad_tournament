@@ -7,17 +7,29 @@
  */
 
 /* Get all tournaments */
-function badt_db_get_tournaments( $tournament_id = false, $get_last = false ){
+function badt_db_get_tournaments( $tournament_id = false, $get_last = false, $get_parent = false ){
 
     global $wpdb;
 
-    if( !$tournament_id ){
+    if( isset( $get_parent ) && is_numeric( $get_parent ) ){
+        /* GET SUBTOURNAMENTS */
+        $query = "SELECT
+        *
+        
+        FROM
+        ".$wpdb->prefix."bvg_tournaments
+        
+        WHERE
+        parent_id=".$get_parent;
+    }else if( !$tournament_id ){
+        /* GET ALL TOURNAMENTS */
         $query = "SELECT
         *
         
         FROM
         ".$wpdb->prefix."bvg_tournaments";
     }else if( !$get_last ){
+        /* GET TOURNAMENT ON ID */
         $query = "SELECT
         *
         
@@ -27,6 +39,7 @@ function badt_db_get_tournaments( $tournament_id = false, $get_last = false ){
         WHERE
         id=".$tournament_id;
     }else{
+        /* GET LAST TOURNAMENT */
         $query = "SELECT
         *
         

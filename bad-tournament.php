@@ -41,7 +41,7 @@ class badt_Bad_Tournament
 
         add_action( 'admin_head', array( $this, 'bvg_head_javascript_object' ) );
 
-
+        add_shortcode( 'bad_tournament_selector', array( $this, 'bad_tournament_selector_shortcode' ) );
         add_shortcode( 'bad_tournament_table', array( $this, 'bad_tournament_table_shortcode' ) );
         add_shortcode( 'bad_tournament_matches', array( $this, 'bad_tournament_matches_shortcode' ) );
         add_shortcode( 'bad_tournament_summary', array( $this, 'bad_tournament_summary_shortcode' ) );
@@ -192,6 +192,23 @@ class badt_Bad_Tournament
 
 
     /* Add Shortcodes */
+
+    function bad_tournament_selector_shortcode( $atts ){
+        /* Use css from theme if existing */
+        $theme_uri = get_theme_file_path();
+        if( file_exists( $theme_uri.'/bad-tournament.css' ) && !defined( 'BADT_THEME_CSS' ) ){
+            wp_enqueue_style( 'bad_tournament', get_theme_file_uri() . '/bad-tournament.css' );
+            define( 'BADT_THEME_CSS' , true );
+        }else if( !defined( 'BADT_THEME_CSS' ) ){
+            wp_enqueue_style( 'bad_tournament_admin_style', plugin_dir_url(__FILE__).'bad-tournament.css');
+        }
+
+        $html_shortcode = '';
+        include plugin_dir_path( __FILE__ ).'shortcodes/shortcode-tournament-selector.php';
+
+        return $html_shortcode;
+    }
+
     function bad_tournament_table_shortcode( $atts ) {
 
         /* Use css from theme if existing */
