@@ -48,14 +48,14 @@ function badt_update( $bad_tournament_current_version ){
 
             $func_name = 'badt_update_'.str_replace( '.', '_', $version );
             if( $msg = $func_name() ){
-                $bvg_admin_msg .= ' '.$msg.',';
+                $bvg_admin_msg .= ' '.$msg.'<br />';
             }else{
-                $bvg_admin_msg .= ' '.$version.' ('.__( 'ERROR: function '.$func_name.' is missing...' , 'bad-tournament' ).'),';
+                $bvg_admin_msg .= ' '.$version.' ('.__( 'ERROR: function '.$func_name.' is missing...' , 'bad-tournament' ).')<br />';
             }
 
         }
     }
-    $bvg_admin_msg = substr( $bvg_admin_msg, 0, -1);
+
 
     return $bvg_admin_msg;
 }

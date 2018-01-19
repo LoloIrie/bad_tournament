@@ -248,6 +248,28 @@ select.player_name.winner, input.player_name.winner{
     display: inline-block;
     max-width: 250px;
 }
+.radio_block_vertical{
+    display: inline-block;
+    float: left;
+    padding-top: 8px;
+    height: 100%;
+    width: 100%;
+}
+.radio_block_vertical div{
+    margin-bottom: 12px;
+}
+.radio_block_vertical label{
+    border: 0;
+    float: none;
+    clear: right;
+    display: block;
+    margin-right: 32px;
+}
+.radio_block_vertical input[type=checkbox]{
+    float: left;
+    margin-top: 0;
+    height: 22px;
+}
 input.wp_style{
     padding: 3px 8px;
     font-size: 1.7em;

@@ -9,11 +9,11 @@
 /* MENU */
 $html .= '<nav id="main_nav">';
 $html .= '<ul>';
-$html .= '<li class="nav_item'.( $ADMIN_VIEW == 'tournament' ? ' active"' : '' ).'" id="nav_tournament">';
+$html .= '<li class="nav_item'.( $ADMIN_VIEW == 'export' ? ' active"' : '' ).'" id="nav_export">';
 $html .= __('Export', 'bad-tournament');
 $html .= '</li>';
 
-$html .= '<li class="nav_item'.( $ADMIN_VIEW == 'clubs' ? ' active"' : '' ).'" id="nav_club">';
+$html .= '<li class="nav_item'.( $ADMIN_VIEW == 'import' ? ' active"' : '' ).'" id="nav_import">';
 $html .= __('Import', 'bad-tournament');
 $html .= '</li>';
 $html .= '</ul>';
@@ -25,4 +25,4 @@ if( !empty( $bvg_admin_msg ) ){
 }
 
 
-$html .= '<h1 id="bad_tournament_maintitle" class="subtournament_name">'.__( 'Import / Export', 'bad-tournament').'</h1>';
+$html .= '<h1 id="bad_tournament_maintitle" class="subtournament_name">'.__( 'Export / Import', 'bad-tournament').'</h1>';

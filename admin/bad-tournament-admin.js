@@ -404,3 +404,14 @@ jQuery( '#club_player, .clubs_name' ).on('change keypress click', function(e){
         return false;
     }
 });
+
+/* Export */
+jQuery('#export1').on( 'click' , function(){
+    if( jQuery( this ).attr('checked') == 'checked' ){
+        jQuery('.export_checkbox').attr('checked', 'checked').attr('disabled', 'disabled');
+    }else{
+        jQuery('.export_checkbox').attr('disabled', false );
+    }
+
+    jQuery( this ).attr( 'disabled', false );
+});

@@ -12,6 +12,8 @@ TODOs(-) / DONE(+)
 + Restrict players list depending of tournament typ (Men vs Women vs Mixte)
 + Tournament selector
 - Import/Export features
+- Player pictures
+- Player frontend view
 - Tournament KO System (v2)
 - Tournament League (v2)
 - Form validator (v2)

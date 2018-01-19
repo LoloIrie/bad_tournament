@@ -9,6 +9,11 @@
 
 if ( !defined( 'ABSPATH' ) ) die();
 
+$ADMIN_VIEW = false;
+if( isset( $_GET['admin_view'] ) ){
+    $ADMIN_VIEW = $_GET['admin_view'];
+}
+
 /* GET/SET CONTENT */
 include_once plugin_dir_path(__FILE__). 'db-get-content.php';
 
@@ -18,17 +23,21 @@ if( isset($_POST['form_action']) ){
 }
 
 
+if( !$ADMIN_VIEW ){
+    $ADMIN_VIEW = 'export';
+}
+
 /* HTML */
 $html = '';
 
 /* Header */
-include plugin_dir_path(__FILE__). 'index_html/header_export.php';
+include plugin_dir_path(__FILE__). 'index_html/header-export.php';
 
-/* Tournament */
-//include plugin_dir_path(__FILE__). 'index_html/export.php';
+/* Import */
+include plugin_dir_path(__FILE__). 'index_html/import.php';
 
-/* Clubs */
-//include plugin_dir_path(__FILE__). 'index_html/import.php';
+/* Export */
+include plugin_dir_path(__FILE__). 'index_html/export.php';
 
 
 echo $html;
