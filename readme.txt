@@ -89,6 +89,10 @@ But please, describe correctly your issue and be patient...
 
 == Changelog ==
 
+= 1.0.2 - 20.01.2018 =
+* Tournament selector shortcode
+
+
 = 1.0.1 - 16.01.2018 =
 * Wordpress admin layout
 * Phone view

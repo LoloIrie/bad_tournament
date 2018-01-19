@@ -207,6 +207,8 @@ $html .= '</tr>';
     $html .= '</form>';
 
     $html .= '<h1 class="topspace">'.__('Shortcodes', 'bad-tournament').'</h1>';
+    $html .= '<div class="shortcode_bvg"><h2>'.__('Tournaments selector for all tournaments', 'bad-tournament').'</h2><input type="text" class="wp_style" value="[bad_tournament_selector t_parent_id=false]" /></div>';
+    $html .= '<div class="shortcode_bvg"><h2>'.__('Tournaments selector for a defined group', 'bad-tournament').'</h2><input type="text" class="wp_style" value="[bad_tournament_selector t_parent_id='.$_SESSION['t_id'].']" /></div>';
     $html .= '<div class="shortcode_bvg"><h2>'.__('Tournament summary', 'bad-tournament').'</h2><input type="text" class="wp_style" value="[bad_tournament_summary t_id='.$_SESSION['t_id'].' t_view=full]" /></div>';
 
 
