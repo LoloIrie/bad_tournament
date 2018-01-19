@@ -221,7 +221,7 @@ if( isset( $_POST['player_tournament_remove'] ) ){
                     $data,
                     array( 'id' => $player_in_tournament->id ) );
                 $player_already_in_tournament = true;
-                $bvg_admin_msg .= __( 'Player '.$player_in_tournament->player_firstname.' '.$player_in_tournament->player_lastname.' restored for the current tournament...' , 'bad-tournament') ;
+                $bvg_admin_msg .= sprintf( __( "Player %1$d %2$d restored for the current tournament...", 'bad-tournament' ), $player_in_tournament->player_firstname, $player_in_tournament->player_lastname );
                 break;
             }
         }

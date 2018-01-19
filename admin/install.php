@@ -34,18 +34,20 @@ function badt_install( $bad_tournament_version, $bad_tournament_current_version 
 }
 
 function badt_update( $bad_tournament_current_version ){
-    $bvg_admin_msg = __( 'Plugin Bad Tournament updated with following version(s):' , 'bad-tournament' );
+    $bvg_admin_msg = __( 'Plugin Bad Tournament updated with following versions. Database modifications:' , 'bad-tournament' );
 
     $existing_updates = array(
-        '1.0.1'
+        '1.0.1',
+        '1.0.2',
+        '1.1'
     );
 
     foreach( $existing_updates as $version ){
         if( $version > $bad_tournament_current_version ){
 
             $func_name = 'badt_update_'.str_replace( '.', '_', $version );
-            if( $func_name() ){
-                $bvg_admin_msg .= ' '.$version.',';
+            if( $msg = $func_name() ){
+                $bvg_admin_msg .= ' '.$msg.',';
             }else{
                 $bvg_admin_msg .= ' '.$version.' ('.__( 'ERROR: function '.$func_name.' is missing...' , 'bad-tournament' ).'),';
             }
@@ -215,7 +217,6 @@ function badt_install_init(){
     return true;
 }
 
-
 function badt_update_1_0_1(){
     global $wpdb;
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -226,6 +227,19 @@ function badt_update_1_0_1(){
 
     $wpdb->query( $sql );
 
+    $msg_update = __('Version 1.0.1: Add tournament logo', 'bad-tournament');
 
-    return true;
+    return $msg_update;
+}
+
+function badt_update_1_0_2(){
+    $msg_update = __('Version 1.0.2: No database modification', 'bad-tournament');
+
+    return $msg_update;
+}
+
+function badt_update_1_1(){
+    $msg_update = __('Version 1.1: No database modification', 'bad-tournament');
+
+    return $msg_update;
 }

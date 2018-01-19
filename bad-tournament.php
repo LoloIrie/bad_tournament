@@ -25,7 +25,7 @@ function myStartSession() {
 class badt_Bad_Tournament
 {
     function __construct(){
-        load_plugin_textdomain( 'bad-tournament' );
+        load_plugin_textdomain( 'bad-tournament', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
         add_action( 'admin_init', array( $this, 'bad_tournament_start_session' ) );
         add_action( 'admin_menu', array( $this, 'bad_tournament_menu' ) );

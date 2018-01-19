@@ -89,6 +89,10 @@ But please, describe correctly your issue and be patient...
 
 == Changelog ==
 
+= 1.1 - 19.01.2018 =
+* Better infos about updates displayed in the admin area
+* First translation files (DE)
+
 = 1.0.2 - 19.01.2018 =
 * Tournament selector shortcode
 * Bugs Fix for oldier PHP versions
