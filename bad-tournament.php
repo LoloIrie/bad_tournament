@@ -78,6 +78,7 @@ class badt_Bad_Tournament
         add_submenu_page( 'bad_tournament', 'Table', __('Table', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=table');
         add_submenu_page( 'bad_tournament', 'Matches', __('Matches', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=matches');
 
+        add_submenu_page( 'bad_tournament', 'Import/Export', __('Import/Export', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=export');
     }
 
     function bad_tournament_start_session(){
@@ -126,7 +127,12 @@ class badt_Bad_Tournament
 
             }
 
-            include plugin_dir_path(__FILE__).'admin/index.php';
+            if( $_GET['admin_view'] == 'export' ){
+                include plugin_dir_path(__FILE__).'admin/export.php';
+            }else{
+                include plugin_dir_path(__FILE__).'admin/index.php';
+            }
+
         }else{
             die( __('You are not allowed to access here...', 'bad-tournament') );
         }
@@ -134,6 +140,8 @@ class badt_Bad_Tournament
 
         return true;
     }
+
+    /* AJAX */
 
     // Ajax: Return player infos for tootip
     function player_tooltip( $atts ){
@@ -190,8 +198,9 @@ class badt_Bad_Tournament
     }
 
 
-    /* Add Shortcodes */
+    /* SHORTCODES */
 
+    // Shortcode tournament selector
     function bad_tournament_selector_shortcode( $atts ){
         /* Use css from theme if existing */
         $theme_uri = get_theme_file_path();
@@ -208,6 +217,7 @@ class badt_Bad_Tournament
         return $html_shortcode;
     }
 
+    // Shortcode table
     function bad_tournament_table_shortcode( $atts ) {
 
         /* Use css from theme if existing */
@@ -227,6 +237,7 @@ class badt_Bad_Tournament
         return $html_shortcode;
     }
 
+    // Shortcode matches
     function bad_tournament_matches_shortcode( $atts ) {
 
         /* Use css from theme if existing */
@@ -246,6 +257,7 @@ class badt_Bad_Tournament
         return $html_shortcode;
     }
 
+    // Shortcode tournament summary
     function bad_tournament_summary_shortcode( $atts ) {
 
 

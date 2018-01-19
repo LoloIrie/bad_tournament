@@ -3,7 +3,7 @@ Contributors: loloirie
 Tags: tournament, club, shortcode, administration, badminton, tennis, table tennis
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.1
+Stable tag: 1.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 
@@ -88,6 +88,10 @@ But please, describe correctly your issue and be patient...
 
 
 == Changelog ==
+
+
+= 1.2 - 19.01.2018 =
+* Import / Export
 
 = 1.1 - 19.01.2018 =
 * Better infos about updates displayed in the admin area

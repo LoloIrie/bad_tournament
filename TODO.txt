@@ -11,9 +11,9 @@ TODOs(-) / DONE(+)
 + Remove tournament feature
 + Restrict players list depending of tournament typ (Men vs Women vs Mixte)
 + Tournament selector
+- Import/Export features
 - Tournament KO System (v2)
 - Tournament League (v2)
-- Export features (Excel) (v2)
 - Form validator (v2)
 - Limit nbr players / tournament in free version (v2)
 - Tie Break (tennis option) (v3)

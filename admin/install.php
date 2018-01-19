@@ -39,7 +39,8 @@ function badt_update( $bad_tournament_current_version ){
     $existing_updates = array(
         '1.0.1',
         '1.0.2',
-        '1.1'
+        '1.1',
+        '1.2'
     );
 
     foreach( $existing_updates as $version ){
@@ -240,6 +241,12 @@ function badt_update_1_0_2(){
 
 function badt_update_1_1(){
     $msg_update = __('Version 1.1: No database modification', 'bad-tournament');
+
+    return $msg_update;
+}
+
+function badt_update_1_2(){
+    $msg_update = __('Version 1.2: No database modification', 'bad-tournament');
 
     return $msg_update;
 }
