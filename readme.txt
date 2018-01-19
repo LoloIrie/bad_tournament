@@ -3,7 +3,7 @@ Contributors: loloirie
 Tags: tournament, club, shortcode, administration, badminton, tennis, table tennis
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 
@@ -89,8 +89,9 @@ But please, describe correctly your issue and be patient...
 
 == Changelog ==
 
-= 1.0.2 - 20.01.2018 =
+= 1.0.2 - 19.01.2018 =
 * Tournament selector shortcode
+* Bugs Fix for oldier PHP versions
 
 
 = 1.0.1 - 16.01.2018 =
