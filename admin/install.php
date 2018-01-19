@@ -8,7 +8,7 @@
 
 if ( !defined( 'ABSPATH' ) ) die();
 
-$bad_tournament_version = '1.0.2';
+$bad_tournament_version = '1.1';
 
 function badt_install( $bad_tournament_version, $bad_tournament_current_version = false ){
 
