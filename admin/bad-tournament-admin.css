@@ -145,7 +145,7 @@ input[type=submit]{
     margin-top: 10px;
     margin-bottom: 10px;
 }
-input[type=submit].submit2 {
+input[type=submit].submit2, input[type=button].submit2 {
     clear: none;
     margin-left: 8px;
 }

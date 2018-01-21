@@ -37,7 +37,7 @@ class badt_Bad_Tournament
         add_action( 'wp_ajax_player_edit_field', array( $this, 'player_edit_field' ) );
         add_action( 'wp_ajax_set_club_default', array( $this, 'set_club_default' ) );
         add_action( 'wp_ajax_set_player_form_default', array( $this, 'set_player_form_default' ) );
-
+        add_action( 'wp_ajax_export_file', array( $this, 'export_file' ) );
 
         add_action( 'admin_head', array( $this, 'bvg_head_javascript_object' ) );
 
@@ -194,6 +194,13 @@ class badt_Bad_Tournament
         include plugin_dir_path(__FILE__).'admin/action/change-player-match.php';
         //var_dump( $_POST );
         echo $html_ajax;
+        wp_die();
+    }
+
+    // Ajax: Export as csv file
+    function export_file(){
+        $asFile = true;
+        include plugin_dir_path(__FILE__).'admin/action/export-data.php';
         wp_die();
     }
 

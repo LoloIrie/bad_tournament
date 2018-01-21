@@ -14,6 +14,8 @@ if( isset( $_GET['admin_view'] ) ){
     $ADMIN_VIEW = $_GET['admin_view'];
 }
 
+global $wpdb;
+
 /* GET/SET CONTENT */
 include_once plugin_dir_path(__FILE__). 'db-get-content.php';
 
@@ -39,7 +41,11 @@ include plugin_dir_path(__FILE__). 'index_html/import.php';
 /* Export */
 include plugin_dir_path(__FILE__). 'index_html/export.php';
 
+/* Footer */
+include plugin_dir_path(__FILE__). 'index_html/footer.php';
 
 echo $html;
 
-
+if( isset( $csv ) ){
+    echo '<div id="csv_view" style="margin-top: 24px; padding: 16px; clear: both; height: 300px; overflow: auto; border: 1px solid #000;"><pre>'.$csv.'</pre></div>';
+}

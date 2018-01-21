@@ -415,3 +415,27 @@ jQuery('#export1').on( 'click' , function(){
 
     jQuery( this ).attr( 'disabled', false );
 });
+
+/* Export data as file */
+jQuery('#export_file').on( 'click', function(){
+    console.log( 'CSV file start...' );
+    jQuery('#ajax_spinner_layer').fadeIn();
+    type_data = jQuery('.export_checkbox:checked').val();
+    console.log(type_data);
+    data = {
+        action: 'export_file',
+        type_data: type_data
+    };
+    jQuery.ajax({
+        type: "POST",
+        data : data,
+        async: true,
+        cache: false,
+        url: ajaxurl,
+        success: function(data) {
+            console.log( 'CSV file end...' );
+            window.location = 'bad_tournament.csv';
+            jQuery('#ajax_spinner_layer').fadeOut( 'slow' );
+        }
+    });
+});
