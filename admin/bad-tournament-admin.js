@@ -410,7 +410,7 @@ jQuery('#export1').on( 'click' , function(){
     if( jQuery( this ).attr('checked') == 'checked' ){
         jQuery('.export_checkbox').attr('checked', 'checked').attr('disabled', 'disabled');
     }else{
-        jQuery('.export_checkbox').attr('disabled', false );
+        jQuery('.export_checkbox').attr('checked', false ).attr('disabled', false );
     }
 
     jQuery( this ).attr( 'disabled', false );
@@ -419,23 +419,25 @@ jQuery('#export1').on( 'click' , function(){
 /* Export data as file */
 jQuery('#export_file').on( 'click', function(){
     console.log( 'CSV file start...' );
-    jQuery('#ajax_spinner_layer').fadeIn();
-    type_data = jQuery('.export_checkbox:checked').val();
-    console.log(type_data);
-    data = {
-        action: 'export_file',
-        type_data: type_data
-    };
-    jQuery.ajax({
-        type: "POST",
-        data : data,
-        async: true,
-        cache: false,
-        url: ajaxurl,
-        success: function(data) {
-            console.log( 'CSV file end...' );
-            window.location = 'bad_tournament.csv';
-            jQuery('#ajax_spinner_layer').fadeOut( 'slow' );
-        }
+    checkbox_types = new Array();
+
+    jQuery('.export_checkbox:checked').each( function(){
+        checkbox_types.push( jQuery( this ).val() );
     });
+    if( checkbox_types.length ){
+        jQuery('#ajax_spinner_layer').fadeIn();
+
+        type_data = checkbox_types.join( ',' );
+        console.log(type_data);
+        data = {
+            action: 'export_file',
+            type_data: type_data
+        };
+        window.location = 'admin-ajax.php?action=export_file&type_data=' + type_data;
+        jQuery('#ajax_spinner_layer').fadeOut( 'slow' );
+        return false;
+    }
+    alert( 'You need to select something...' );
+    return false;
+
 });
