@@ -35,7 +35,7 @@ $html .= '<div class="admin_block nav_export" id="block_export" '.( $ADMIN_VIEW 
 
         $html .= '</table>';
 
-        $html .= '<input type="submit" value="'.__('Export data', 'bad-tournament').'" class="button-primary button" />';
+        $html .= '<input type="submit" value="'.__('View data', 'bad-tournament').'" class="button-primary button" />';
         $html .= '<input id="export_file" type="button" value="'.__('Export as file', 'bad-tournament').'" class="button-primary button submit2" />';
 
 
