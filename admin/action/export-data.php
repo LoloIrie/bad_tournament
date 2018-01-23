@@ -25,200 +25,112 @@ $tables = array(
 
 
 if( $_GET['type_data'] == 1 || substr( $_GET['type_data'] , 0, 2 ) == '1,' ){
+
     /* EVERYTHING */
-
     foreach( $tables as $table ){
-        $csv .= "#".$table."\n";
-
-        $query = "SELECT
-        *
-        
-        FROM
-        ".$wpdb->prefix.$table;
-
-        //echo $query;
-        $results = $wpdb->get_results( $query, ARRAY_A );
-        //$results .= print_r( $data, 1 );
-
-        if( !empty( $results ) ){
-            $csv_table = '"'.implode('";"',array_keys($results[0])).'";'."\n";
-
-            foreach ($results as $row) {
-                $csv_table .= '"'.implode('";"',$row).'";'."\n";
-            }
-        }
-
-        $csv_table .= "\n";
-        $csv .= $csv_table;
+        $csv .= badt_generate_csv( $table );
     }
+
 }else if( $_GET['type_data'] == 2 || substr( $_GET['type_data'] , 0, 2 ) == '2,' ){
+
     /* CURRENT TOURNAMENT */
     if( isset( $_SESSION[ 't_id' ] ) ){
         $t_id = $_SESSION['t_id'];
 
 
-        /* Get tournament */
-        $csv .= "#tournaments\n";
-
-        $query = "SELECT
-        *
-        
-        FROM
-        ".$wpdb->prefix."bvg_tournaments
-        
-        WHERE
+        /* Get Tournament */
+        $sql_extended = " WHERE
         id=".$t_id."
         
         LIMIT
-        0,1
-        ";
-        $results = $wpdb->get_results( $query, ARRAY_A );
-
-        if( !empty( $results ) ){
-            $csv_table = '"'.implode('";"',array_keys($results[0])).'";'."\n";
-
-            foreach ($results as $row) {
-                $csv_table .= '"'.implode('";"',$row).'";'."\n";
-            }
-        }
-
-        $csv_table .= "\n";
-        $csv .= $csv_table;
-        unset( $results );
+        0,1";
+        $csv .= badt_generate_csv( 'bvg_tournaments', $sql_extended );
+        unset( $sql_extended );
         /* Tournament END */
 
         if( !empty( $results ) && $results[0]['club_restriction'] > 0 ){
             /* Get Club if club restriction */
-            $csv .= "#clubs\n";
-
-            $query = "SELECT
-            *
-            
-            FROM
-            ".$wpdb->prefix."bvg_clubs
-            
-            WHERE
+            $sql_extended = " WHERE
             id=".$results[0]['club_restriction']."
             
             LIMIT
-            0,1
-            ";
-            $results = $wpdb->get_results( $query, ARRAY_A );
-
-            if( !empty( $results ) ){
-                $csv_table = '"'.implode('";"',array_keys($results[0])).'";'."\n";
-
-                foreach ($results as $row) {
-                    $csv_table .= '"'.implode('";"',$row).'";'."\n";
-                }
-            }
-
-            $csv_table .= "\n";
-            $csv .= $csv_table;
-            unset( $results );
-
+            0,1";
+            $csv .= badt_generate_csv( 'bvg_clubs', $sql_extended );
+            unset( $sql_extended );
             /* Club END */
         }
 
 
         /* Get tournament players */
-        $csv .= "#bvg_players_tournament\n";
-
-        $query = "SELECT
-        *
-        
-        FROM
-        ".$wpdb->prefix."bvg_players_tournament
-        
-        WHERE
+        $sql_extended = " WHERE
         tournament_id=".$t_id."
 
         ORDER BY
         id
         ASC";
-        $results = $wpdb->get_results( $query, ARRAY_A );
-
-        if( !empty( $results ) ){
-            $csv_table = '"'.implode('";"',array_keys($results[0])).'";'."\n";
-
-            $players_id_str = '';
-            foreach ($results as $row) {
-                $csv_table .= '"'.implode('";"',$row).'";'."\n";
-                $players_id .= $row['players_id'].',';
-            }
-            $players_id = substr( $players_id , 0, -1 );
-        }
-
-        $csv_table .= "\n";
-        $csv .= $csv_table;
-        unset( $results );
+        $tmp = badt_generate_csv( 'bvg_players_tournament', $sql_extended, 'players_id' );
+        $csv .= $tmp[0];
+        $players_id = $tmp[1];
+        unset( $sql_extended, $tmp );
         /* Tournament players END */
 
-
-
         /* Get players */
-        $csv .= "#bvg_players\n";
-
-        $query = "SELECT
-        *
-        
-        FROM
-        ".$wpdb->prefix."bvg_players
-        
-        WHERE
+        $sql_extended = " WHERE
         id IN (".$players_id.")
 
         ORDER BY
         id
         ASC";
-        $results = $wpdb->get_results( $query, ARRAY_A );
-
-        if( !empty( $results ) ){
-            $csv_table = '"'.implode('";"',array_keys($results[0])).'";'."\n";
-
-            foreach ($results as $row) {
-                $csv_table .= '"'.implode('";"',$row).'";'."\n";
-            }
-        }
-
-        $csv_table .= "\n";
-        $csv .= $csv_table;
-        unset( $results );
+        $csv .= badt_generate_csv( 'bvg_players', $sql_extended );
+        unset( $sql_extended );
         /* Players END */
 
 
         /* Get matches */
-        $csv .= "#bvg_matches\n";
-
-        $query = "SELECT
-        *
-
-        FROM
-        ".$wpdb->prefix."bvg_matches
-
-        WHERE
+        $sql_extended = "WHERE
         tournament_id=".$t_id."
 
         ORDER BY
         id
         ASC";
-        $results = $wpdb->get_results( $query, ARRAY_A );
-
-        if( !empty( $results ) ){
-            $csv_table = '"'.implode('";"',array_keys($results[0])).'";'."\n";
-
-            foreach ($results as $row) {
-                $csv_table .= '"'.implode('";"',$row).'";'."\n";
-            }
-        }
-
-        $csv_table .= "\n";
-        $csv .= $csv_table;
-        unset( $results );
+        $csv .= badt_generate_csv( 'bvg_matches', $sql_extended );
+        unset( $sql_extended );
         /* Matches END */
     }
 
+}else{
+    /* Custom tables choice */
+    /* TOURNAMENTS */
+    if( $_GET['type_data'] == 3 || substr( $_GET['type_data'] , 0, 2 ) == '3,' || strpos( $_GET['type_data'] , ',3,' ) !== false || substr( $_GET['type_data'] , -2 ) == ',3' ){
+        /* Get Tournaments */
+        $csv .= badt_generate_csv( 'bvg_tournaments' );
+        /* Tournaments END */
+    }
 
+    /* CLUBS */
+    if( $_GET['type_data'] == 4 || substr( $_GET['type_data'] , 0, 2 ) == '4,' || strpos( $_GET['type_data'] , ',4,' ) !== false || substr( $_GET['type_data'] , -2 ) == ',4' ){
+        /* Get Clubs */
+        $csv .= badt_generate_csv( 'bvg_clubs' );
+        /* Clubs END */
+    }
+
+    /* PLAYERS */
+    if( $_GET['type_data'] == 5 || substr( $_GET['type_data'] , 0, 2 ) == '5,' || strpos( $_GET['type_data'] , ',5,' ) !== false || substr( $_GET['type_data'] , -2 ) == ',5' ){
+        /* Get Players */
+        $csv .= badt_generate_csv( 'bvg_players' );
+        /* Players END */
+
+        /* Get Players/Tournament */
+        $csv .= badt_generate_csv( 'bvg_players_tournament' );
+        /* Players/Tournament END */
+    }
+
+    /* MATCHES */
+    if( $_GET['type_data'] == 6 || substr( $_GET['type_data'] , 0, 2 ) == '6,' || strpos( $_GET['type_data'] , ',6,' ) !== false || substr( $_GET['type_data'] , -2 ) == ',6' ){
+        /* Get Matches */
+        $csv .= badt_generate_csv( 'bvg_matches' );
+        /* Matches END */
+    }
 
 }
 
@@ -237,3 +149,46 @@ if( isset( $asFile ) && $asFile === true){
 
 
 $bvg_admin_msg .= __( 'Data exported !', 'bad-tournament' );
+
+function badt_generate_csv( $table , $sql_extended = false, $field_to_inString = false ){
+
+    global $wpdb;
+
+    $str = "#".$table."\n";
+    $inStr = '';
+
+    $query = "SELECT
+    *
+    
+    FROM
+    ".$wpdb->prefix.$table;
+
+    if( badt_generate_csv !== false ){
+        $query .= " 
+        ".$sql_extended;
+    }
+
+    $results = $wpdb->get_results( $query, ARRAY_A );
+
+    if( !empty( $results ) ){
+        $csv_table = '"'.implode('";"',array_keys($results[0])).'";'."\n";
+
+        foreach ($results as $row) {
+            $csv_table .= '"'.implode('";"',$row).'";'."\n";
+            if( $field_to_inString !== false ){
+                $inStr .= $row[ $field_to_inString ].',';
+            }
+        }
+        $inStr = substr( $inStr , 0, -1 );
+    }
+
+    $csv_table .= "\n";
+
+    $str .= $csv_table;
+
+    if( $field_to_inString !== false ) {
+        return array( $str , $inStr );
+    }else{
+        return $str;
+    }
+}

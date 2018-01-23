@@ -89,7 +89,7 @@ class badt_Bad_Tournament
 
         $bvg_admin_msg = '';
 
-        add_action( 'admin_footer', array( $this , 'media_selector_print_scripts' ) );
+
 
         /* jQuery UI for datepicker
         wp_enqueue_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css');
@@ -130,6 +130,7 @@ class badt_Bad_Tournament
             if( $_GET['admin_view'] == 'export' ){
                 include plugin_dir_path(__FILE__).'admin/index-export.php';
             }else{
+                add_action( 'admin_footer', array( $this , 'media_selector_print_scripts' ) );
                 include plugin_dir_path(__FILE__).'admin/index.php';
             }
 

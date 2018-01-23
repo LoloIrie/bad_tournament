@@ -425,7 +425,7 @@ jQuery('#export_file').on( 'click', function(){
         checkbox_types.push( jQuery( this ).val() );
     });
     if( checkbox_types.length ){
-        jQuery('#ajax_spinner_layer').fadeIn();
+        //jQuery('#ajax_spinner_layer').fadeIn();
 
         type_data = checkbox_types.join( ',' );
         console.log(type_data);
@@ -434,7 +434,8 @@ jQuery('#export_file').on( 'click', function(){
             type_data: type_data
         };
         window.location = 'admin-ajax.php?action=export_file&type_data=' + type_data;
-        jQuery('#ajax_spinner_layer').fadeOut( 'slow' );
+        //console.log( window.location.hash );
+        //jQuery('#ajax_spinner_layer').fadeOut( 'slow' );
         return false;
     }
     alert( 'You need to select something...' );
