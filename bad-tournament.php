@@ -127,7 +127,7 @@ class badt_Bad_Tournament
 
             }
 
-            if( $_GET['admin_view'] == 'export' ){
+            if( $_GET['admin_view'] == 'export' || $_GET['admin_view'] == 'import' ){
                 include plugin_dir_path(__FILE__).'admin/index-export.php';
             }else{
                 add_action( 'admin_footer', array( $this , 'media_selector_print_scripts' ) );

@@ -413,3 +413,13 @@ h1.topspace{
 #player_select{
     height: 150px;
 }
+
+#csv_view{
+    margin-top: 24px;
+    padding: 16px;
+    clear: both;
+    height: 300px;
+    overflow: auto;
+
+    border: 1px solid #000;
+}
