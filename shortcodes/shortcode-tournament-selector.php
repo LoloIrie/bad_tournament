@@ -7,10 +7,11 @@
  */
 
 
-
+/*
 if( !isset( $_SESSION ) ){
     session_start();
 }
+*/
 
 if( isset( $_POST['tournament_selector_id'] ) && is_numeric( $_POST['tournament_selector_id'] ) ){
     $_SESSION['tournament_to_display'] = $_POST['tournament_selector_id'];

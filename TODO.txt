@@ -2,6 +2,8 @@ KNOWN BUGS(-) / SOLVED(+)
 + Match update add new game played to player_tournament
 + All players added => empty Sslect players displayed
 + Parent tournament
++ Matches selector JS
++ Session maybe already started => conflict with shortcodes
 
 TODOs(-) / DONE(+)
 + Restrict available players list for a club tournament

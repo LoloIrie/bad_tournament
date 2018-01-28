@@ -36,20 +36,21 @@ jQuery('#round_select').on( 'change', function(){
         jQuery(jRound_available + ' .match_row').fadeIn();
     }else{
         //console.log( 'jRound_available:' + jRound_available );
+
+        jQuery( jRound_available + ' .match_round_header' ).fadeOut();
+        jQuery( '.match_row' ).fadeOut();
+
         jQuery(jRound_available + ' .match_round_header').each(function(){
-            jQuery( this ).fadeOut();
-            jQuery( jRound_available + ' .match_row' ).fadeOut();
-        });
-        jQuery(jRound_available + ' match_round_header').each(function(){
             if( jQuery( this).attr( 'data-round' ) == round_display ){
                 jQuery( this ).slideDown();
-                jQuery(jRound_available + ' .match_row').each(function(){
-                    if( jQuery( this).attr( 'data-round' ) == round_display ){
-                        jQuery( this ).slideDown( 'slow' );
-                    }
-                });
+                return false;
             }
+        });
 
+        jQuery(jRound_available + ' .match_row').each(function(){
+            if( jQuery( this).attr( 'data-round' ) == round_display ){
+                jQuery( this ).slideDown();
+            }
         });
     }
 

@@ -210,6 +210,9 @@ class badt_Bad_Tournament
 
     // Shortcode tournament selector
     function bad_tournament_selector_shortcode( $atts ){
+
+        add_action('init', array( $this, 'bad_tournament_start_session' ) );
+
         /* Use css from theme if existing */
         $theme_uri = get_theme_file_path();
         if( file_exists( $theme_uri.'/bad-tournament.css' ) && !defined( 'BADT_THEME_CSS' ) ){

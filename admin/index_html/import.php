@@ -28,7 +28,7 @@ $html .= '<div class="admin_block nav_import" id="block_import" '.( $ADMIN_VIEW 
 
             $html .= '<tr class="form-field form-required">';
                 $html .= '<th scope="row">';
-                    $html .= '<label>'.__('File to import ?:', 'bad-tournament').'</label>';
+                    $html .= '<label>'.__('File to import:', 'bad-tournament').'</label>';
                 $html .= '</th>';
                     $html .= '<td>';
                         $html .= '<input type="file" value="" name="import_file" />';
