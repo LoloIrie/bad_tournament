@@ -118,8 +118,8 @@ $html .= '<tr class="form-field form-required">';
         $html .= '<label>'.__('Date:', 'bad-tournament').'</label>';
     $html .= '</th>';
     $html .= '<td>';
-        $html .= '<input type="text" value="" placeholder="'.__('from...', 'bad-tournament').'" name="tournament_date_start" id="tournament_date_start" class="datetimepicker" />';
-        $html .= '<input type="text" value="" placeholder="'.__('...to', 'bad-tournament').'" name="tournament_date_end" id="tournament_date_end" class="datetimepicker" />';
+        $html .= '<input type="text" value="" placeholder="'.__('from...', 'bad-tournament').'" name="tournament_date_start" id="tournament_date_start" class="datetime2picker" />';
+        $html .= '<input type="text" value="" placeholder="'.__('...to', 'bad-tournament').'" name="tournament_date_end" id="tournament_date_end" class="datetime2picker" />';
     $html .= '</td>';
 $html .= '</tr>';
 
@@ -130,13 +130,30 @@ $html .= '<tr class="form-field form-required">';
     $html .= '</th>';
     $html .= '<td>';
         $html .= '<div class="radio_block">';
-        $html .= '<span><input type="radio" id="tournament_typ1" name="tournament_typ" value="1" checked="checked" /> <label for="tournament_typ1" class="radio">'.__('Simple Men', 'bad-tournament').'</label></span>';
-        $html .= '<span><input type="radio" id="tournament_typ2" name="tournament_typ" value="2" /> <label for="tournament_typ2" class="radio">'.__('Simple Women', 'bad-tournament').'</label></span>';
-        $html .= '<span><input type="radio" id="tournament_typ3" name="tournament_typ" value="3" /> <label for="tournament_typ3" class="radio">'.__('Double Men', 'bad-tournament').'</label></span>';
-        $html .= '<span><input type="radio" id="tournament_typ4" name="tournament_typ" value="4" /> <label for="tournament_typ4" class="radio">'.__('Double Women', 'bad-tournament').'</label></span>';
-        $html .= '<span><input type="radio" id="tournament_typ5" name="tournament_typ" value="5" /> <label for="tournament_typ5" class="radio">'.__('Mixte', 'bad-tournament').'</label></span>';
-        $html .= '<span><input type="radio" id="tournament_typ6" name="tournament_typ" value="6" /> <label for="tournament_typ5" class="radio">'.__('Simple Free', 'bad-tournament').'</label></span>';
-        $html .= '<span><input type="radio" id="tournament_typ7" name="tournament_typ" value="7" /> <label for="tournament_typ5" class="radio">'.__('Double Free', 'bad-tournament').'</label></span>';
+            $html .= '<span><input type="radio" id="tournament_typ1" name="tournament_typ" value="1" checked="checked" /> <label for="tournament_typ1" class="radio">'.__('Simple Men', 'bad-tournament').'</label></span>';
+            $html .= '<span><input type="radio" id="tournament_typ2" name="tournament_typ" value="2" /> <label for="tournament_typ2" class="radio">'.__('Simple Women', 'bad-tournament').'</label></span>';
+            $html .= '<span><input type="radio" id="tournament_typ3" name="tournament_typ" value="3" /> <label for="tournament_typ3" class="radio">'.__('Double Men', 'bad-tournament').'</label></span>';
+            $html .= '<span><input type="radio" id="tournament_typ4" name="tournament_typ" value="4" /> <label for="tournament_typ4" class="radio">'.__('Double Women', 'bad-tournament').'</label></span>';
+            $html .= '<span><input type="radio" id="tournament_typ5" name="tournament_typ" value="5" /> <label for="tournament_typ5" class="radio">'.__('Mixte', 'bad-tournament').'</label></span>';
+            $html .= '<span><input type="radio" id="tournament_typ6" name="tournament_typ" value="6" /> <label for="tournament_typ5" class="radio">'.__('Simple Free', 'bad-tournament').'</label></span>';
+            $html .= '<span><input type="radio" id="tournament_typ7" name="tournament_typ" value="7" /> <label for="tournament_typ5" class="radio">'.__('Double Free', 'bad-tournament').'</label></span>';
+        $html .= '</div>';
+    $html .= '</td>';
+$html .= '</tr>';
+
+$html .= '<tr class="form-field form-required">';
+    $html .= '<th scope="row">';
+        $html .= '<label>'.__('Other tournaments :', 'bad-tournament').'</label>';
+    $html .= '</th>';
+    $html .= '<td>';
+        $html .= '<div class="radio_block">';
+            $html .= '<span><input type="checkbox" id="subtournament_typ1" name="subtournament_typ[]" value="1" /> <label for="subtournament_typ1" class="radio">'.__('Simple Men', 'bad-tournament').'</label></span>';
+            $html .= '<span><input type="checkbox" id="subtournament_typ2" name="subtournament_typ[]" value="2" /> <label for="subtournament_typ2" class="radio">'.__('Simple Women', 'bad-tournament').'</label></span>';
+            $html .= '<span><input type="checkbox" id="subtournament_typ3" name="subtournament_typ[]" value="3" /> <label for="subtournament_typ3" class="radio">'.__('Double Men', 'bad-tournament').'</label></span>';
+            $html .= '<span><input type="checkbox" id="subtournament_typ4" name="subtournament_typ[]" value="4" /> <label for="subtournament_typ4" class="radio">'.__('Double Women', 'bad-tournament').'</label></span>';
+            $html .= '<span><input type="checkbox" id="subtournament_typ5" name="subtournament_typ[]" value="5" /> <label for="subtournament_typ5" class="radio">'.__('Mixte', 'bad-tournament').'</label></span>';
+            $html .= '<span><input type="checkbox" id="subtournament_typ6" name="subtournament_typ[]" value="6" /> <label for="subtournament_typ5" class="radio">'.__('Simple Free', 'bad-tournament').'</label></span>';
+            $html .= '<span><input type="checkbox" id="subtournament_typ7" name="subtournament_typ[]" value="7" /> <label for="subtournament_typ5" class="radio">'.__('Double Free', 'bad-tournament').'</label></span>';
         $html .= '</div>';
     $html .= '</td>';
 $html .= '</tr>';
@@ -234,5 +251,47 @@ tournament = [];
 
         $html .= 'tournament['.$tournament->id.'] = \''.json_encode( $tournament ).'\';';
     };
+$html .= "
+    jQuery(document).ready(function() {
+        var startDateTextBox = jQuery('#tournament_date_start');
+        var endDateTextBox = jQuery('#tournament_date_end');
+
+        startDateTextBox.datetimepicker({
+            dateFormat: 'dd/mm/yy',
+            timeFormat: 'hh:mm',
+            onClose: function(dateText, inst) {
+                if (endDateTextBox.val() != '') {
+                    var testStartDate = startDateTextBox.datetimepicker('getDate');
+                    var testEndDate = endDateTextBox.datetimepicker('getDate');
+                    if (testStartDate > testEndDate)
+                        endDateTextBox.datetimepicker('setDate', testStartDate);
+                }
+                else {
+                    endDateTextBox.val(dateText);
+                }
+            },
+                onSelect: function (selectedDateTime){
+                endDateTextBox.datetimepicker('option', 'minDate', startDateTextBox.datetimepicker('getDate') );
+            }
+        });
+        endDateTextBox.datetimepicker({
+            dateFormat: 'dd/mm/yy',
+            timeFormat: 'hh:mm',
+            onClose: function(dateText, inst) {
+                if (startDateTextBox.val() != '') {
+                    var testStartDate = startDateTextBox.datetimepicker('getDate');
+                    var testEndDate = endDateTextBox.datetimepicker('getDate');
+                    if (testStartDate > testEndDate)
+                        startDateTextBox.datetimepicker('setDate', testEndDate);
+                }
+                else {
+                    startDateTextBox.val(dateText);
+                }
+            },
+            onSelect: function (selectedDateTime){
+            startDateTextBox.datetimepicker('option', 'maxDate', endDateTextBox.datetimepicker('getDate') );
+        }
+        });
+    });";
 $html .= '</script>';
 

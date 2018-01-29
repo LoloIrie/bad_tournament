@@ -65,14 +65,15 @@ class badt_Bad_Tournament
         add_menu_page(
             'Bad Tournament',
             __('Bad Tournament', 'bad-tournament'),
-            'edit_pages',
+            'manage_options',
             'bad_tournament',
             array( $this, 'bad_tournament_admin' ),
             plugin_dir_url( __FILE__ ).'icons/bad-tournament-icon.png',
             20
         );
 
-        //add_submenu_page( 'bad_tournament', 'Tournament', __('Tournament', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=tournament');
+        add_submenu_page( 'bad_tournament', 'Tournament', __('Rangliste CH', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=tournament&t_id=22');
+        add_submenu_page( 'bad_tournament', 'Tournament', __('Rangliste CH (Double Women)', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=tournament&t_id=25');
         add_submenu_page( 'bad_tournament', 'Clubs', __('Clubs', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=clubs');
         add_submenu_page( 'bad_tournament', 'Players', __('Players', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=players');
         add_submenu_page( 'bad_tournament', 'Table', __('Table', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=table');

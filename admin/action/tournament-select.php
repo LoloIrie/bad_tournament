@@ -154,14 +154,25 @@ else if( isset( $_POST['tournament_select_button'] ) && is_numeric( $_POST['tour
 else{
 
     // CREATE NEW TOURNAMENT
+    $sub_names = array(
+        1 => __( 'Simple Men', 'bad-tournament' ),
+        2 => __( 'Simple Women', 'bad-tournament' ),
+        3 => __( 'Double Men', 'bad-tournament' ),
+        4 => __( 'Double women', 'bad-tournament' ),
+        5 => __( 'Mixte', 'bad-tournament' ),
+        6 => __( 'Simple Free', 'bad-tournament' ),
+        7 => __( 'Double Free', 'bad-tournament' )
+    );
 
     $logo = $_POST['image_attachment_id'];
     if( isset( $_POST['tournament_logo_url'] ) && !empty( $_POST['tournament_logo_url'] ) ){
         $logo = $_POST['tournament_logo_url'];
     }
 
-
-
+    $new_t_name = $_POST['tournament_name'];
+    if( isset( $_POST['subtournament_typ'] ) && !empty( $_POST['subtournament_typ'] ) ){
+        $new_t_name = $_POST['tournament_name'].__( ' (' , 'bad-tournament' ).$sub_names[ $_POST['tournament_typ'] ].__( ')' , 'bad-tournament' );
+    }
     $data = array(
         'parent_id' => $parent_id,
         'name' => $_POST['tournament_name'],
@@ -183,8 +194,7 @@ else{
     $new_t_id = $wpdb->insert_id;
     $data['id'] = $new_t_id;
     $_SESSION['current_tournament'] = $data;
-    $new_t_name = $_POST['tournament_name'];
-    $new_t_system = $_POST['tournament_system'];
+   $new_t_system = $_POST['tournament_system'];
     $_SESSION['round'] = 1;
 
     if( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] > 0 ){
@@ -194,7 +204,39 @@ else{
     $_SESSION['t_id'] = $new_t_id;
     $_SESSION['t_name'] = $new_t_name;
     $_SESSION['t_system'] = $new_t_system;
-    $bvg_admin_msg .= __( 'New tournament' , 'bad-tournament' ).'<br />';
+
+    $bvg_admin_msg .= __( 'New tournament: ' , 'bad-tournament' ).$new_t_name.'<br />';
+
+    /* Create subtournaments */
+
+    if( isset( $_POST['subtournament_typ'] ) && !empty( $_POST['subtournament_typ'] ) ){
+        foreach( $_POST['subtournament_typ'] as $sub_typ ){
+            if( $sub_typ != $_POST['tournament_typ'] ){
+                $new_t_name = $_POST['tournament_name'].__( ' (' , 'bad-tournament' ).$sub_names[ $sub_typ ].__( ')' , 'bad-tournament' );
+
+                $data = array(
+                    'parent_id' => $new_t_id,
+                    'name' => $new_t_name,
+                    'round' => 1,
+                    'system' => $_POST['tournament_system'],
+                    'nb_sets' => $nb_sets,
+                    'points_set' => $points_sets,
+                    'max_points_set' => $tournament_max_points_set,
+                    'club_restriction' => $_POST['club_restriction'],
+                    'tournament_typ' => $sub_typ,
+                    'localization' => $_POST['tournament_localization'],
+                    'date_start' => $date_start,
+                    'date_end' => $date_end,
+                    'logo' => $logo
+                );
+                //$wpdb->show_errors();
+                $wpdb->insert( $wpdb->prefix . 'bvg_tournaments', $data );
+                $bvg_admin_msg .= __( 'New subtournament: ' , 'bad-tournament' ).$new_t_name.'<br />';
+            }
+        }
+    }
+
+
 }
 
 /*
