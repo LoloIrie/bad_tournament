@@ -11,20 +11,6 @@ jQuery('.nav_item').on( 'click', function(){
     jQuery( id_block ).slideDown( 'slow' );
 });
 
-/* Menu opacity effect */
-jQuery(document).ready(function() {
-    jQuery(function () {
-        jQuery(window).scroll(function () {
-            if( jQuery(window).scrollTop() >= 35 ) {
-                jQuery( 'nav#main_nav' ).addClass( 'transparent' );
-            } else {
-                jQuery( 'nav#main_nav' ).removeClass( 'transparent' );
-
-            }
-        });
-    });
-});
-
 /* Set match winner */
 jQuery('.match_winner').on( 'click', function(){
     jMatchId = '#match_winner_' + jQuery( this ).attr('data_m_id');
@@ -442,3 +428,56 @@ jQuery('#export_file').on( 'click', function(){
     return false;
 
 });
+
+
+
+/* Menus */
+var badt_submenus = '<ul class="wp-submenu wp-submenu-wrap badt_submenu" id="badt_submenu" style="top: -47px !important;"><li class="wp-submenu-head" aria-hidden="true">Bad Tournament</li>';
+for( var key in bvg_submenus ){
+    if (bvg_submenus.hasOwnProperty(key)) {
+        badt_submenus += '<li class="badt-menu-open"><a href="edit.php" class="wp-first-item">'+bvg_submenus[key]+'</a></li>';
+    }
+}
+    badt_submenus += '</ul>';
+var badt_link_decoration = '<div class="wp-menu-arrow"><div></div></div>';
+
+jQuery(document).ready(function() {
+
+    jQuery('li.wp-first-item a.wp-first-item:contains(Bad Tournament)')
+        .append( badt_link_decoration )
+        .addClass('wp-has-submenu')
+        .after( badt_submenus )
+        .parent()
+        .addClass('badt-menu-open')
+        .addClass('opensub')
+        .addClass('wp-has-submenu')
+        .addClass('wp-has-current-submenu');
+
+    /* Menu opacity effect */
+    jQuery(function () {
+        jQuery(window).scroll(function () {
+            if( jQuery(window).scrollTop() >= 35 ) {
+                jQuery( 'nav#main_nav' ).addClass( 'transparent' );
+            } else {
+                jQuery( 'nav#main_nav' ).removeClass( 'transparent' );
+
+            }
+        });
+    });
+
+    /* Display submenus */
+
+    jQuery('li.wp-first-item a.wp-first-item:contains(Bad Tournament)').on( 'hover', function(){
+        jQuery( this ).parent().addClass( 'opensub' );
+        jSubmenu = jQuery( '#badt_submenu' );
+        jSubmenu.show();
+        jQuery( '#adminmenu' ).on( 'hover' , function(){
+            jSubmenu.hide();
+        });
+    });
+
+    jQuery( 'li:not(.badt-menu-open)').on( 'hover', function(){
+        jQuery( '#badt_submenu' ).hide();
+    });
+});
+

@@ -48,6 +48,8 @@ class badt_Bad_Tournament
     }
 
     function bvg_head_javascript_object(){
+        include_once plugin_dir_path(__FILE__). 'admin/db-get-content.php';
+        $tournaments = badt_db_get_tournaments();
         ?>
         <script>
             var bvg_tournament_constants = {
@@ -56,6 +58,15 @@ class badt_Bad_Tournament
                 "badTournamentFemale": '<?php echo __( 'Female' , 'bad-tournament' ); ?>',
                 "confirmRemoveTournament": '<?php echo __( 'Are you sure you want to remove this tournament ?' , 'bad-tournament' ); ?>',
             }
+
+            var bvg_submenus = {
+                <?php
+                foreach( $tournaments as $t ){
+                    echo '"'.$t->id.'" : "'.$t->name.'",';
+                }
+                ?>
+            };
+
             console.log( bvg_tournament_constants );
         </script>
         <?php
@@ -72,8 +83,6 @@ class badt_Bad_Tournament
             20
         );
 
-        add_submenu_page( 'bad_tournament', 'Tournament', __('Rangliste CH', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=tournament&t_id=22');
-        add_submenu_page( 'bad_tournament', 'Tournament', __('Rangliste CH (Double Women)', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=tournament&t_id=25');
         add_submenu_page( 'bad_tournament', 'Clubs', __('Clubs', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=clubs');
         add_submenu_page( 'bad_tournament', 'Players', __('Players', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=players');
         add_submenu_page( 'bad_tournament', 'Table', __('Table', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=table');

@@ -423,3 +423,54 @@ h1.topspace{
 
     border: 1px solid #000;
 }
+
+
+/* Submenus */
+#badt_submenu{
+    display: none;
+    list-style: none;
+    position: absolute !important;
+    top: -1000em;
+    left: 160px !important;
+    overflow: visible;
+    word-wrap: break-word;
+}
+
+#toplevel_page_bad_tournament li.badt-menu-open:hover::after{
+    right: 0;
+    border: solid transparent;
+    border-top-width: medium;
+    border-right-width: medium;
+    border-bottom-width: medium;
+    border-left-width: medium;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-width: 8px;
+    top: 10px;
+    z-index: 10000;
+}
+#toplevel_page_bad_tournament #badt_submenu .wp-has-current-submenu .wp-submenu{
+    top: -47px !important;
+}
+#toplevel_page_bad_tournament a.wp-has-current-submenu::after {
+    right: 0;
+    border: 8px solid transparent;
+    border-right-color: transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-right-color: #f1f1f1;
+    top: 50%;
+    margin-top: -8px;
+}
+#toplevel_page_bad_tournament li.wp-has-current-submenu.opensub:hover::after {
+    border-right-color: #655a6a;
+}
+#toplevel_page_bad_tournament .wp-submenu li.current a:hover{
+    color: #00b9eb;
+}
