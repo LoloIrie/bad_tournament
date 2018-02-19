@@ -435,7 +435,7 @@ jQuery('#export_file').on( 'click', function(){
 var badt_submenus = '<ul class="wp-submenu wp-submenu-wrap badt_submenu" id="badt_submenu" style="top: -47px !important;"><li class="wp-submenu-head" aria-hidden="true">Bad Tournament</li>';
 for( var key in bvg_submenus ){
     if (bvg_submenus.hasOwnProperty(key)) {
-        badt_submenus += '<li class="badt-menu-open"><a href="edit.php" class="wp-first-item">'+bvg_submenus[key]+'</a></li>';
+        badt_submenus += '<li class="badt-menu-open"><a href="admin.php?page=bad_tournament&t_select_id='+key+'" class="wp-first-item">'+bvg_submenus[key]+'</a></li>';
     }
 }
     badt_submenus += '</ul>';
@@ -468,16 +468,15 @@ jQuery(document).ready(function() {
     /* Display submenus */
 
     jQuery('li.wp-first-item a.wp-first-item:contains(Bad Tournament)').on( 'hover', function(){
+        console.log( 'Display menu now...' );
         jQuery( this ).parent().addClass( 'opensub' );
         jSubmenu = jQuery( '#badt_submenu' );
         jSubmenu.show();
-        jQuery( '#adminmenu' ).on( 'hover' , function(){
+        jQuery('#wpcontent, .wp-menu-name').on( 'hover' , function(){
             jSubmenu.hide();
         });
     });
 
-    jQuery( 'li:not(.badt-menu-open)').on( 'hover', function(){
-        jQuery( '#badt_submenu' ).hide();
-    });
+
 });
 

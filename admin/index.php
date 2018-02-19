@@ -32,6 +32,10 @@ include_once plugin_dir_path(__FILE__). 'db-get-content.php';
 /* ACTIONS */
 if( isset($_POST['form_action']) ){
     include plugin_dir_path(__FILE__). 'action/'.$_POST['form_action'].'.php';
+}else if( isset($_GET['t_select_id']) && is_numeric( $_GET['t_select_id'] ) ){
+    $_POST['tournament_select_button'] = true;
+    $_POST['tournament_select'] = $_GET['t_select_id'];
+    include plugin_dir_path(__FILE__). 'action/tournament-select.php';
 }
 if( !$ADMIN_VIEW ){
     $ADMIN_VIEW = 'tournament';
