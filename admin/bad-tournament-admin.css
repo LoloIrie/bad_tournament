@@ -67,7 +67,7 @@ nav#main_nav li.active{
 hr{
     clear: both;
 }
-#bvg_admin_msg{
+#bvg_admin_msg, .badt_alert{
     margin-top: 80px;
     margin-bottom: -50px;
     padding: 15px;
@@ -83,6 +83,10 @@ hr{
 
     font-weight: bold;
     color: #c00;
+}
+.badt_alert{
+    margin-top: 10px;
+    margin-bottom: 0;
 }
 #bvg_admin_msg_close, .plus_icon{
     width: 20px;

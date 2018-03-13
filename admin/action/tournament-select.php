@@ -31,6 +31,12 @@ if( isset( $_POST['tournament_max_points_set'] ) && is_numeric( $_POST['tourname
     $tournament_max_points_set = $_POST['tournament_max_points_set'];
 }
 
+$round_max = 0;
+if( isset( $_POST['round_max'] ) && is_numeric( $_POST['round_max'] ) ){
+    $round_max = $_POST['round_max'];
+}
+
+
 if( isset( $_POST['tournament_date_start'] ) && !empty( $_POST['tournament_date_start'] ) && $_POST['tournament_date_start'] != '00/00/0000 00:00:00' ){
     $date_start = $_POST['tournament_date_start'];
     if( !isset( $_POST['tournament_date_end'] ) || $_POST['tournament_date_end'] < $_POST['tournament_date_start'] ){
@@ -108,6 +114,7 @@ else if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_se
         'club_restriction' => $_POST['club_restriction'],
         'tournament_typ' => $_POST['tournament_typ'],
         'localization' => $_POST['tournament_localization'],
+        'round_max' => $round_max,
         'date_start' => $date_start,
         'date_end' => $date_end,
         'logo' => $logo
@@ -184,6 +191,7 @@ else{
         'club_restriction' => $_POST['club_restriction'],
         'tournament_typ' => $_POST['tournament_typ'],
         'localization' => $_POST['tournament_localization'],
+        'round_max' => $round_max,
         'date_start' => $date_start,
         'date_end' => $date_end,
         'logo' => $logo
@@ -194,7 +202,7 @@ else{
     $new_t_id = $wpdb->insert_id;
     $data['id'] = $new_t_id;
     $_SESSION['current_tournament'] = $data;
-   $new_t_system = $_POST['tournament_system'];
+    $new_t_system = $_POST['tournament_system'];
     $_SESSION['round'] = 1;
 
     if( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] > 0 ){

@@ -65,6 +65,13 @@ if( $_SESSION['current_tournament'] !== false ){
     $html .= __('Players: ', 'bad-tournament').'<span id="nb_players_tournament" data-init="'.$nb_players_tournament.'">'.$nb_players_tournament.'</span>';
     $html .= '<br />';
     $html .= __('Matches played: ', 'bad-tournament').$nb_matchs;
+    if( $_SESSION[ 'current_tournament' ][ 'round_max' ]  > 0){
+        $html .= '<br />';
+        $html .= __('Max rounds: ', 'bad-tournament').$_SESSION[ 'current_tournament' ][ 'round_max' ];
+    }else{
+        $html .= '<br />';
+        $html .= __('Max rounds: ', 'bad-tournament').' '.__( 'No limit' , 'bad-tournament');
+    }
 
     $html .= '<h4>'.$t_system[ $_SESSION['current_tournament']['system'] ].'</h4>';
     $html .= '<h4>'.__( 'Sets to win:', 'bad-tournament').' '.$_SESSION['current_tournament']['nb_sets'].' '.__( 'Points/Set:', 'bad-tournament').' '.$_SESSION['current_tournament']['points_set'].' '.__( 'Max. points per set:', 'bad-tournament').' '.$_SESSION['current_tournament']['max_points_set'].'</h4>';

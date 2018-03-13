@@ -9,32 +9,62 @@
 //$wpdb->show_errors();
 
 if( !is_numeric( $_POST['match_id'] ) ){
-    $bvg_admin_msg .= 'Fehler: Match ID ist falsch...';
+    if( $_POST['form_subaction'] == 'allgames-result' ){
+        /* Save all matches */
+
+        $json_data = $_POST[ 'json_data' ];
+        $matches = json_decode( stripslashes( $json_data ) );
+
+        foreach( $matches as $match ){
+            $bvg_admin_msg .= badt_update_match( $match );
+        }
+
+    }else{
+        $bvg_admin_msg .= 'Fehler: Match ID ist falsch...';
+    }
+
 }else{
 
+    $bvg_admin_msg .= badt_update_match( $_POST );
+
+    $bvg_admin_msg .= '<br />';
+}
+
+function badt_update_match( $match_vals ){
+    global $wpdb;
+    $bvg_admin_msg = '';
+
+    if( !isset( $match_vals['match_id'] ) ){
+        $match_vals_stocked = $match_vals;
+        $match_vals = array();
+        foreach( $match_vals_stocked as $param ){
+            $match_vals[ $param->name ] = $param->value;
+        }
+    }
+
     /* Get match values before update */
-    $match_before_update = badt_db_get_matches( false, false, $_POST['match_id'] )[0];
+    $match_before_update = badt_db_get_matches( false, false, $match_vals['match_id'] )[0];
     //var_dump( $match_before_update );
 
     $winner = 0;
 
-    $m_id = $_POST['match_id'];
+    $m_id = $match_vals['match_id'];
 
-    $pl1_id = $_POST['pl1_id'];
-    $pl2_id = $_POST['pl2_id'];
-    $pl1_id_bis = $_POST['pl1_id_bis'];
-    $pl2_id_bis = $_POST['pl2_id_bis'];
+    $pl1_id = $match_vals['pl1_id'];
+    $pl2_id = $match_vals['pl2_id'];
+    $pl1_id_bis = $match_vals['pl1_id_bis'];
+    $pl2_id_bis = $match_vals['pl2_id_bis'];
 
-    $pl1_set1 = $_POST['pl1_m'.$m_id.'_set1'];
-    $pl2_set1 = $_POST['pl2_m'.$m_id.'_set1'];
-    $pl1_set2 = $_POST['pl1_m'.$m_id.'_set2'];
-    $pl2_set2 = $_POST['pl2_m'.$m_id.'_set2'];
-    $pl1_set3 = $_POST['pl1_m'.$m_id.'_set3'];
-    $pl2_set3 = $_POST['pl2_m'.$m_id.'_set3'];
-    $pl1_set4 = $_POST['pl1_m'.$m_id.'_set4'];
-    $pl2_set4 = $_POST['pl2_m'.$m_id.'_set4'];
-    $pl1_set5 = $_POST['pl1_m'.$m_id.'_set5'];
-    $pl2_set5 = $_POST['pl2_m'.$m_id.'_set5'];
+    $pl1_set1 = $match_vals['pl1_m'.$m_id.'_set1'];
+    $pl2_set1 = $match_vals['pl2_m'.$m_id.'_set1'];
+    $pl1_set2 = $match_vals['pl1_m'.$m_id.'_set2'];
+    $pl2_set2 = $match_vals['pl2_m'.$m_id.'_set2'];
+    $pl1_set3 = $match_vals['pl1_m'.$m_id.'_set3'];
+    $pl2_set3 = $match_vals['pl2_m'.$m_id.'_set3'];
+    $pl1_set4 = $match_vals['pl1_m'.$m_id.'_set4'];
+    $pl2_set4 = $match_vals['pl2_m'.$m_id.'_set4'];
+    $pl1_set5 = $match_vals['pl1_m'.$m_id.'_set5'];
+    $pl2_set5 = $match_vals['pl2_m'.$m_id.'_set5'];
 
     $s1 = 0;
     $s2 = 0;
@@ -64,8 +94,8 @@ if( !is_numeric( $_POST['match_id'] ) ){
         $s2++;
     }
 
-    if( is_numeric( $_POST['match_winner_'.$m_id] ) && $_POST['match_winner_'.$m_id] > 0 ){
-        $winner = $_POST['match_winner_'.$m_id];
+    if( is_numeric( $match_vals['match_winner_'.$m_id] ) && $match_vals['match_winner_'.$m_id] > 0 ){
+        $winner = $match_vals['match_winner_'.$m_id];
     }else{
         /* Try to set winner */
         $bvg_admin_msg .= 'Try to set winner...<br />';
@@ -128,7 +158,7 @@ if( !is_numeric( $_POST['match_id'] ) ){
         }
     }
 
-    $bvg_admin_msg .= 'Winner: '.$winner.'<br />';
+    $bvg_admin_msg .= __( 'Winner: ' , 'bad-tournament' ).$winner.'<br />';
 
     if( $winner > 0 ){
         $pl1_level_current_change = 0;
@@ -187,7 +217,7 @@ if( !is_numeric( $_POST['match_id'] ) ){
         $wpdb->query( $wpdb->prepare(
             "UPDATE
             ".$wpdb->prefix . 'bvg_players_tournament'."
-            
+
             SET
             player_level_current=player_level_current+".$pl1_level_current_change.",
             played=played+%d,
@@ -199,12 +229,12 @@ if( !is_numeric( $_POST['match_id'] ) ){
             sets_against=sets_against+%d,
             points=points+%d,
             points_against=points_against+%d
-            
+
             WHERE
             id=".$pl1_id,
 
             $played, $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
-            )
+        )
         );
 
         if( $_SESSION['t_system'] == 4 ){
@@ -212,7 +242,7 @@ if( !is_numeric( $_POST['match_id'] ) ){
             $wpdb->query( $wpdb->prepare(
                 "UPDATE
                 ".$wpdb->prefix . 'bvg_players_tournament'."
-                
+
                 SET
                 player_level_current=player_level_current+".$pl1_level_current_change.",
                 played=played+%d,
@@ -224,12 +254,12 @@ if( !is_numeric( $_POST['match_id'] ) ){
                 sets_against=sets_against+%d,
                 points=points+%d,
                 points_against=points_against+%d
-                
+
                 WHERE
                 id=".$pl1_id_bis,
 
                 $played, $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
-                )
+            )
             );
         }
 
@@ -281,7 +311,7 @@ if( !is_numeric( $_POST['match_id'] ) ){
         /*echo $wpdb->prepare(
             "UPDATE
             ".$wpdb->prefix . 'bvg_players_tournament'."
-            
+
             SET
             player_level_current=player_level_current+".$pl2_level_current_change.",
             played=played+%d,
@@ -293,7 +323,7 @@ if( !is_numeric( $_POST['match_id'] ) ){
             sets_against=sets_against+%d,
             points=points+%d,
             points_against=points_against+%d
-            
+
             WHERE
             id=".$pl2_id,
 
@@ -302,7 +332,7 @@ if( !is_numeric( $_POST['match_id'] ) ){
         $wpdb->query( $wpdb->prepare(
             "UPDATE
             ".$wpdb->prefix . 'bvg_players_tournament'."
-            
+
             SET
             player_level_current=player_level_current+".$pl2_level_current_change.",
             played=played+%d,
@@ -314,12 +344,12 @@ if( !is_numeric( $_POST['match_id'] ) ){
             sets_against=sets_against+%d,
             points=points+%d,
             points_against=points_against+%d
-            
+
             WHERE
             id=".$pl2_id,
 
             $played, $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
-            )
+        )
         );
 
         if( $_SESSION['t_system'] == 4 ){
@@ -327,7 +357,7 @@ if( !is_numeric( $_POST['match_id'] ) ){
             $wpdb->query( $wpdb->prepare(
                 "UPDATE
                 ".$wpdb->prefix . 'bvg_players_tournament'."
-                
+
                 SET
                 player_level_current=player_level_current+".$pl2_level_current_change.",
                 played=played+%d,
@@ -339,12 +369,12 @@ if( !is_numeric( $_POST['match_id'] ) ){
                 sets_against=sets_against+%d,
                 points=points+%d,
                 points_against=points_against+%d
-                
+
                 WHERE
                 id=".$pl2_id_bis,
 
                 $played, $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
-                )
+            )
             );
         }
     }
@@ -352,24 +382,22 @@ if( !is_numeric( $_POST['match_id'] ) ){
     //$wpdb->print_error();
 
     $data = array(
-        'pl1_set1' => ( is_numeric( $_POST['pl1_m'.$m_id.'_set1'] ) ? $_POST['pl1_m'.$m_id.'_set1'] : 0 ),
-        'pl2_set1' => ( is_numeric( $_POST['pl2_m'.$m_id.'_set1'] ) ? $_POST['pl2_m'.$m_id.'_set1'] : 0 ),
-        'pl1_set2' => ( is_numeric( $_POST['pl1_m'.$m_id.'_set2'] ) ? $_POST['pl1_m'.$m_id.'_set2'] : 0 ),
-        'pl2_set2' => ( is_numeric( $_POST['pl2_m'.$m_id.'_set2'] ) ? $_POST['pl2_m'.$m_id.'_set2'] : 0 ),
-        'pl1_set3' => ( is_numeric( $_POST['pl1_m'.$m_id.'_set3'] ) ? $_POST['pl1_m'.$m_id.'_set3'] : 0 ),
-        'pl2_set3' => ( is_numeric( $_POST['pl2_m'.$m_id.'_set3'] ) ? $_POST['pl2_m'.$m_id.'_set3'] : 0 ),
-        'pl1_set4' => ( is_numeric( $_POST['pl1_m'.$m_id.'_set4'] ) ? $_POST['pl1_m'.$m_id.'_set4'] : 0 ),
-        'pl2_set4' => ( is_numeric( $_POST['pl2_m'.$m_id.'_set4'] ) ? $_POST['pl2_m'.$m_id.'_set4'] : 0 ),
-        'pl1_set5' => ( is_numeric( $_POST['pl1_m'.$m_id.'_set5'] ) ? $_POST['pl1_m'.$m_id.'_set5'] : 0 ),
-        'pl2_set5' => ( is_numeric( $_POST['pl2_m'.$m_id.'_set5'] ) ? $_POST['pl2_m'.$m_id.'_set5'] : 0 ),
+        'pl1_set1' => ( is_numeric( $match_vals['pl1_m'.$m_id.'_set1'] ) ? $match_vals['pl1_m'.$m_id.'_set1'] : 0 ),
+        'pl2_set1' => ( is_numeric( $match_vals['pl2_m'.$m_id.'_set1'] ) ? $match_vals['pl2_m'.$m_id.'_set1'] : 0 ),
+        'pl1_set2' => ( is_numeric( $match_vals['pl1_m'.$m_id.'_set2'] ) ? $match_vals['pl1_m'.$m_id.'_set2'] : 0 ),
+        'pl2_set2' => ( is_numeric( $match_vals['pl2_m'.$m_id.'_set2'] ) ? $match_vals['pl2_m'.$m_id.'_set2'] : 0 ),
+        'pl1_set3' => ( is_numeric( $match_vals['pl1_m'.$m_id.'_set3'] ) ? $match_vals['pl1_m'.$m_id.'_set3'] : 0 ),
+        'pl2_set3' => ( is_numeric( $match_vals['pl2_m'.$m_id.'_set3'] ) ? $match_vals['pl2_m'.$m_id.'_set3'] : 0 ),
+        'pl1_set4' => ( is_numeric( $match_vals['pl1_m'.$m_id.'_set4'] ) ? $match_vals['pl1_m'.$m_id.'_set4'] : 0 ),
+        'pl2_set4' => ( is_numeric( $match_vals['pl2_m'.$m_id.'_set4'] ) ? $match_vals['pl2_m'.$m_id.'_set4'] : 0 ),
+        'pl1_set5' => ( is_numeric( $match_vals['pl1_m'.$m_id.'_set5'] ) ? $match_vals['pl1_m'.$m_id.'_set5'] : 0 ),
+        'pl2_set5' => ( is_numeric( $match_vals['pl2_m'.$m_id.'_set5'] ) ? $match_vals['pl2_m'.$m_id.'_set5'] : 0 ),
         'winner' => $winner
     );
     $wpdb->update( $wpdb->prefix . 'bvg_matches',
         $data,
-        array( 'id' => $_POST['match_id'] ) );
+        array( 'id' => $match_vals['match_id'] ) );
 
-
-    //$wpdb->print_error();
-    $bvg_admin_msg .= 'Match aktualisiert...'.print_r( $_POST , 1 );
+    $bvg_admin_msg .= __( 'Match successfully updated.' , 'bad-tournament' ).'<br />';
+    return $bvg_admin_msg;
 }
-

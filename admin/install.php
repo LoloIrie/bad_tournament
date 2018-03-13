@@ -8,7 +8,7 @@
 
 if ( !defined( 'ABSPATH' ) ) die();
 
-$bad_tournament_version = '1.1';
+$bad_tournament_version = '1.3';
 
 function badt_install( $bad_tournament_version, $bad_tournament_current_version = false ){
 
@@ -34,21 +34,24 @@ function badt_install( $bad_tournament_version, $bad_tournament_current_version 
 }
 
 function badt_update( $bad_tournament_current_version ){
-    $bvg_admin_msg = __( 'Plugin Bad Tournament updated with following versions. Database modifications:' , 'bad-tournament' );
+    $bvg_admin_msg = __( 'Plugin Bad Tournament updated with following versions:' , 'bad-tournament' ).'<br />';
 
     $existing_updates = array(
         '1.0.1',
-        '1.0.2',
-        '1.1',
-        '1.2'
+        //'1.0.2',
+        //'1.1',
+        //'1.2',
+        '1.3'
     );
 
     foreach( $existing_updates as $version ){
         if( $version > $bad_tournament_current_version ){
 
             $func_name = 'badt_update_'.str_replace( '.', '_', $version );
-            if( $msg = $func_name() ){
+            if( function_exists( $func_name ) && $msg = $func_name() ){
                 $bvg_admin_msg .= ' '.$msg.'<br />';
+            }else if( !function_exists( $func_name ) ){
+                $bvg_admin_msg .= ' Version '.$version.__( ':no database update required' , 'bad-tournament' ).'<br />';
             }else{
                 $bvg_admin_msg .= ' '.$version.' ('.__( 'ERROR: function '.$func_name.' is missing...' , 'bad-tournament' ).')<br />';
             }
@@ -233,6 +236,7 @@ function badt_update_1_0_1(){
     return $msg_update;
 }
 
+/*
 function badt_update_1_0_2(){
     $msg_update = __('Version 1.0.2: No database modification', 'bad-tournament');
 
@@ -247,6 +251,22 @@ function badt_update_1_1(){
 
 function badt_update_1_2(){
     $msg_update = __('Version 1.2: No database modification', 'bad-tournament');
+
+    return $msg_update;
+}
+*/
+
+function badt_update_1_3(){
+    global $wpdb;
+    require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+    $nom_table = $wpdb->prefix . 'bvg_tournaments';
+    $sql = "ALTER TABLE ".$nom_table."
+                    ADD round_max INT(6) unsigned NOT NULL AFTER localization;";
+
+    $wpdb->query( $sql );
+
+    $msg_update = __('Version 1.3: Add tournament max round', 'bad-tournament');
 
     return $msg_update;
 }

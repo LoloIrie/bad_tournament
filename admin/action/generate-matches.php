@@ -9,12 +9,20 @@
 
 /* Try to find a free opponent */
 function badt_get_free_opponent( $players_match, $k_pl1, $opponents ){
+
+    /*
+    echo '<pre>';
+    var_dump($players_match);
+    var_dump($k_pl1);
+    var_dump($opponents);
+    echo '</pre>';
+    */
     $key = 0;
 
     foreach( $players_match as $k => $player_match ){
         if( $k != $k_pl1 ){
-            if( !in_array( $player_match[$k]->id , $opponents ) ){
-                $key = $k;
+            if( !in_array( $player_match->$k['id'] , $opponents ) ){
+                $key = $player_match->$k['id'];
                 break;
             }
         }
@@ -159,7 +167,7 @@ if( isset( $_POST['generate_matchs_now'] ) || $generate_matchs_now === true ){
 
             for ($i = 0; $i < $nb_matches; $i+2) {
 
-                echo '$I: '.$i.' ...<br />';
+                //echo '$I: '.$i.' ...<br />';
                 $already_played = true;
                 $k_pl1 = $i;
                 $bvg_admin_msg .= '<h3>Spieler(i:'.$i.') ID: '.$players_match[$k_pl1]->id.'</h3>';

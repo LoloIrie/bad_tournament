@@ -172,7 +172,8 @@ if( isset( $_POST['player_tournament_remove'] ) ){
     ".$where;
 
     if( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] > 0 ){
-        $query .= "AND club_id=".$_SESSION[ 'current_tournament' ][ 'club_restriction' ];
+        $query .= '
+        AND club_id='.$_SESSION[ 'current_tournament' ][ 'club_restriction' ];
     }
 
     $all_players = $wpdb->get_results( $query, OBJECT_K  );

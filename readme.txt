@@ -3,7 +3,7 @@ Contributors: loloirie
 Tags: tournament, club, shortcode, administration, badminton, tennis, table tennis
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.2
+Stable tag: 1.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 
@@ -89,6 +89,10 @@ But please, describe correctly your issue and be patient...
 
 == Changelog ==
 
+
+= 1.3 - .2018 =
+* Allow to set fixed rounds for a tournament
+* Allow to update more matches in one step
 
 = 1.2 - 19.01.2018 =
 * Import / Export

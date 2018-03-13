@@ -20,7 +20,6 @@ $atts = shortcode_atts(
 
 include_once plugin_dir_path(__FILE__). '../admin/db-get-content.php';
 
-
 if( isset( $_SESSION['tournament_to_display'] ) && is_numeric( $_SESSION['tournament_to_display'] ) ){
     $tournament = badt_db_get_tournaments( $_SESSION['tournament_to_display'] );
     $players = badt_db_get_players( $_SESSION['tournament_to_display'] );

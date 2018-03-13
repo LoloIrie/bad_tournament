@@ -39,7 +39,7 @@ if( $round === 0 ){
 if( isset( $tournament[0] ) ){
     if( isset( $_SESSION['tournament_to_display'] ) && is_numeric( $_SESSION['tournament_to_display'] ) ){
         $matches = badt_db_get_matches( $_SESSION['tournament_to_display'], $round );
-        echo 'ROUND: '.$round;
+        echo 'ROUND: '.$round. ' '.__FILE__.':'.__LINE__;
     }else{
         $matches = badt_db_get_matches( $atts['t_id'], $round );
     }

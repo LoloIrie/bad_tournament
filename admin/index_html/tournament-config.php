@@ -201,6 +201,15 @@ $html .= '</tr>';
 
 $html .= '<tr class="form-field form-required">';
     $html .= '<th scope="row">';
+        $html .= '<label>'.__('Max rounds for the full tournament:', 'bad-tournament').'</label>';
+    $html .= '</th>';
+    $html .= '<td>';
+        $html .= '<input type="number" value="" name="round_max" id="round_max" min="1" max="64" />';
+    $html .= '</td>';
+$html .= '</tr>';
+
+$html .= '<tr class="form-field form-required">';
+    $html .= '<th scope="row">';
         $html .= '<label>'.__('Club restriction:', 'bad-tournament').'</label>';
     $html .= '</th>';
     $html .= '<td>';

@@ -87,6 +87,12 @@ $html .= '<div class="bad_tournament_block" id="tournament_summary">';
         $html .= '<span>'.__( 'Max points per set:' , 'bad-tournament' ).'</span>'.$tournament->max_points_set;
     $html .= '</div>';
 
+    if( $tournament->round_max > 0) {
+        $html .= '<div class="tournament_summary_row" id="tournament_summary_round_max">';
+        $html .= '<span>' . __('Max rounds for this tournament:', 'bad-tournament') . '</span>' . $tournament->round_max;
+        $html .= '</div>';
+    }
+
     if( !empty( $tournament->date_start ) ){
         $html .= '<div class="tournament_summary_row" id="tournament_summary_date_start">';
         $html .= '<span>'.__( 'Date:' , 'bad-tournament' ).'</span>'.$tournament->date_start;

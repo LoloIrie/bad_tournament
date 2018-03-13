@@ -1,7 +1,8 @@
 console.log( 'bad-tournament-admin.js included...' );
 console.log( bvg_tournament_constants );
 
-/* Switching admin page */
+/*
+Switching admin page */
 jQuery('.nav_item').on( 'click', function(){
     jQuery('.nav_item').removeClass( 'active' );
     jQuery( this ).addClass( 'active' );
@@ -11,7 +12,8 @@ jQuery('.nav_item').on( 'click', function(){
     jQuery( id_block ).slideDown( 'slow' );
 });
 
-/* Set match winner */
+/*
+Set match winner */
 jQuery('.match_winner').on( 'click', function(){
     jMatchId = '#match_winner_' + jQuery( this ).attr('data_m_id');
     jFormId = '#form_match_' + jQuery().attr('data_m_id');
@@ -19,7 +21,8 @@ jQuery('.match_winner').on( 'click', function(){
     jQuery( jFormId ).submit();
 });
 
-/* Choose existing tournament */
+/*
+Choose existing tournament */
 jQuery('#tournament_select_button').on( 'click', function(){
     jQuery( '#tournament_name').val( '' );
     jQuery( '#tournament_select_id' ).val( jQuery( '#tournament_select' ).val() );
@@ -37,12 +40,14 @@ jQuery('#tournament_remove_button').on( 'click', function(){
 
 });
 
-/* Fill tournament form with existing values */
+/*
+Fill tournament form with existing values */
 jQuery('#tournament_select').on( 'change', function(){
     if( jQuery( this ).val() > 0 ){
         jQuery( '#tournament_edit').fadeIn();
         console.log( tournament[jQuery( '#tournament_select' ).val()] );
         selected_tournament = JSON.parse( tournament[jQuery( '#tournament_select' ).val()] );
+        //console.log( selected_tournament );
 
         jQuery( '#tournament_parent_select option' ).each( function(){
             if( jQuery( this).val() == selected_tournament.parent_id ){
@@ -69,6 +74,7 @@ jQuery('#tournament_select').on( 'change', function(){
         jQuery( '#tournament_nb_sets').val( selected_tournament.nb_sets );
         jQuery( '#tournament_points_set').val( selected_tournament.points_set );
         jQuery( '#tournament_max_points_set').val( selected_tournament.max_points_set );
+        jQuery( '#round_max').val( selected_tournament.round_max );
         jQuery( '#club_restriction option' ).each( function(){
             if( jQuery( this).val() == selected_tournament.club_restriction ){
                 jQuery( this).attr( 'selected', 'selected' );
@@ -100,13 +106,15 @@ jQuery( '#tournament_logo_url').on( 'blur', function(){
     }
 });
 
-/* Close admin message */
+/*
+Close admin message */
 jQuery('#bvg_admin_msg_close').on( 'click', function(){
     console.log( 'Close admin msg...' );
     jQuery( '#bvg_admin_msg').animate({ height: 0, opacity: 0 }, 'slow');
 });
 
-/* Expand players list */
+/*
+Expand players list */
 jQuery('#player_select').on( 'focus mouseover' , function(){
     if( jQuery( this ).children().length > 25 ){
         jQuery( this ).height( 400 );
@@ -118,7 +126,8 @@ jQuery('#player_select').on( 'blur mouseout' , function(){
    jQuery( this ).height( 150 );
 });
 
-/* Display nb players in the current tournament */
+/*
+Display nb players in the current tournament */
 jQuery('#player_select').on( 'change' , function(){
     nb_players_init = jQuery( '#nb_players_tournament' ).data( 'init' );
     nb_players_added = jQuery("#player_select :selected").length;
@@ -128,7 +137,8 @@ jQuery('#player_select').on( 'change' , function(){
     jQuery('#nb_players_tournament').html( nb_players_init + ' (+' + nb_players_added + ') ' + nb_players_total );
 });
 
-/* Expand new player form */
+/*
+Expand new player form */
 jQuery('.plus_icon').on( 'click', function(){
     jQuery( this).next().next().slideDown();
 
@@ -149,7 +159,8 @@ jQuery('.plus_icon').on( 'click', function(){
     });
 });
 
-/* Change player for a match */
+/*
+Change player for a match */
 jQuery( 'select.player_name' ).on('change', function() {
         if (confirm('Wollen Sie wirklich die Spieleinstellung ändern ? ')) {
             jQuery('#ajax_spinner_layer').fadeIn();
@@ -186,7 +197,8 @@ jQuery( 'select.player_name' ).on('change', function() {
         }
     } );
 
-/* Expand player profile on table view */
+/*
+Expand player profile on table view */
 jQuery('.pl_infos').on( 'click', function(){
     console.log('Display player infos');
 
@@ -295,7 +307,8 @@ jQuery('.pl_infos').on( 'click', function(){
 
 } );
 
-/* Remove player from tournament */
+/*
+Remove player from tournament */
 jQuery('.pl_remove').on( 'click', function(){
     jQuery('#ajax_spinner_layer').fadeIn();
 
@@ -333,12 +346,14 @@ jQuery('.pl_remove').on( 'click', function(){
     });
 } );
 
-/* add datepicker to forms */
+/*
+Add datepicker to forms */
 //jQuery('.datepicker').datepicker( {dateFormat: "dd/mm/yy"} );
 jQuery('.datepicker').datepicker( {dateFormat: "dd/mm/yy"} );
 jQuery('.datetimepicker').datetimepicker( {dateFormat: "dd/mm/yy", timeFormat: "hh:mm"} );
 
-/* Set club as default */
+/*
+Set club as default */
 jQuery( '#club_player, .clubs_name' ).on('change keypress click', function(e){
     if( jQuery( this ).val() > 0 ){
         if( jQuery( '#edit_field_valid' ).length > 0 ){
@@ -391,7 +406,8 @@ jQuery( '#club_player, .clubs_name' ).on('change keypress click', function(e){
     }
 });
 
-/* Export */
+/*
+Export */
 jQuery('#export1').on( 'click' , function(){
     if( jQuery( this ).attr('checked') == 'checked' ){
         jQuery('.export_checkbox').attr('checked', 'checked').attr('disabled', 'disabled');
@@ -431,7 +447,8 @@ jQuery('#export_file').on( 'click', function(){
 
 
 
-/* Menus */
+/*
+Menus */
 var badt_submenus = '<ul class="wp-submenu wp-submenu-wrap badt_submenu" id="badt_submenu" style="top: -47px !important;"><li class="wp-submenu-head" aria-hidden="true">Bad Tournament</li>';
 for( var key in bvg_submenus ){
     if (bvg_submenus.hasOwnProperty(key)) {

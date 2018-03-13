@@ -95,8 +95,13 @@ foreach( $players as $k => $player ){
 }
 $html .= '</ul>';
 
-$html .= '<input type="submit" value="'.__('Next round', 'bad-tournament').'" class="next_round button-primary button" style="float: none;" />';
-$html .= '<input type="submit" value="'.__('Next round and create matches', 'bad-tournament').'" name="generate_matchs_now" class="submit2 next_round button-primary button" style="float: none;" />';
+if( $_SESSION[ 'current_tournament' ][ 'round_max' ] <= $_SESSION['round'] ){
+    $html .= '<p class="topspace badt_alert">'.__('Be careful to the defined maximum round number... Sure to want to create a new round ?', 'bad-tournament').'</p>';
+}
+$html .= '<p>
+<input type="submit" value="'.__('Next round', 'bad-tournament').'" class="next_round button-primary button" style="float: none;" />';
+$html .= '<input type="submit" value="'.__('Next round and create matches', 'bad-tournament').'" name="generate_matchs_now" class="submit2 next_round button-primary button" style="float: none;" />
+</p>';
 
 $html .= '<h1 class="topspace">'.__('Shortcodes', 'bad-tournament').'</h1>';
 $html .= '<div class="shortcode_bvg"><h2>'.__('Full table', 'bad-tournament').'</h2><input type="text" class="wp_style" value="[bad_tournament_table t_id='.$_SESSION['t_id'].' view=full]" /></div>';

@@ -31,7 +31,9 @@ $html .= '<div class="admin_block nav_match" id="block_game" '.( $ADMIN_VIEW == 
 
         /* Allow to regenerate all games ? */
         $winner_exists = false;
+        $all_matches_id = array();
         $tabindex = 0;
+        $nb_open_matches = 0;
         foreach( $matches as $match ){
             $winner = 0;
             $pl1_set1 = 0;
@@ -85,8 +87,12 @@ $html .= '<div class="admin_block nav_match" id="block_game" '.( $ADMIN_VIEW == 
                 $m_id = $match['id'];
             }
 
+            $all_matches_id[] = $m_id;
+
             if( $winner > 0 ){
                 $winner_exists = true;
+            }else{
+                $nb_open_matches++;
             }
 
             if( !isset( $players[ $match->player1_id ] ) && $match->player1_id > 0 ){
@@ -104,17 +110,19 @@ $html .= '<div class="admin_block nav_match" id="block_game" '.( $ADMIN_VIEW == 
 
 
             //var_dump( $match );
-            $html .= '<form method="post" id="match_form_'.$m_id.'" action="admin.php?page=bad_tournament&admin_view=matches">';
+            $html .= '<form method="post" id="match_form_'.$m_id.'" action="admin.php?page=bad_tournament&admin_view=matches" class="match_form'.( $winner != $pl1_id && $winner != $pl2_id ? '_open' : '' ).'">';
             $html .= '<input type="hidden" name="form_action" value="game-result" />';
-            $html .= '<input type="hidden" name="match_id" class="match_id" value="'.$m_id.'" />';
             $html .= '<input type="hidden" name="pl1_id" value="'.$pl1_id.'" />';
             $html .= '<input type="hidden" name="pl2_id" value="'.$pl2_id.'" />';
             $html .= '<input type="hidden" name="pl1_id_bis" value="'.$pl1_id_bis.'" />';
             $html .= '<input type="hidden" name="pl2_id_bis" value="'.$pl2_id_bis.'" />';
             $html .= '<input type="hidden" id="match_winner_'.$m_id.'" name="match_winner_'.$m_id.'" value="" />';
 
-            $html .= '<div>';
-            $html .= '<div>'.__( 'Match' , 'bad-tournament').' '.$m_id.': '.$players[$pl1_id]->player_firstname.' '.$players[$pl1_id]->player_lastname.( $_SESSION['t_system'] == 1 ? '('.$players[$pl1_id]->player_level_init.')' : '' ).' - '.$players[$pl2_id]->player_firstname.' '.$players[$pl2_id]->player_lastname.( $_SESSION['t_system'] == 1 ? '('.$players[$pl2_id]->player_level_init.')' : '' ).'</div>';
+
+            $html .= '<div style="line-height: 26px;"><input type="checkbox" name="match_id" class="match_id" value="'.$m_id.'" '.( $winner == 0 ? 'checked="checked"' : 'disabled="disabled"' ).' />'.__( 'Match' , 'bad-tournament').' '.$m_id.': '.$players[$pl1_id]->player_firstname.' '.$players[$pl1_id]->player_lastname.( $_SESSION['t_system'] == 1 ? '('.$players[$pl1_id]->player_level_init.')' : '' ).' - '.$players[$pl2_id]->player_firstname.' '.$players[$pl2_id]->player_lastname.( $_SESSION['t_system'] == 1 ? '('.$players[$pl2_id]->player_level_init.')' : '' ).'</div>';
+
+            $html .= '<div style="clear: both;">';
+
 
             //$html .= '<table class="form-table">';
 
@@ -191,17 +199,41 @@ $html .= '<div class="admin_block nav_match" id="block_game" '.( $ADMIN_VIEW == 
             $html .= '<br /><br /><hr />';
 
 
-
             $html .= '</form>';
+
 
             $tabindex = $tabindex + 100;
         }
+
+
 
         if( !$winner_exists ){
             $html .= '<form method="post" action="admin.php?page=bad_tournament&admin_view=matches">';
             $html .= '<input name="regenerate_matchs_now" type="submit" value="'.__('Regenerate matches', 'bad-tournament').'" class="button button-primary" />';
             $html .= '</form>';
         }
+
+        if( $nb_open_matches > 0){
+            $html .= '<form method="post" id="allmatches_form" action="admin.php?page=bad_tournament&admin_view=matches">';
+            $html .= '<input type="hidden" name="form_action" value="game-result" />';
+            $html .= '<input type="hidden" name="form_subaction" value="allgames-result" />';
+            $html .= '<textarea name="json_data" id="json_data" style="display: none;" ></textarea>';
+            $html .= '<input name="update_all_matches" id="update_all_matches" type="submit" value="'.__('Update all selected matches', 'bad-tournament').'" class="button button-primary '.( !$winner_exists ? 'submit2' : '' ).'" />';
+            $html .= '</form>';
+            $html .= '<script>
+            jQuery(\'#update_all_matches\').on(\'click\', function(){
+                forms_object = {};
+                forms_json = {};
+                jQuery(\'form.match_form_open\').each(function( index ){
+                    forms_json[index] = jQuery( this ).serializeArray();
+                });
+                console.log( forms_json );
+                $(\'#json_data\').text( JSON.stringify( forms_json ) );
+                //$(\'#allmatches_form\').submit();
+            });
+        </script>';
+        }
+
 
         $html .= '<h1 class="topspace">'.__('Shortcodes', 'bad-tournament').'</h1>';
         $html .= '<div class="shortcode_bvg"><h2>'.__('Matches', 'bad-tournament').'</h2><input type="text" class="wp_style" value="[bad_tournament_matches t_id='.$_SESSION['t_id'].' round=0]" /></div>';
