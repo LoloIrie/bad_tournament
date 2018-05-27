@@ -157,6 +157,18 @@ jQuery('#tournament_remove_button').on( 'click', function(){
 
 });
 
+jQuery('#tournament_restart_button').on( 'click', function(){
+    if( jQuery( '#tournament_select' ).val() > 0 ){
+        if( !confirm( bvg_tournament_constants.confirmRestartTournament ) ){
+            return false;
+        }
+    }else{
+        alert( 'Choose a tournament to restart' );
+        return false;
+    }
+
+});
+
 /*
 Fill tournament form with existing values */
 jQuery('#tournament_select').on( 'change', function(){

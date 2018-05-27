@@ -40,8 +40,9 @@ $html .= '<input type="hidden" name="tournament_select_id" value="'.$_SESSION['t
 
         $html .= '<tr class="form-field form-required">';
             $html .= '<td colspan="2" >';
-                $html .= '<input type="submit" class="button button-primary" value="'.__('Choose tournament', 'bad-tournament').'" id="tournament_select_button" name="tournament_select_button" />';
-                $html .= '<input type="submit" class="submit2 button-primary button" value="'.__('Remove tournament', 'bad-tournament').'" id="tournament_remove_button" name="tournament_remove_button" />';
+                $html .= '<input type="submit" class="button button-primary" value="'.__('Choose tournament', 'bad-tournament').'" id="tournament_select_button" name="tournament_select_button" title="'.__( 'Will activate this tournament in the admin area...' , 'bad-tournament' ).'" />';
+                $html .= '<input type="submit" class="submit2 button-primary button" value="'.__('Remove tournament', 'bad-tournament').'" id="tournament_remove_button" name="tournament_remove_button" title="'.__( 'This tournament will be removed and all matches and players will be deleted for this tournament as well in the database' , 'bad-tournament' ).'" />';
+                $html .= '<input type="submit" class="submit2 button-primary button" value="'.__('Restart tournament', 'bad-tournament').'" id="tournament_restart_button" name="tournament_restart_button" title="'.__( 'All matches for this tournament will be deleted, players stats reinitialized and current round set to 1...' , 'bad-tournament' ).'" />';
             $html .= '</td>';
         $html .= '</tr>';
     }

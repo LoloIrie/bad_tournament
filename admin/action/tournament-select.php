@@ -94,6 +94,58 @@ if( isset( $_POST['tournament_remove_button'] ) && is_numeric( $_POST['tournamen
 
     $bvg_admin_msg .= __( 'Tournament removed !' , 'bad-tournament' ).'<br />';
 }
+/* RESTART TOURNAMENT */
+else if( isset( $_POST['tournament_restart_button'] ) && is_numeric( $_POST['tournament_select'] ) ){
+    $ADMIN_VIEW = 'tournament';
+    /* Edit players */
+
+    /* Remove matches */
+    $query = "DELETE FROM
+    ".$wpdb->prefix."bvg_matches
+
+    WHERE
+    tournament_id=". $_POST['tournament_select'];
+    $wpdb->query( $query );
+    //echo $query.'<br />';
+
+    /* Reinitialize players */
+    $query = "UPDATE
+    ".$wpdb->prefix."bvg_players_tournament
+
+    SET
+    played=0,
+    player_level_current=0,
+    victory=0,
+    draw=0,
+    loss=0,
+    points_major=0,
+    sets=0,
+    sets_against=0,
+    points=0,
+    points_against=0,
+    opponents=''
+
+    WHERE
+    tournament_id=". $_POST['tournament_select'] ;
+    $wpdb->query( $query );
+    //echo $query.'<br />';
+
+    /* Restart tournament */
+    $query = "UPDATE
+    ".$wpdb->prefix."bvg_tournaments
+
+    SET
+    round=1,
+
+    WHERE
+    id=".$_POST['tournament_select'];
+    $wpdb->query( $query );
+    //echo $query.'<br />';
+
+    $_SESSION['round'] = 1;
+
+    $bvg_admin_msg .= __( 'Restart tournament !' , 'bad-tournament' ).'<br />';
+}
 /* EDIT TOURNAMENT */
 else if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_select'] ) ){
     /* EDIT EXISTING TOURNAMENT */

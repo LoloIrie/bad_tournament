@@ -58,6 +58,7 @@ class badt_Bad_Tournament
                 "badTournamentMale": '<?php echo __( 'Male' , 'bad-tournament' ); ?>',
                 "badTournamentFemale": '<?php echo __( 'Female' , 'bad-tournament' ); ?>',
                 "confirmRemoveTournament": '<?php echo __( 'Are you sure you want to remove this tournament ?' , 'bad-tournament' ); ?>',
+                "confirmRestartTournament": '<?php echo __( 'Are you sure you want to restart this tournament ?' , 'bad-tournament' ); ?>',
                 "createMatchSubmitLabel": '<?php echo __( 'Create match now !' , 'bad-tournament' ); ?>',
             }
 
