@@ -11,12 +11,55 @@ if( $_SESSION['current_tournament']['tournament_typ'] == 1 || $_SESSION['current
     $nb_players_matches = 2;
 }
 
+
+
 /* Matches */
 
 
 //$html .= '<div class="admin_block_label">Spiele</div>';
 $html .= '<div class="admin_block nav_match" id="block_game" '.( $ADMIN_VIEW == 'matches' ? 'style="display: block;"' : '' ).'>';
 
+    /* Create custom match */
+    $html .= '<div style="clear: both; margin-bottom: 25px; display: inline-block;">';
+        $html .= '<form method="post" id="match_form_custom" action="admin.php?page=bad_tournament&admin_view=matches" class="match_form">';
+            $html .= '<input type="hidden" name="form_action" value="game-create" />';
+
+
+            $html .= '<div id="create_match_form" style="float: left; display: none; margin-bottom: 15px;;">';
+                $html .= '<div style="clear: both;">';
+
+                    //$html .= '<table class="form-table">';
+
+                    $html .= '<select name="pl1_m_name" id="pl1_m_name" class="player_name_create" />';
+                    $html_options = '';
+                    foreach( $players as $k => $player ){
+                        $html_options .= '<option value="'.$player->id.'">'.$player->player_firstname.' '.$player->player_lastname.'</option>';
+                    }
+                    $html .= $html_options;
+                    $html .= '</select>';
+                    if( $nb_players_matches == 4 ){
+                        $html .= '<select name="pl1_m_name_bis" id="pl1_m_name_bis" class="player_name_create" />';
+                        $html .= $html_options;
+                        $html .= '</select>';
+                    }
+                $html .= '</div>';
+                $html .= '<div>VS</div>';
+                $html .= '<div style="clear: both;">';
+
+                    $html .= '<select name="pl2_m_name" id="pl2_m_name" class="player_name_create" />';
+                    $html .= $html_options;
+                    $html .= '</select>';
+                    if( $nb_players_matches == 4 ){
+                        $html .= '<select name="pl2_m_name_bis" id="pl2_m_name_bis" class="player_name_create" />';
+                        $html .= $html_options;
+                        $html .= '</select>';
+                    }
+                $html .= '</div>';
+            $html .= '</div>';
+
+            $html .= '<input id="create_match_button" type="button" value="'.__('Create custom match', 'bad-tournament').'" class="button button-primary" />';
+        $html .= '</form>';
+    $html .= '</div>';
 
     //var_dump( $matches );
     if( !empty( $matches ) ){
@@ -215,12 +258,28 @@ $html .= '<div class="admin_block nav_match" id="block_game" '.( $ADMIN_VIEW == 
 
         if( $nb_open_matches > 0){
             $html .= '<form method="post" id="allmatches_form" action="admin.php?page=bad_tournament&admin_view=matches">';
-            $html .= '<input type="hidden" name="form_action" value="game-result" />';
+            $html .= '<input type="hidden" name="form_action" id="form_action_updateable" value="game-result" />';
             $html .= '<input type="hidden" name="form_subaction" value="allgames-result" />';
             $html .= '<textarea name="json_data" id="json_data" style="display: none;" ></textarea>';
             $html .= '<input name="update_all_matches" id="update_all_matches" type="submit" value="'.__('Update all selected matches', 'bad-tournament').'" class="button button-primary '.( !$winner_exists ? 'submit2' : '' ).'" />';
+            $html .= '<input name="delete_all_matches" id="delete_all_matches" type="button" value="'.__('Delete all selected matches', 'bad-tournament').'" class="button button-primary '.( !$winner_exists ? 'submit2' : '' ).'" />';
             $html .= '</form>';
             $html .= '<script>
+            jQuery(\'#delete_all_matches\').on(\'click\', function(){
+                if( confirm(\''.__('Are you sure ?', 'bad-tournament').'\') ){
+                    jQuery(\'#form_action_updateable\').val(\'game-delete\');
+                    forms_object = {};
+                    forms_json = {};
+                    jQuery(\'form.match_form_open\').each(function( index ){
+                        forms_json[index] = jQuery( this ).serializeArray();
+                    });
+                    console.log( forms_json );
+                    $(\'#json_data\').text( JSON.stringify( forms_json ) );
+                    jQuery( this ).attr(\'type\', \'submit\');
+                }
+
+            });
+
             jQuery(\'#update_all_matches\').on(\'click\', function(){
                 forms_object = {};
                 forms_json = {};

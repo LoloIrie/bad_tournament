@@ -38,6 +38,7 @@ class badt_Bad_Tournament
         add_action( 'wp_ajax_set_club_default', array( $this, 'set_club_default' ) );
         add_action( 'wp_ajax_set_player_form_default', array( $this, 'set_player_form_default' ) );
         add_action( 'wp_ajax_export_file', array( $this, 'export_file' ) );
+        add_action( 'wp_ajax_save_players_couple', array( $this, 'save_players_couple' ) );
 
         add_action( 'admin_head', array( $this, 'bvg_head_javascript_object' ) );
 
@@ -57,6 +58,7 @@ class badt_Bad_Tournament
                 "badTournamentMale": '<?php echo __( 'Male' , 'bad-tournament' ); ?>',
                 "badTournamentFemale": '<?php echo __( 'Female' , 'bad-tournament' ); ?>',
                 "confirmRemoveTournament": '<?php echo __( 'Are you sure you want to remove this tournament ?' , 'bad-tournament' ); ?>',
+                "createMatchSubmitLabel": '<?php echo __( 'Create match now !' , 'bad-tournament' ); ?>',
             }
 
             var bvg_submenus = {
@@ -137,7 +139,7 @@ class badt_Bad_Tournament
 
             }
 
-            if( $_GET['admin_view'] == 'export' || $_GET['admin_view'] == 'import' ){
+            if( $_GET['admin_view'] == 'export' || $_GET['admin_view'] == 'import' || $_GET['admin_view'] == 'cleanup' ){
                 include plugin_dir_path(__FILE__).'admin/index-export.php';
             }else{
                 add_action( 'admin_footer', array( $this , 'media_selector_print_scripts' ) );
@@ -212,6 +214,14 @@ class badt_Bad_Tournament
     function export_file(){
         $asFile = true;
         include plugin_dir_path(__FILE__).'admin/action/export-data.php';
+        wp_die();
+    }
+
+    // Ajax: Save players couple
+    function save_players_couple(){
+        $html_ajax = '';
+        include plugin_dir_path(__FILE__).'admin/action/save-players-couple.php';
+        echo $html_ajax;
         wp_die();
     }
 

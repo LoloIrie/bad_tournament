@@ -43,6 +43,7 @@ if( !$ADMIN_VIEW ){
 
 
 //echo 'XXX'.$_SESSION['round'];
+//unset( $_SESSION['t_id'] );
 if( !isset( $_SESSION['t_id'] ) ){
 
     $last_tournament = badt_db_get_tournaments( false , true );
@@ -80,7 +81,7 @@ $all_players = badt_db_get_all_players( $club_restriction );
 $players = badt_db_get_players();
 $matches = badt_db_get_matches( $_SESSION['t_id'], $_SESSION['round'] );
 $nb_matchs = badt_db_nb_matches( $_SESSION['t_id'], false, true );
-
+$couples = badt_db_get_couples();
 
 //echo '<pre>';
 //var_dump( $matches );

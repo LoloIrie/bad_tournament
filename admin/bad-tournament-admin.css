@@ -427,7 +427,10 @@ h1.topspace{
 
     border: 1px solid #000;
 }
-
+.player_inCouple_1{
+    margin-top: 0;
+    margin-bottom: 20px;
+}
 
 /* Submenus */
 #badt_submenu{

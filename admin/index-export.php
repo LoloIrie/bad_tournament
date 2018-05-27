@@ -41,6 +41,9 @@ include plugin_dir_path(__FILE__). 'index_html/import.php';
 /* Export */
 include plugin_dir_path(__FILE__). 'index_html/export.php';
 
+/* Import */
+include plugin_dir_path(__FILE__). 'index_html/cleanup.php';
+
 /* Footer */
 include plugin_dir_path(__FILE__). 'index_html/footer.php';
 

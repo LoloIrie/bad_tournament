@@ -106,7 +106,7 @@ else if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_se
     $data = array(
         'parent_id' => $parent_id,
         'name' => $_POST['tournament_name'],
-        //'round' => 1,
+        'round' => $_POST['round'],
         'system' => $_POST['tournament_system'],
         'nb_sets' => $nb_sets,
         'points_set' => $points_sets,
@@ -119,6 +119,9 @@ else if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_se
         'date_end' => $date_end,
         'logo' => $logo
     );
+
+    $_SESSION['current_tournament'] = $data;
+
     $where = array( 'id' => $_POST['tournament_select'] );
     $wpdb->update( $wpdb->prefix . 'bvg_tournaments', $data, $where );
     $_SESSION['t_id'] = $_POST['tournament_select'];

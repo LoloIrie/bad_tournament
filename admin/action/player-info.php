@@ -31,6 +31,12 @@ if( !is_numeric( $_POST['pl_id'] ) ){
         $html_ajax .= '<span class="label_row">'.$player[0]->firstname.' '.$player[0]->lastname.'</span>';
     $html_ajax .= '</div>';
     */
+    $html_ajax .= '<div class="pl_tooltip_player_name">';
+        $html_ajax .= '<label class="pl_tooltip_label">';
+            $html_ajax .= __('Name: ', 'bad-tournament');
+        $html_ajax .= '</label>';
+        $html_ajax .= '<span class="label_row"><span class="player_current_value">'. $player[0]->firstname .' '. $player[0]->lastname .'</span><input class="pl_edit_field" type="text" id="firstname" name="firstname" value="'.$player[0]->firstname.'" /> <input class="pl_edit_field" type="text" id="lastname" name="lastname" value="'.$player[0]->lastname.'" /></span>';
+    $html_ajax .= '</div>';
     $html_ajax .= '<div class="pl_tooltip_player_id">';
         $html_ajax .= '<label class="pl_tooltip_label">';
             $html_ajax .= __('ID: ', 'bad-tournament');

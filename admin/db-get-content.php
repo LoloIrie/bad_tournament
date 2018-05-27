@@ -21,7 +21,7 @@ function badt_db_get_tournaments( $tournament_id = false, $get_last = false, $ge
         
         WHERE
         parent_id=".$get_parent;
-    }else if( !$tournament_id ){
+    }else if( !$tournament_id && !$get_last ){
         /* GET ALL TOURNAMENTS */
         $query = "SELECT
         *
@@ -124,12 +124,20 @@ function badt_db_get_all_players( $club_restriction = false ){
 }
 
 /* Get all players for the current tournament */
-function badt_db_get_players( $tournament_id = false ){
+function badt_db_get_players( $tournament_id = false, $players_list = array() ){
 
     global $wpdb;
 
     if( !$tournament_id ){
         $tournament_id = $_SESSION['t_id'];
+    }
+
+    $where = '';
+    if( !empty( $players_list ) ){
+        $players_id_IN = implode( ',' , $players_list );
+        $where .= '
+        AND
+        pl_t.id IN ('.$players_id_IN.')';
     }
 
     $query = "SELECT
@@ -148,7 +156,7 @@ function badt_db_get_players( $tournament_id = false ){
     pl.id = pl_t.players_id
     
     WHERE
-    pl_t.tournament_id = ".$tournament_id."
+    pl_t.tournament_id = ".$tournament_id.$where."
     
     ORDER BY
     pl_t.points_major DESC, pl_t.played ASC, pl_t.sets DESC, pl_t.sets_against ASC, pl_t.points DESC, pl_t.points_against ASC, pl_t.player_level_init DESC
@@ -256,4 +264,27 @@ function badt_db_get_matches( $tournament_id = false, $round = false, $match_id 
     $matches = $wpdb->get_results( $query );
 
 return $matches;
+}
+
+/*  */
+function badt_db_get_couples( $tournament_id = false ){
+    global $wpdb;
+
+    if( !$tournament_id ){
+        $tournament_id = $_SESSION['t_id'];
+    }
+
+    $query = "SELECT
+    pl_d.*
+
+    FROM
+    ".$wpdb->prefix."bvg_players_double as pl_d
+
+    WHERE
+    pl_d.tournament_id = ".$tournament_id;
+    //$wpdb->show_errors();
+    //echo $query;
+    $couples = $wpdb->get_results( $query, OBJECT_K  );
+    //var_dump( $players );
+    return $couples;
 }

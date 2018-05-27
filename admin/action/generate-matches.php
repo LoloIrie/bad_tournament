@@ -9,31 +9,34 @@
 
 /* Try to find a free opponent */
 function badt_get_free_opponent( $players_match, $k_pl1, $opponents ){
+    echo 'FUNCTION '.__FILE__.':badt_get_free_opponent<br />';
 
-    /*
-    echo '<pre>';
+    echo '<pre style="display: none;">';
     var_dump($players_match);
     var_dump($k_pl1);
     var_dump($opponents);
-    echo '</pre>';
-    */
-    $key = 0;
+
+    $key = -1;
 
     foreach( $players_match as $k => $player_match ){
+        echo $k.': '.$player_match->id.'<br />';
         if( $k != $k_pl1 ){
-            if( !in_array( $player_match->$k['id'] , $opponents ) ){
-                $key = $player_match->$k['id'];
+            if( !in_array( $player_match->id , $opponents ) ){
+                $key = $k;
+                echo 'KEY: '.$key.'<br />';
                 break;
             }
         }
     }
+    echo 'LAST KEY: '.$key.'<br />';
+    echo '</pre>';
 
     return $key;
 }
 
 $generate_matchs_now = false;
 if( isset( $_POST['regenerate_matchs_now'] ) ){
-    /* Remove current matchs... */
+    /* Remove current matches... */
     $matches = array();
     $query = "DELETE FROM
                     ".$wpdb->prefix . 'bvg_matches'."
@@ -90,8 +93,15 @@ if( isset( $_POST['generate_matchs_now'] ) || $generate_matchs_now === true ){
 
     //echo 'NB Matches: '.$nb_matches.'<br />';
     if( $_SESSION['t_system'] == 1 ){
-        $nb_matches = floor( $nb_players / 2 );
         /* Schweizer system */
+
+        $nb_players_matches = 4;
+        if( $_SESSION['current_tournament']['tournament_typ'] == 1 || $_SESSION['current_tournament']['tournament_typ'] == 2 || $_SESSION['current_tournament']['tournament_typ'] == 6 ){
+            $nb_players_matches = 2;
+        }
+
+
+        $nb_matches = floor( $nb_players / $nb_players_matches);
 //echo __LINE__;
         if( $_SESSION['round'] < 2 ){
 
@@ -101,39 +111,88 @@ if( isset( $_POST['generate_matchs_now'] ) || $generate_matchs_now === true ){
                 return $b->player_level_init - $a->player_level_init;
             });
 
+            $nb_match_tocreate = $nb_matches;
             for( $i=0; $i<$nb_matches; $i++ ){
-                $k_pl1 = $i;
-                $k_pl2 = $i + $nb_matches;
+
+                if( $nb_players_matches == 2 ){
+                    $k_pl1 = 0;
+                    #$k_pl1_bis = 3;
+                    $k_pl2 = $nb_match_tocreate;
+                    #$k_pl2_bis = 4;
+                }else{
+                    $k_pl1 = 0;
+                    $k_pl1_bis = 3;
+                    $k_pl2 = 2;
+                    $k_pl2_bis = 1;
+                }
 
                 /* Create matches in DB */
-                $data = array(
-                    'player1_id' => $players_match[ $k_pl1 ]->id,
-                    'player2_id' => $players_match[ $k_pl2 ]->id,
-                    'tournament_id' => $_SESSION['t_id'],
-                    'round' => $_SESSION['round']
-                );
+                if( $nb_players_matches == 2 ){
+                    $data = array(
+                        'player1_id' => $players_match[ $k_pl1 ]->id,
+                        'player2_id' => $players_match[ $k_pl2 ]->id,
+                        'tournament_id' => $_SESSION['t_id'],
+                        'round' => $_SESSION['round']
+                    );
+                }else{
+                    $data = array(
+                        'player1_id' => $players_match[ $k_pl1 ]->id,
+                        'player2_id' => $players_match[ $k_pl2 ]->id,
+                        'player1_id_bis' => $players_match[ $k_pl1_bis ]->id,
+                        'player2_id_bis' => $players_match[ $k_pl2_bis ]->id,
+                        'tournament_id' => $_SESSION['t_id'],
+                        'round' => $_SESSION['round']
+                    );
+                }
                 $wpdb->insert( $wpdb->prefix . 'bvg_matches', $data );
 
-                $matches[] = array(
-                    'id' => $wpdb->insert_id,
-                    'player1_id' => $players_match[ $k_pl1 ]->id,
-                    'player2_id' => $players_match[ $k_pl2 ]->id,
-                    'player1_name' => $players_match[ $k_pl1 ]->player_firstname.' '.$players_match[ $k_pl1 ]->player_lastname,
-                    'player2_name' => $players_match[ $k_pl2 ]->player_firstname.' '.$players_match[ $k_pl2 ]->player_lastname,
-                    'tournament_id' => 1,
-                    'round' => $_SESSION['round'],
-                    'pl1_set1' => 0,
-                    'pl2_set1' => 0,
-                    'pl1_set2' => 0,
-                    'pl2_set2' => 0,
-                    'pl1_set3' => 0,
-                    'pl2_set3' => 0,
-                    'pl1_set4' => 0,
-                    'pl2_set4' => 0,
-                    'pl1_set5' => 0,
-                    'pl2_set5' => 0,
-                    'parent_id' => 0
-                );
+                if( $nb_players_matches == 2 ) {
+                    $matches[] = array(
+                        'id' => $wpdb->insert_id,
+                        'player1_id' => $players_match[$k_pl1]->id,
+                        'player2_id' => $players_match[$k_pl2]->id,
+                        'player1_name' => $players_match[$k_pl1]->player_firstname . ' ' . $players_match[$k_pl1]->player_lastname,
+                        'player2_name' => $players_match[$k_pl2]->player_firstname . ' ' . $players_match[$k_pl2]->player_lastname,
+                        'tournament_id' => 1,
+                        'round' => $_SESSION['round'],
+                        'pl1_set1' => 0,
+                        'pl2_set1' => 0,
+                        'pl1_set2' => 0,
+                        'pl2_set2' => 0,
+                        'pl1_set3' => 0,
+                        'pl2_set3' => 0,
+                        'pl1_set4' => 0,
+                        'pl2_set4' => 0,
+                        'pl1_set5' => 0,
+                        'pl2_set5' => 0,
+                        'parent_id' => 0
+                    );
+                }else{
+                    $matches[] = array(
+                        'id' => $wpdb->insert_id,
+                        'player1_id' => $players_match[$k_pl1]->id,
+                        'player2_id' => $players_match[$k_pl2]->id,
+                        'player1_name' => $players_match[$k_pl1]->player_firstname . ' ' . $players_match[$k_pl1]->player_lastname,
+                        'player2_name' => $players_match[$k_pl2]->player_firstname . ' ' . $players_match[$k_pl2]->player_lastname,
+                        'player1_id_bis' => $players_match[$k_pl1_bis]->id,
+                        'player2_id_bis' => $players_match[$k_pl2_bis]->id,
+                        'player1_name_bis' => $players_match[$k_pl1_bis]->player_firstname . ' ' . $players_match[$k_pl1_bis]->player_lastname,
+                        'player2_name_bis' => $players_match[$k_pl2_bis]->player_firstname . ' ' . $players_match[$k_pl2_bis]->player_lastname,
+                        'tournament_id' => 1,
+                        'round' => $_SESSION['round'],
+                        'pl1_set1' => 0,
+                        'pl2_set1' => 0,
+                        'pl1_set2' => 0,
+                        'pl2_set2' => 0,
+                        'pl1_set3' => 0,
+                        'pl2_set3' => 0,
+                        'pl1_set4' => 0,
+                        'pl2_set4' => 0,
+                        'pl1_set5' => 0,
+                        'pl2_set5' => 0,
+                        'parent_id' => 0
+                    );
+                }
 
                 /* Add players opponents in DB */
                 $wpdb->query( "UPDATE
@@ -158,10 +217,18 @@ if( isset( $_POST['generate_matchs_now'] ) || $generate_matchs_now === true ){
 
                 //echo '<pre>';
                 //print_r( $data );
+                unset( $players_match[ $k_pl1 ], $players_match[ $k_pl2 ], $players_match[ $k_pl1_bis ], $players_match[ $k_pl2_bis ] );
+                $players_match = array_values($players_match);
+                $nb_match_tocreate--;
             }
+
+
         }else {
 
             usort($players_match, function($a, $b) {
+                if( $a->played != $b->played ){
+                    return $a->played - $b->played;
+                }
                 return $b->player_level_current - $a->player_level_current;
             });
 
@@ -197,7 +264,7 @@ if( isset( $_POST['generate_matchs_now'] ) || $generate_matchs_now === true ){
                             $already_played = false;
                         }else{
                             $bvg_admin_msg .= 'Game played: '.$players_match[$k_pl1]->id.'-'.$players_match[$k_pl2]->id.'<br />';
-                            $k_pl2 = $i + 3;
+                            $k_pl2 = $i + 4;
                             /* Trying the 4th player */
                             if( !in_array( $players_match[$k_pl2]->id , $opponents ) ){
                                 $already_played = false;
@@ -205,7 +272,8 @@ if( isset( $_POST['generate_matchs_now'] ) || $generate_matchs_now === true ){
                                 $bvg_admin_msg .= 'Game played: '.$players_match[$k_pl1]->id.'-'.$players_match[$k_pl2]->id.'<br />';
                                 /* Get an opponent in the rest of available players */
                                 $k_pl2 = badt_get_free_opponent( $players_match, $k_pl1, $opponents );
-                                if( $k_pl2 > 0 ){
+                                $bvg_admin_msg .= 'badt_get_free_opponent ID Result: '.$k_pl2.':'.$players_match[$k_pl2]->id.'<br />';
+                                if( $k_pl2 > -1 ){
                                     $already_played = false;
                                 }
                             }
@@ -231,6 +299,7 @@ if( isset( $_POST['generate_matchs_now'] ) || $generate_matchs_now === true ){
                         'round' => $_SESSION['round']
                     );
                     $wpdb->insert($wpdb->prefix . 'bvg_matches', $data);
+                    echo $wpdb->insert_id.':'.$players_match[$k_pl1]->id.'/'.$players_match[$k_pl1]->id.'<br />';
 
                     $matches[] = array(
                         'id' => $wpdb->insert_id,
@@ -284,6 +353,7 @@ if( isset( $_POST['generate_matchs_now'] ) || $generate_matchs_now === true ){
             }
         }
     }
+    // Grinding tournament
     else if( $_SESSION['t_system'] == 4 ){
         /* Grinding Tournament */
 

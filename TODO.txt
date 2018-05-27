@@ -4,6 +4,10 @@ KNOWN BUGS(-) / SOLVED(+)
 + Parent tournament
 + Matches selector JS
 + Session maybe already started => conflict with shortcodes
++ Player name not editable
++ Remove match => Don't clean opponents
+- Create matches for swiss tournament
+- Swiss tournament first round/matches opponents not correctly set
 
 TODOs(-) / DONE(+)
 + Restrict available players list for a club tournament
@@ -13,14 +17,16 @@ TODOs(-) / DONE(+)
 + Remove tournament feature
 + Restrict players list depending of tournament typ (Men vs Women vs Mixte)
 + Tournament selector
-- Import/Export features
++ Import/Export features
++ Option to quickly reset a tournament
+- List of matches for a player for a tournament
+- Player statistiques (with all matches/tournament)
 - Player pictures
 - Player frontend view
 - Tournament KO System (v2)
 - Tournament League (v2)
 - Form validator (v2)
 - Limit nbr players / tournament in free version (v2)
-- Tie Break (tennis option) (v3)
 
 
 

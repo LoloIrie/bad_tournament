@@ -93,6 +93,7 @@ But please, describe correctly your issue and be patient...
 = 1.3 - .2018 =
 * Allow to set fixed rounds for a tournament
 * Allow to update more matches in one step
+* Option to quickly reset a tournament
 
 = 1.2 - 19.01.2018 =
 * Import / Export

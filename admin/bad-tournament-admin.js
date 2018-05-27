@@ -13,6 +13,123 @@ jQuery('.nav_item').on( 'click', function(){
 });
 
 /*
+Allow to create match */
+jQuery('#create_match_button').click(function(event){
+    console.log('Display crete game form');
+    event.preventDefault();
+    jQuery('#create_match_form').slideDown('slow');
+    jQuery(this).attr( 'id' , 'create_match_submit');
+    jQuery(this).attr( 'value' , bvg_tournament_constants.createMatchSubmitLabel);
+    jQuery(this).attr( 'type' , 'submit');
+
+    jQuery('#create_match_submit').click(function(){
+        jQuery( this).parent().submit();
+    });
+});
+
+/*
+Set couple of players */
+jQuery('#players_list_select_couple').on('click', 'option', function( event ){
+    unvalid_couple = false;
+    tournament_type = jQuery( '#tournament_type' ).val();
+    if( ( tournament_type == 3 && jQuery( this ).data( 'sex' ) == 1 ) || ( tournament_type == 4 && jQuery( this ).data( 'sex' ) == 2 ) ){
+        console.log( 'Check sex couple...' );
+        alert( 'This player can not play in this tournament' );
+    }else{
+        //console.log( 'Set couple...' );
+        nb_total_options = jQuery( '#players_list_select_couple option').length;
+        nb_sel_options = jQuery( '#players_list_select_couple option:selected').length;
+        if( nb_sel_options == 2 ){
+            // Check if this couple is allowed
+            jQuery( '#players_list_select_couple option:selected').each( function( i ){
+                console.log( 'Check sex couple for mixed...' );
+                if( i == 0){
+                    first_selected_player_sex = jQuery( this ).data( 'sex' );
+                }else{
+                    if( tournament_type == 5 && jQuery( this ).data( 'sex' ) == first_selected_player_sex ){
+                        alert( 'Both players are male or female. Not allowed for mixed tournaments.' );
+                        option_clicked.stop();
+                        unvalid_couple = true;
+                    }
+                }
+                console.log( tournament_type );
+                console.log( first_selected_player_sex );
+                console.log( jQuery( this ).data( 'sex' ) );
+            });
+
+            if( !unvalid_couple ){
+                jQuery( '#players_list_select_couple option:selected').each( function( i ){
+                    player_couple_class = 'player_inCouple_' + i;
+                    html_str = '<li id="player_inCouple_' + jQuery( this ).val() + '" data_id="' + jQuery( this ).val() + '" class="' + player_couple_class + '">' + jQuery( this ).html() + '</li>';
+                    jQuery( '#players_couple_list' ).append( html_str );
+                    jQuery( this ).remove();
+                    if( i == 0){
+                        pl1_id = jQuery( this ).val();
+                    }else{
+                        pl2_id = jQuery( this ).val();
+                    }
+
+                });
+                nb_total_options = nb_total_options -2;
+
+                // Save
+                jQuery('#ajax_spinner_layer').fadeIn();
+                data = {
+                    action: 'save_players_couple',
+                    pl1_id: pl1_id,
+                    pl2_id: pl2_id
+                };
+                jQuery.ajax({
+                    type: "POST",
+                    data : data,
+                    async: true,
+                    cache: false,
+                    url: ajaxurl,
+                    success: function(data) {
+                        console.log( 'Players couple now saved...' );
+                        jQuery('#ajax_spinner_layer').fadeOut( 'slow' );
+                    }
+                });
+
+                //console.log( 'Nb selected options: ' + nb_sel_options );
+                // Remove select field if no more player available
+                if( nb_total_options < 1 ){
+                    jQuery('#players_list_select_couple').fadeOut( 'slow', function(){
+                        jQuery('#players_list_select_couple').after( 'All couple of players are set... Probably correct, but check again the following list before to start the tournament.' );
+                    });
+                }
+            }
+
+        }
+
+    }
+
+});
+
+/* Remove couple of players */
+jQuery('#players_couple_list').on('dblclick', 'li', function(){
+    console.log( 'Remove couple...' );
+    // Display the players list if required
+    if( !jQuery('#players_list_select_couple').is(':visible') ){
+        jQuery('#players_list_select_couple').fadeIn();
+    }
+    html_str = '<option value="' + jQuery( this ).val() + '" >' + jQuery( this ).html() + '</option>';
+    jQuery('#players_list_select_couple').append( html_str );
+    if( jQuery( this ).hasClass( 'player_inCouple_0' ) ){
+        html_str = '<option value="' + jQuery( this ).next().val() + '">' + jQuery( this ).next().html() + '</option>';
+        jQuery( this ).next().remove();
+    }else{
+        html_str = '<option value="' + jQuery( this ).prev().val() + '">' + jQuery( this ).prev().html() + '</option>';
+        jQuery( this).prev().remove();
+    }
+    jQuery( this ).remove();
+    jQuery('#players_list_select_couple').append( html_str );
+});
+
+
+
+
+/*
 Set match winner */
 jQuery('.match_winner').on( 'click', function(){
     jMatchId = '#match_winner_' + jQuery( this ).attr('data_m_id');
@@ -75,6 +192,7 @@ jQuery('#tournament_select').on( 'change', function(){
         jQuery( '#tournament_points_set').val( selected_tournament.points_set );
         jQuery( '#tournament_max_points_set').val( selected_tournament.max_points_set );
         jQuery( '#round_max').val( selected_tournament.round_max );
+        jQuery( '#round').val( selected_tournament.round );
         jQuery( '#club_restriction option' ).each( function(){
             if( jQuery( this).val() == selected_tournament.club_restriction ){
                 jQuery( this).attr( 'selected', 'selected' );
@@ -272,6 +390,8 @@ jQuery('.pl_infos').on( 'click', function(){
                                         //console.log( pl_field.parent() );
                                         //console.log( pl_field.parent().find( 'span.player_current_value') );
                                         if( pl_field_name == 'player_level' ){
+                                            pl_field.parent().closest( 'li').find( '.pl_level_init' ).html('(' + pl_field_value + ')');
+                                        }else if( pl_field_name == 'firstname' || pl_field_name == 'lastname' ){
                                             pl_field.parent().closest( 'li').find( '.pl_level_init' ).html('(' + pl_field_value + ')');
                                         }
                                         if( jQuery( '#bvg_admin_msg' ).length > 0 ){

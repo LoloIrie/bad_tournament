@@ -6,10 +6,16 @@
  * Time: 09:12
  */
 
+$nb_players_matches = 4;
+if( $_SESSION['current_tournament']['tournament_typ'] == 1 || $_SESSION['current_tournament']['tournament_typ'] == 2 || $_SESSION['current_tournament']['tournament_typ'] == 6 ){
+    $nb_players_matches = 2;
+}
+
 /*
 echo '<pre>';
 var_dump( $_SESSION['current_tournament'] );
 var_dump( $tournaments );
+var_dump( $all_players );
 echo '</pre>';
 */
 
@@ -87,6 +93,49 @@ if( count( $all_players )  != count( $players ) - $nb_player_unactivated_for_thi
         $html .= '</td>';
     $html .= '</tr>';
     $html .= '</table>';
+
+    $html .= '</form>';
+    $html .= '<hr />';
+}else if( $nb_players_matches == 4 && $_SESSION[ 'current_tournament' ][ 'system' ] != 4 ){
+    /* Need to set couple of players */
+    $html .= '<form method="post">';
+    $html .= '<input type="hidden" name="form_action" value="set-players-couple" />';
+    $html .= '<input type="hidden" id="tournament_type" value="'.$_SESSION['current_tournament']['tournament_typ'].'" />';
+    //$html .= '<input type="hidden" id="swiss_system_point" name="schweizer_system_punkte" value="0" />';
+
+    $html .= '<table class="form-table">';
+
+    $html .= '<tr class="form-field form-required">';
+    $html .= '<th scope="row">';
+    $html .= '<label>'.__('Free Player(s):', 'bad-tournament').'</label>';
+    $html .= '</th>';
+    $html .= '<td>';
+
+    $html .= '<select type="text" value="" name="players_list_select_couple[]" id="players_list_select_couple" multiple="multiple" >';
+
+    $doubles = array();
+    foreach( $couples as $couple ){
+        $doubles[] = $couple->player1_id;
+        $doubles[] = $couple->player2_id;
+    }
+
+    //var_dump($players);
+    foreach( $players as $player ){
+        if( !in_array( $player->id , $doubles ) ){
+            $html .= '<option value="'.$player->id.'" data-sex="'.$player->player_sex.'">'.$player->player_firstname.' '.$player->player_lastname.'</option>';
+        }
+    }
+    $html .= '</select>';
+
+    $html .= '</td>';
+    $html .= '</tr>';
+    $html .= '</table>';
+
+    $html .= '<div id="players_couple_list">';
+        $html .= '<ul>';
+
+        $html .= '</ul>';
+    $html .= '</div>';
 
     $html .= '</form>';
     $html .= '<hr />';
