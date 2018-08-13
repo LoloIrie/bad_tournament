@@ -6,6 +6,13 @@
  * Time: 15:32
  */
 
+$debugs = array(
+    'Game Result',
+    'File loaded'
+);
+if( defined('BADT_DEBUG_MODE') && BADT_DEBUG_MODE > 0 ) {
+    $badt_debug_obj->store_debug($debugs);
+}
 //$wpdb->show_errors();
 
 if( !is_numeric( $_POST['match_id'] ) ){
@@ -31,7 +38,7 @@ if( !is_numeric( $_POST['match_id'] ) ){
 }
 
 function badt_update_match( $match_vals ){
-    global $wpdb;
+    global $wpdb, $badt_debug_obj;
     $bvg_admin_msg = '';
 
     if( !isset( $match_vals['match_id'] ) ){
@@ -214,6 +221,8 @@ function badt_update_match( $match_vals ){
             $pt_opp = ( $pl2_set1+ $pl2_set2 +$pl2_set3 + $pl2_set4 + $pl2_set5 );
         }
 
+        /* Update for simple matches
+        */
         $wpdb->query( $wpdb->prepare(
             "UPDATE
             ".$wpdb->prefix . 'bvg_players_tournament'."
@@ -233,12 +242,20 @@ function badt_update_match( $match_vals ){
             WHERE
             id=".$pl1_id,
 
-            $played, $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
-        )
+                $played, $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
+            )
         );
+        $debugs = array(
+            'Update for simple matches',
+            'Update bvg_players_tournament table for player ID: '.$pl1_id
+        );
+        if( defined('BADT_DEBUG_MODE') && BADT_DEBUG_MODE > 0 ) {
+            $badt_debug_obj->store_debug($debugs);
+        }
+        /* Update Grinding Tournament Double => Partner
+        */
+        if( $_SESSION['t_system'] == 4 && ( $_SESSION['current_tournament']['tournament_typ'] == 3 || $_SESSION['current_tournament']['tournament_typ'] == 4 || $_SESSION['current_tournament']['tournament_typ'] == 5 || $_SESSION['current_tournament']['tournament_typ'] == 7 ) ){
 
-        if( $_SESSION['t_system'] == 4 ){
-            // Grinding Tournament => Partner
             $wpdb->query( $wpdb->prepare(
                 "UPDATE
                 ".$wpdb->prefix . 'bvg_players_tournament'."
@@ -261,6 +278,36 @@ function badt_update_match( $match_vals ){
                 $played, $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
             )
             );
+        }
+        /* Update Double (if not grinding)
+            */
+        else if( $_SESSION['current_tournament']['tournament_typ'] == 3 || $_SESSION['current_tournament']['tournament_typ'] == 4 || $_SESSION['current_tournament']['tournament_typ'] == 5 || $_SESSION['current_tournament']['tournament_typ'] == 7 ){
+
+            $wpdb->query( $wpdb->prepare(
+                "UPDATE
+                ".$wpdb->prefix . 'bvg_players_double'."
+
+                SET
+                player_level_current=player_level_current+".$pl1_level_current_change.",
+                played=played+%d,
+                victory=victory+%d,
+                draw=draw+%d,
+                loss=loss+%d,
+                points_major=points_major+%d,
+                sets=sets+%d,
+                sets_against=sets_against+%d,
+                points=points+%d,
+                points_against=points_against+%d
+
+                WHERE
+                tournament_id=".$_SESSION[ 't_id' ]."
+                AND
+                player1_id=".$pl1_id,
+
+                $played, $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
+                )
+            );
+
         }
 
         if( $match_before_update->winner > 0 ) {
@@ -329,12 +376,16 @@ function badt_update_match( $match_vals ){
 
             $played, $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
         );*/
-        $wpdb->query( $wpdb->prepare(
+
+        /* Update for simple matches
+        */
+
+        $wpdb->query($wpdb->prepare(
             "UPDATE
-            ".$wpdb->prefix . 'bvg_players_tournament'."
+            " . $wpdb->prefix . 'bvg_players_tournament' . "
 
             SET
-            player_level_current=player_level_current+".$pl2_level_current_change.",
+            player_level_current=player_level_current+" . $pl2_level_current_change . ",
             played=played+%d,
             victory=victory+%d,
             draw=draw+%d,
@@ -346,14 +397,16 @@ function badt_update_match( $match_vals ){
             points_against=points_against+%d
 
             WHERE
-            id=".$pl2_id,
+            id=" . $pl2_id,
 
             $played, $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
-        )
+            )
         );
 
-        if( $_SESSION['t_system'] == 4 ){
-            // Grinding Tournament => Partner
+
+        /* Update Grinding Tournament Double => Partner
+        */
+        if( $_SESSION['t_system'] == 4 && ( $_SESSION['current_tournament']['tournament_typ'] == 3 || $_SESSION['current_tournament']['tournament_typ'] == 4 || $_SESSION['current_tournament']['tournament_typ'] == 5 || $_SESSION['current_tournament']['tournament_typ'] == 7 ) ){
             $wpdb->query( $wpdb->prepare(
                 "UPDATE
                 ".$wpdb->prefix . 'bvg_players_tournament'."
@@ -374,12 +427,42 @@ function badt_update_match( $match_vals ){
                 id=".$pl2_id_bis,
 
                 $played, $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
-            )
+                )
             );
         }
-    }
+        /* Update Double (if not grinding)
+        */
+        else if( $_SESSION['current_tournament']['tournament_typ'] == 3 || $_SESSION['current_tournament']['tournament_typ'] == 4 || $_SESSION['current_tournament']['tournament_typ'] == 5 || $_SESSION['current_tournament']['tournament_typ'] == 7 ){
 
-    //$wpdb->print_error();
+            $wpdb->query( $wpdb->prepare(
+                "UPDATE
+                ".$wpdb->prefix . 'bvg_players_double'."
+
+                SET
+                player_level_current=player_level_current+".$pl2_level_current_change.",
+                played=played+%d,
+                victory=victory+%d,
+                draw=draw+%d,
+                loss=loss+%d,
+                points_major=points_major+%d,
+                sets=sets+%d,
+                sets_against=sets_against+%d,
+                points=points+%d,
+                points_against=points_against+%d
+
+                WHERE
+                tournament_id=".$_SESSION[ 't_id' ]."
+                AND
+                player1_id=".$pl2_id,
+
+                $played, $w, $d, $l, $p, $s, $s_opp, $pt, $pt_opp
+            )
+            );
+
+
+        }
+
+    }
 
     $data = array(
         'pl1_set1' => ( is_numeric( $match_vals['pl1_m'.$m_id.'_set1'] ) ? $match_vals['pl1_m'.$m_id.'_set1'] : 0 ),

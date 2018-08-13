@@ -107,7 +107,7 @@ if( count( $all_players )  != count( $players ) - $nb_player_unactivated_for_thi
 
     $html .= '<tr class="form-field form-required">';
     $html .= '<th scope="row">';
-    $html .= '<label>'.__('Free Player(s):', 'bad-tournament').'</label>';
+    $html .= '<label>'.__('Set couples:', 'bad-tournament').'</label>';
     $html .= '</th>';
     $html .= '<td>';
 
@@ -145,6 +145,7 @@ if( count( $all_players )  != count( $players ) - $nb_player_unactivated_for_thi
 
 
 $html .= '<form method="post">';
+$html .= '<h3>'.__('Add or edit player', 'bad-tournament').'</h3>';
 $html .= '<input type="hidden" name="form_action" value="add-players" />';
 
 $html .= '<table class="form-table">';
@@ -240,6 +241,29 @@ $html .= '<tr class="form-field form-required">';
         $html .= '</div>';
     $html .= '</td>';
 $html .= '</tr>';
+
+
+wp_enqueue_media();
+
+$pic_src = '';
+$pic_src_id = '';
+
+$html .= '<tr class="form-field form-required">';
+    $html .= '<th scope="row">';
+        $html .= '<label>'.__('Profile picture:', 'bad-tournament').'</label>';
+    $html .= '</th>';
+    $html .= '<td>';
+        $html .= '<div class="pic-preview-wrapper">';
+            $html .= '<img id="pic-preview" src="'.$pic_src.'" height="100">';
+        $html .= '</div>';
+        $html .= '<input id="upload_pic_button" type="button" class="button" value="'.__( 'Choose image' , 'bad-tournament' ).'">';
+        $html .= '<input type="hidden" name="profile_attachment_id" id="profile_attachment_id" value="'.$pic_src_id.'">';
+
+        $html .= '<label class="new_line">'.__('or use external URL:', 'bad-tournament').'</label>';
+        $html .= '<input type="text" value="'.$pic_src.'" placeholder="http://" name="profile_pic_url" id="profile_pic_url" />';
+    $html .= '</td>';
+$html .= '</tr>';
+
 
 $html .= '<tr class="form-field form-required">';
     $html .= '<th scope="row">';

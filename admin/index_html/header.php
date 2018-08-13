@@ -5,6 +5,7 @@
  * Date: 13.11.2017
  * Time: 09:12
  */
+global $tournament_typ_array;
 
 /* MENU */
 $html .= '<nav id="main_nav">';
@@ -28,6 +29,13 @@ $html .= '</li>';
 $html .= '<li class="nav_item'.( $ADMIN_VIEW == 'matches' ? ' active"' : '' ).'" id="nav_match">';
 $html .= __('Matches', 'bad-tournament');
 $html .= '</li>';
+
+if( defined('BADT_DEBUG_MODE') && BADT_DEBUG_MODE > 0 ){
+    $html .= '<li class="nav_item" id="display_debug_infos">';
+    $html .= __('Debug infos', 'bad-tournament');
+    $html .= '</li>';
+}
+
 $html .= '</ul>';
 $html .= '</nav>';
 
@@ -43,6 +51,7 @@ if( !empty( $bvg_admin_msg ) ){
 
 
 if( $_SESSION['current_tournament'] !== false ){
+
     /* MAIN TITLE */
     $html .= '<h1 id="bad_tournament_maintitle" class="subtournament_name">'.$_SESSION['t_name'].' (ID:'.$_SESSION['current_tournament']['id'].')' .' ( '.__( 'Round', 'bad-tournament').': '.$_SESSION['round'].')</h1>';
 
@@ -61,6 +70,10 @@ if( $_SESSION['current_tournament'] !== false ){
         $html .= '<h3>'.$_SESSION[ 'current_tournament' ][ 'club_restriction_name' ].'</h3>';
     }
 
+    $html .= __('Tournament typ: ', 'bad-tournament').'<b>'.$tournament_typ_array[ $_SESSION['current_tournament'][ 'tournament_typ' ] ].'</b>';
+    $html .= '<br />';
+    $html .= __('Tournament system: ', 'bad-tournament').'<b>'.$t_system[ $_SESSION['current_tournament']['system'] ].'</b>';
+    $html .= '<br />';
     $nb_players_tournament = count( $players );
     $html .= __('Players: ', 'bad-tournament').'<span id="nb_players_tournament" data-init="'.$nb_players_tournament.'">'.$nb_players_tournament.'</span>';
     $html .= '<br />';
@@ -73,7 +86,6 @@ if( $_SESSION['current_tournament'] !== false ){
         $html .= __('Max rounds: ', 'bad-tournament').' '.__( 'No limit' , 'bad-tournament');
     }
 
-    $html .= '<h4>'.$t_system[ $_SESSION['current_tournament']['system'] ].'</h4>';
     $html .= '<h4>'.__( 'Sets to win:', 'bad-tournament').' '.$_SESSION['current_tournament']['nb_sets'].' '.__( 'Points/Set:', 'bad-tournament').' '.$_SESSION['current_tournament']['points_set'].' '.__( 'Max. points per set:', 'bad-tournament').' '.$_SESSION['current_tournament']['max_points_set'].'</h4>';
 
 }else{

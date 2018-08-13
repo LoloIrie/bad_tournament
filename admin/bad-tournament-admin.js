@@ -4,12 +4,25 @@ console.log( bvg_tournament_constants );
 /*
 Switching admin page */
 jQuery('.nav_item').on( 'click', function(){
+    if( jQuery( '#main_nav' ).hasClass( 'refresh_required' ) ){
+        console.log( 'Need to refresh page to reupdate everything after ajax requests' );
+        window.location = window.location.hash;
+        return true;
+    }
     jQuery('.nav_item').removeClass( 'active' );
     jQuery( this ).addClass( 'active' );
     id_nav = jQuery( this ).attr( 'id' );
     id_block = '.admin_block.' + id_nav;
     jQuery('.admin_block').hide();
     jQuery( id_block ).slideDown( 'slow' );
+});
+
+/* View other round
+*/
+jQuery( '#view_round' ).on( 'change', function(){
+    console.log( 'New round...' );
+    //debugger;
+    jQuery( this ).parent('form').submit();
 });
 
 /*
@@ -32,7 +45,7 @@ Set couple of players */
 jQuery('#players_list_select_couple').on('click', 'option', function( event ){
     unvalid_couple = false;
     tournament_type = jQuery( '#tournament_type' ).val();
-    if( ( tournament_type == 3 && jQuery( this ).data( 'sex' ) == 1 ) || ( tournament_type == 4 && jQuery( this ).data( 'sex' ) == 2 ) ){
+    if( ( tournament_type == 3 && jQuery( this ).data( 'sex' ) == 2 ) || ( tournament_type == 4 && jQuery( this ).data( 'sex' ) == 1 ) ){
         console.log( 'Check sex couple...' );
         alert( 'This player can not play in this tournament' );
     }else{
@@ -74,6 +87,7 @@ jQuery('#players_list_select_couple').on('click', 'option', function( event ){
 
                 // Save
                 jQuery('#ajax_spinner_layer').fadeIn();
+                jQuery( '#main_nav' ).addClass( 'refresh_required' );
                 data = {
                     action: 'save_players_couple',
                     pl1_id: pl1_id,
@@ -125,9 +139,6 @@ jQuery('#players_couple_list').on('dblclick', 'li', function(){
     jQuery( this ).remove();
     jQuery('#players_list_select_couple').append( html_str );
 });
-
-
-
 
 /*
 Set match winner */
@@ -236,6 +247,16 @@ jQuery( '#tournament_logo_url').on( 'blur', function(){
     }
 });
 
+jQuery( '#upload_pic_button').on( 'click', function(){
+    jQuery( '#profile_pic_url').val( '' );
+});
+jQuery( '#profile_pic_url').on( 'blur', function(){
+    if( jQuery( this ).val() != '' ){
+        console.log( jQuery( this ).val() );
+        jQuery( '#pic-preview').attr( 'src' , jQuery( this ).val() );
+    }
+});
+
 /*
 Close admin message */
 jQuery('#bvg_admin_msg_close').on( 'click', function(){
@@ -273,6 +294,7 @@ jQuery('.plus_icon').on( 'click', function(){
     jQuery( this).next().next().slideDown();
 
     jQuery('#ajax_spinner_layer').fadeIn();
+    jQuery( '#main_nav' ).addClass( 'refresh_required' );
     data = {
         action: 'set_player_form_default'
     };
@@ -294,6 +316,7 @@ Change player for a match */
 jQuery( 'select.player_name' ).on('change', function() {
         if (confirm('Wollen Sie wirklich die Spieleinstellung ändern ? ')) {
             jQuery('#ajax_spinner_layer').fadeIn();
+            jQuery( '#main_nav' ).addClass( 'refresh_required' );
             the_form = jQuery(this).closest('form');
             pl_select = the_form.find( '.player_name' );
             players_id = [];
@@ -339,12 +362,15 @@ jQuery('.pl_infos').on( 'click', function(){
         row_parent.find( '.player_infos').fadeOut().remove();
     }else{
         jQuery('#ajax_spinner_layer').fadeIn();
+        jQuery( '#main_nav' ).addClass( 'refresh_required' );
         console.log( 'Display player infos' );
         pl_id = jQuery( this ).attr('data-pl_id');
+        pl2_id = jQuery( this ).attr('data-pl2_id');
 
         var data = {
             action: 'player_tooltip',
-            pl_id: pl_id
+            pl_id: pl_id,
+            pl2_id: pl2_id
         };
 
         jQuery.ajax({
@@ -363,6 +389,10 @@ jQuery('.pl_infos').on( 'click', function(){
                 jQuery('.datepicker').datepicker( {dateFormat: "dd/mm/yy"} );
 
                 jQuery( '.pl_edit_field' ).on('change keypress', function(e){
+                    pl_id2 = 0;
+                    if( jQuery( this).hasClass( 'pl_edit_field2' ) ){
+                        pl_id2 = pl2_id;
+                    }
                     allow_to_edit = true;
                     if( jQuery('option:selected', this).hasClass( 'no_edit' ) ){
                         allow_to_edit = false;
@@ -379,6 +409,7 @@ jQuery('.pl_infos').on( 'click', function(){
                                 data = {
                                     action: 'player_edit_field',
                                     pl_id: pl_id,
+                                    pl_id2: pl_id2,
                                     pl_field_name: pl_field_name,
                                     pl_field_value: pl_field_value
                                 };
@@ -402,9 +433,21 @@ jQuery('.pl_infos').on( 'click', function(){
                                         //console.log( pl_field.parent() );
                                         //console.log( pl_field.parent().find( 'span.player_current_value') );
                                         if( pl_field_name == 'player_level' ){
-                                            pl_field.parent().closest( 'li').find( '.pl_level_init' ).html('(' + pl_field_value + ')');
-                                        }else if( pl_field_name == 'firstname' || pl_field_name == 'lastname' ){
-                                            pl_field.parent().closest( 'li').find( '.pl_level_init' ).html('(' + pl_field_value + ')');
+                                            if( pl_id2 > 0 ){
+                                                pl_field.parent().closest( 'li').find( '.pl_level_init' ).html('(' + pl_field_value + ')');
+                                            }else{
+                                                console.log( 'Level Pl1: ' + jQuery( '#player1_current_value' ).html() );
+                                                level_double = parseInt( jQuery( '#player1_current_value' ).html() ) + parseInt( jQuery( '#player2_current_value' ).html() );
+                                                pl_field.parent().closest( 'li' ).find( '.pl_level_init').html( '(' + level_double + ')' );
+                                            }
+                                        }else if( pl_field_name == 'firstname1' || pl_field_name == 'lastname1' || pl_field_name == 'firstname2' || pl_field_name == 'lastname2' ){
+                                            if( pl_id2 > 0 ){
+                                                console.log( pl_field.parent().closest( 'li' ).find( '.pl_name_pl2') );
+                                                pl_field.parent().closest( 'li' ).find( '.pl_name_pl2').html( jQuery( '#firstname2' ).val() + ' ' + jQuery( '#lastname2' ).val() );
+                                            }else{
+                                                pl_field.parent().closest( 'li' ).find( '.pl_name_pl1').html( jQuery( '#firstname1' ).val() + ' ' + jQuery( '#lastname1' ).val() );
+                                            }
+
                                         }
                                         if( jQuery( '#bvg_admin_msg' ).length > 0 ){
                                             jQuery( '#bvg_admin_msg').append( data );
@@ -443,16 +486,19 @@ jQuery('.pl_infos').on( 'click', function(){
 Remove player from tournament */
 jQuery('.pl_remove').on( 'click', function(){
     jQuery('#ajax_spinner_layer').fadeIn();
+    jQuery( '#main_nav' ).addClass( 'refresh_required' );
 
     console.log('Remove player');
 
     row_parent = jQuery( this).closest( 'li.table_row' );
 
     pl_id = jQuery( this ).attr('data-pl_id');
+    pl2_id = jQuery( this ).attr('data-pl2_id');
 
     var data = {
         action: 'player_remove',
-        pl_id: pl_id
+        pl_id: pl_id,
+        pl2_id: pl2_id
     };
 
     jQuery.ajax({
@@ -498,6 +544,7 @@ jQuery( '#club_player, .clubs_name' ).on('change keypress click', function(e){
         jQuery( '#edit_field_valid' ).on( 'click', function(){
 
                 jQuery('#ajax_spinner_layer').fadeIn();
+                jQuery( '#main_nav' ).addClass( 'refresh_required' );
                 data = {
                     action: 'set_club_default',
                     club_id: club_id

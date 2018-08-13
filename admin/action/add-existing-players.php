@@ -4,6 +4,9 @@
  * User: ldorier
  * Date: 30.10.2017
  * Time: 15:32
+ * Actions: Remove all players for the current tournament
+ *          Unactivate player for the current tournament
+ *          Add (all) existing players to the current tournament
  */
 
 

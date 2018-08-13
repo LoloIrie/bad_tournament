@@ -202,6 +202,11 @@ ul.table span{
     padding: 3px;
     font-weight: normal;
 }
+.table_row .player_infos{
+    margin-top: 50px;
+    padding: 5px;
+    border: 1px solid #000;
+}
 .table_row .player_infos span{
     width: auto;
     padding: 0;
@@ -209,6 +214,11 @@ ul.table span{
 .table span.pl_name{
     min-width: 250px;
     width: 350px;
+}
+.pl_name_pl1, .pl_name_pl2{
+    min-width: 200px;
+    width: 350px;
+    display: block;
 }
 .player_removed span.pl_name{
     color: #fff;
@@ -332,6 +342,66 @@ h1.topspace{
 .pl_tooltip_label{
     float: left;
     font-weight: bold;
+    width: 100%;
+}
+#matches_list_player{
+    margin-top: 15px;
+    border-top: 2px solid #fff;
+}
+.player_view{
+    font-weight: bold;
+}
+.match_row{
+    border-bottom: 2px solid #fff;
+    margin-bottom: 30px;
+}
+.match_round_header{
+    font-weight: bold;
+}
+.match_row1, .match_row2{
+    display: block;
+    clear: both;
+    min-height: 14px;
+}
+.match_row1:hover, .match_row2:hover{
+    background-color: #444;
+}
+.match_row2{
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+
+.match_pl1_name, .match_pl1_score, .match_pl2_name, .match_pl2_score{
+    display: inline;
+    float: left;
+    margin-left: 15px;
+}
+.match_pl1_name, .match_pl2_name{
+    min-width: 200px;
+    padding-left: 5px;
+}
+.match_pl1_name, .match_pl2_name{
+    min-width: 400px;
+}
+.match_pl1_score, .match_pl2_score{
+    min-width: 150px;
+    max-width: 300px;
+}
+.set_score{
+    display: inline-block;
+    width: 30px;
+    margin-right: 8px;
+    padding-left: 4px;
+    border-left: 0;
+    text-align: center;
+    color: #c00;
+}
+.set_score ~ .set_score {
+    border-left: 1px dashed #ddd;
+}
+.set_score.set_win{
+    font-weight: bold;
+    color: #5e8c1c;
 }
 .label_row{
     display: inline-block;
@@ -480,4 +550,28 @@ h1.topspace{
 }
 #toplevel_page_bad_tournament .wp-submenu li.current a:hover{
     color: #00b9eb;
+}
+
+#badt_debug_panel{
+    position: absolute;
+    display: none;
+    width: 100%;
+    height-max: 600px;
+    top: 0;
+
+    background-color: #000;
+    border: 2px solid #f00;
+    color: #fff;
+    z-index: 10000;
+    overflow: auto;
+}
+.badt_debug_block{
+    margin-bottom: 4px;
+    border-bottom: 2px dashed #fff;
+    font-weight: normal;
+}
+.badt_debug_label{
+    margin-top: 8px;
+    font-weight: bold;
+    color: #f99;
 }

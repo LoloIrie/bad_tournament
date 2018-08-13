@@ -4,6 +4,8 @@
  * User: ldorier
  * Date: 30.10.2017
  * Time: 15:32
+ * Actions: Add a new player profile
+ *
  */
 
 $dates = explode( '/', $_POST['birthdate'] );
@@ -17,6 +19,11 @@ if( !isset( $_POST['sex'] ) || empty( $_POST['sex'] ) ){
     $_POST['sex'] = 0;
 }
 
+$user_pic = $_POST['profile_attachment_id'];
+if( isset( $_POST['profile_pic_url'] ) && !empty( $_POST['profile_pic_url'] ) ){
+    $user_pic = $_POST['profile_pic_url'];
+}
+
 $data = array(
     'firstname' => $_POST['firstname'],
     'lastname' => $_POST['lastname'],
@@ -25,7 +32,8 @@ $data = array(
     'club_id' => $_POST['club_id'],
     'player_id' => $_POST['player_id'],
     'birthdate' => $birthdate,
-    'sex' => $_POST['sex']
+    'sex' => $_POST['sex'],
+    'profile_attachment_id' => $user_pic
 );
 $wpdb->insert( $wpdb->prefix . 'bvg_players', $data );
 $bvg_admin_msg .= __( 'New player added...', 'bad-tournament' );

@@ -5,7 +5,7 @@ Plugin Name: Bad Tournament
 Plugin URI: http://etalkers.org/what/wordpress-development/bad-tournament-wp-plugin
 Description: Badminton / Tennis / Table tennis Tournament Plugin
 Author: Laurent Dorier
-Version: 1.1
+Version: 1.4
 Author URI: http://etalkers.org
 Text Domain: bad-tournament
 Domain Path: /languages
@@ -91,17 +91,23 @@ class badt_Bad_Tournament
         add_submenu_page( 'bad_tournament', 'Table', __('Table', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=table');
         add_submenu_page( 'bad_tournament', 'Matches', __('Matches', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=matches');
 
-        add_submenu_page( 'bad_tournament', 'Import/Export', __('Import/Export', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=export');
+        add_submenu_page( 'bad_tournament', 'Options', __('Options', 'bad-tournament'), 'manage_options', 'admin.php?page=bad_tournament&admin_view=export');
     }
 
     function bad_tournament_start_session(){
         session_start();
+
+        register_setting( 'badt', 'badt_debug');
     }
 
     function bad_tournament_admin(){
 
         $bvg_admin_msg = '';
-
+        if( get_option( 'badt_debug' ) == 1 ){
+            define( 'BADT_DEBUG_MODE', true );
+        }else{
+            define( 'BADT_DEBUG_MODE', false );
+        }
 
 
         /* jQuery UI for datepicker
@@ -155,11 +161,13 @@ class badt_Bad_Tournament
         return true;
     }
 
+
     /* AJAX */
 
     // Ajax: Return player infos for tootip
     function player_tooltip( $atts ){
         $html_ajax = '';
+
         include plugin_dir_path(__FILE__).'admin/action/player-info.php';
 
         echo $html_ajax;
@@ -221,6 +229,7 @@ class badt_Bad_Tournament
     // Ajax: Save players couple
     function save_players_couple(){
         $html_ajax = '';
+        include_once plugin_dir_path(__FILE__). 'admin/db-get-content.php';
         include plugin_dir_path(__FILE__).'admin/action/save-players-couple.php';
         echo $html_ajax;
         wp_die();
@@ -320,7 +329,16 @@ class badt_Bad_Tournament
                 var file_frame;
                 var wp_media_post_id = wp.media.model.settings.post.id; // Store the old id
                 var set_to_post_id = <?php echo $my_saved_attachment_post_id; ?>; // Set this
-                jQuery('#upload_image_button').on('click', function( event ){
+                var jPreview = $( '#image-preview' );
+                var jAttachmentId = $( '#image_attachment_id' );
+                jQuery('#upload_image_button, #upload_pic_button').on('click', function( event ){
+                    if( jQuery( this).attr( 'id' ) == 'upload_pic_button' ){
+                        jPreview = $( '#pic-preview' );
+                        jAttachmentId = $( '#profile_attachment_id' );
+                    }else{
+                        jPreview = $( '#image-preview' );
+                        jAttachmentId = $( '#image_attachment_id' );
+                    }
                     event.preventDefault();
                     // If the media frame already exists, reopen it.
                     if ( file_frame ) {
@@ -346,8 +364,8 @@ class badt_Bad_Tournament
                         // We set multiple to false so only get one image from the uploader
                         attachment = file_frame.state().get('selection').first().toJSON();
                         // Do something with attachment.id and/or attachment.url here
-                        $( '#image-preview' ).attr( 'src', attachment.url ).css( 'width', 'auto' );
-                        $( '#image_attachment_id' ).val( attachment.id );
+                        jPreview.attr( 'src', attachment.url ).css( 'width', 'auto' );
+                        jAttachmentId.val( attachment.id );
                         // Restore the main post ID
                         wp.media.model.settings.post.id = wp_media_post_id;
                     });

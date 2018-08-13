@@ -12,6 +12,13 @@ if( !is_numeric( $_POST['pl_id'] ) ){
 }else{
     global $wpdb;
 
+    if( isset( $_POST['pl_id2'] ) && $_POST['pl_id2'] > 0 ){
+        $_POST['pl_id'] = $_POST['pl_id2'];
+    }
+
+    if( strpos( $_POST['pl_field_name'] , 'stname') > 0 ){
+        $_POST['pl_field_name'] = substr( $_POST['pl_field_name'], 0, -1 );
+    }
     if( $_POST['pl_field_name'] == 'birthdate' ){
         $dates = explode( '/', $_POST['pl_field_value'] );
         $_POST['pl_field_value'] = $dates[2].'-'.$dates[1].'-'.$dates[0];

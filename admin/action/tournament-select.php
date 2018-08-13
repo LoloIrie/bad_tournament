@@ -74,6 +74,15 @@ if( isset( $_POST['tournament_remove_button'] ) && is_numeric( $_POST['tournamen
     $wpdb->query( $query );
     //echo $query.'<br />';
 
+    // Remove doubles
+    $query = "DELETE FROM
+    ".$wpdb->prefix."bvg_players_double
+
+    WHERE
+    tournament_id = ".$_POST['tournament_select'];
+
+    $wpdb->query( $query );
+
     /* Remove players */
     $query = "DELETE FROM
     ".$wpdb->prefix."bvg_players_tournament
@@ -142,6 +151,29 @@ else if( isset( $_POST['tournament_restart_button'] ) && is_numeric( $_POST['tou
     $wpdb->query( $query );
     //echo $query.'<br />';
 
+    /* Reinitialize doubles if required */
+    if( $_SESSION['current_tournament']['tournament_typ'] == 3 || $_SESSION['current_tournament']['tournament_typ'] == 4 || $_SESSION['current_tournament']['tournament_typ'] == 5 || $_SESSION['current_tournament']['tournament_typ'] == 7 ){
+        $query = "UPDATE
+        ".$wpdb->prefix."bvg_players_double
+
+        SET
+        played=0,
+        player_level_current=0,
+        victory=0,
+        draw=0,
+        loss=0,
+        points_major=0,
+        sets=0,
+        sets_against=0,
+        points=0,
+        points_against=0,
+        opponents=''
+
+        WHERE
+        tournament_id=". $_POST['tournament_select'] ;
+        $wpdb->query( $query );
+    }
+
     $_SESSION['round'] = 1;
 
     $bvg_admin_msg .= __( 'Restart tournament !' , 'bad-tournament' ).'<br />';
@@ -179,7 +211,10 @@ else if( isset( $_POST['tournament_edit'] ) && is_numeric( $_POST['tournament_se
     $_SESSION['t_id'] = $_POST['tournament_select'];
     $_SESSION['t_name'] = $_POST['tournament_name'];
     $_SESSION['t_system'] = $_POST['tournament_system'];
-
+    $_SESSION[ 'current_tournament' ][ 'tournament_double' ] = false;
+    if( $_SESSION['current_tournament']['tournament_typ'] == 3 || $_SESSION['current_tournament']['tournament_typ'] == 4 || $_SESSION['current_tournament']['tournament_typ'] == 5 || $_SESSION['current_tournament']['tournament_typ'] == 7 ){
+        $_SESSION[ 'current_tournament' ][ 'tournament_double' ] = true;
+    }
     $bvg_admin_msg .= __( 'Tournament edited !' , 'bad-tournament' ).'<br />';
 }
 /* SELECT TOURNAMENT */
@@ -210,7 +245,10 @@ else if( isset( $_POST['tournament_select_button'] ) && is_numeric( $_POST['tour
     if( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] > 0 ){
         $_SESSION[ 'current_tournament' ][ 'club_restriction_name' ] = badt_db_get_clubs( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] )[0]->name;
     }
-
+    $_SESSION[ 'current_tournament' ][ 'tournament_double' ] = false;
+    if( $_SESSION['current_tournament']['tournament_typ'] == 3 || $_SESSION['current_tournament']['tournament_typ'] == 4 || $_SESSION['current_tournament']['tournament_typ'] == 5 || $_SESSION['current_tournament']['tournament_typ'] == 7 ){
+        $_SESSION[ 'current_tournament' ][ 'tournament_double' ] = true;
+    }
 }
 /* CREATE TOURNAMENT */
 else{
@@ -267,6 +305,10 @@ else{
     $_SESSION['t_id'] = $new_t_id;
     $_SESSION['t_name'] = $new_t_name;
     $_SESSION['t_system'] = $new_t_system;
+    $_SESSION[ 'current_tournament' ][ 'tournament_double' ] = false;
+    if( $_SESSION['current_tournament']['tournament_typ'] == 3 || $_SESSION['current_tournament']['tournament_typ'] == 4 || $_SESSION['current_tournament']['tournament_typ'] == 5 || $_SESSION['current_tournament']['tournament_typ'] == 7 ){
+        $_SESSION[ 'current_tournament' ][ 'tournament_double' ] = true;
+    }
 
     $bvg_admin_msg .= __( 'New tournament: ' , 'bad-tournament' ).$new_t_name.'<br />';
 

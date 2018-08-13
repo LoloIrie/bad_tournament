@@ -6,7 +6,6 @@
  * Time: 09:12
  */
 
-
 /* Table */
 
 //$html .= '<div class="admin_block_label">Tabelle</div>';
@@ -43,6 +42,7 @@ $html .= '<ul class="table">';
     $html .= '</li>';
 
 $display_nextround_buttons = false;
+$already_played = false;
 if( $_SESSION[ 'current_tournament' ][ 'tournament_typ' ] > 2 && $_SESSION[ 'current_tournament' ][ 'system' ] != 4 ){
 
     /*
@@ -61,20 +61,23 @@ if( $_SESSION[ 'current_tournament' ][ 'tournament_typ' ] > 2 && $_SESSION[ 'cur
         $player2 = $players[ $id2 ];
 
         if( $player->status != 2 ){
-            if( $player->played >= $_SESSION[ 'round' ] ){
+            if( $player->played > 0 ){
+                $already_played = true;
+            }
+            if( $_SESSION[ 'round' ] >= $player->played ){
                 $display_nextround_buttons = true;
             }
             $html .= '<li class="table_row">';
-            $html .= '<span class="pl_name">';
+            $html .= '<span class="pl_name"><span class="pl_name_pl1">';
             $html .= $player->player_firstname.' '.$player->player_lastname;
-            $html .= ' / ';
-            $html .= $player2->player_firstname.' '.$player2->player_lastname;
+            $html .= '</span> <span class="pl_name_pl2">';
+            $html .= $player2->player_firstname.' '.$player2->player_lastname.'</span>';
             if( $_SESSION['t_system'] == 1 ){
-                $html .= '<span class="pl_level_init"> ('.$player->player_level_init.')</span>';
+                $html .= '<span class="pl_level_init"> ('.( $player->player_level_init + $player2->player_level_init ).')</span>';
             }
             $html .= '<span class="pl_options">';
-                $html .= '<img src="'.plugin_dir_url( __FILE__ ).'../../icons/bad-tournament-close-icon.png'.'" class="pl_remove" data-pl_id="'.$player->players_id.'" />';
-                $html .= '<img src="'.plugin_dir_url( __FILE__ ).'../../icons/bad-tournament-info-icon.png'.'" class="pl_infos" data-pl_id="'.$player->players_id.'" />';
+                $html .= '<img src="'.plugin_dir_url( __FILE__ ).'../../icons/bad-tournament-close-icon.png'.'" class="pl_remove" data-pl_id="'.$player->players_id.'" data-pl2_id="'.$player2->players_id.'" />';
+                $html .= '<img src="'.plugin_dir_url( __FILE__ ).'../../icons/bad-tournament-info-icon.png'.'" class="pl_infos" data-pl_id="'.$player->players_id.'" data-pl2_id="'.$player2->players_id.'" />';
             $html .= "</span>";
 
             /*
@@ -126,19 +129,22 @@ if( $_SESSION[ 'current_tournament' ][ 'tournament_typ' ] > 2 && $_SESSION[ 'cur
     foreach( $players as $k => $player ){
 
         if( $player->status != 2 ){
-            if( $player->played >= $_SESSION[ 'round' ] ){
+            if( $player->played > 0 ){
+                $already_played = true;
+            }
+            if( $_SESSION[ 'round' ] >= $player->played ){
                 $display_nextround_buttons = true;
             }
 
             $html .= '<li class="table_row">';
-            $html .= '<span class="pl_name">';
-            $html .= $player->player_firstname.' '.$player->player_lastname;
+            $html .= '<span class="pl_name"><span class="pl_name_pl1">';
+            $html .= $player->player_firstname.' '.$player->player_lastname.'</span><span class="pl_name_pl2"></span>';
             if( $_SESSION['t_system'] == 1 ){
                 $html .= '<span class="pl_level_init"> ('.$player->player_level_init.')</span>';
             }
             $html .= '<span class="pl_options">';
-            $html .= '<img src="'.plugin_dir_url( __FILE__ ).'../../icons/bad-tournament-close-icon.png'.'" class="pl_remove" data-pl_id="'.$player->players_id.'" />';
-            $html .= '<img src="'.plugin_dir_url( __FILE__ ).'../../icons/bad-tournament-info-icon.png'.'" class="pl_infos" data-pl_id="'.$player->players_id.'" />';
+            $html .= '<img src="'.plugin_dir_url( __FILE__ ).'../../icons/bad-tournament-close-icon.png'.'" class="pl_remove" data-pl_id="'.$player->players_id.'" data-pl2_id="" />';
+            $html .= '<img src="'.plugin_dir_url( __FILE__ ).'../../icons/bad-tournament-info-icon.png'.'" class="pl_infos" data-pl_id="'.$player->players_id.'" data-pl2_id="" />';
             $html .= "</span>";
             $html .= "</span>";
 
@@ -182,13 +188,17 @@ if( $_SESSION[ 'current_tournament' ][ 'tournament_typ' ] > 2 && $_SESSION[ 'cur
 $html .= '</ul>';
 
 if( $display_nextround_buttons ){
-    if( $_SESSION[ 'current_tournament' ][ 'round_max' ] <= $_SESSION['round'] ){
+    if( $_SESSION[ 'current_tournament' ][ 'round_max' ] > 0 && $_SESSION[ 'current_tournament' ][ 'round_max' ] <= $_SESSION['round'] ){
         $html .= '<p class="topspace badt_alert">'.__('Be careful to the defined maximum round number... Sure to want to create a new round ?', 'bad-tournament').'</p>';
     }
     $html .= '<p>
 <input type="submit" value="'.__('Next round', 'bad-tournament').'" class="next_round button-primary button" style="float: none;" />';
-    $html .= '<input type="submit" value="'.__('Next round and create matches', 'bad-tournament').'" name="generate_matchs_now" class="submit2 next_round button-primary button" style="float: none;" />
-</p>';
+    $html .= '<input type="submit" value="'.__('Next round and create matches', 'bad-tournament').'" name="generate_matchs_now" class="submit2 next_round button-primary button" style="float: none;" />';
+    if( $_SESSION[ 'round' ] == 1 && !$already_played ){
+        $html .= '<input name="generate_matchs_now_noround" type="submit" value="'.__('Create matches', 'bad-tournament').'" class="submit2 button button-primary" style="float: none;" />';
+    }
+
+$html .= '</p>';
 }
 
 

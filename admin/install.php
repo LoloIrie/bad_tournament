@@ -8,7 +8,7 @@
 
 if ( !defined( 'ABSPATH' ) ) die();
 
-$bad_tournament_version = '1.3';
+$bad_tournament_version = '1.4';
 
 function badt_install( $bad_tournament_version, $bad_tournament_current_version = false ){
 
@@ -41,7 +41,8 @@ function badt_update( $bad_tournament_current_version ){
         //'1.0.2',
         //'1.1',
         //'1.2',
-        '1.3'
+        '1.3',
+        '1.4'
     );
 
     foreach( $existing_updates as $version ){
@@ -267,6 +268,21 @@ function badt_update_1_3(){
     $wpdb->query( $sql );
 
     $msg_update = __('Version 1.3: Add tournament max round', 'bad-tournament');
+
+    return $msg_update;
+}
+
+function badt_update_1_4(){
+    global $wpdb;
+    require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+    $nom_table = $wpdb->prefix . 'bvg_players';
+    $sql = "ALTER TABLE ".$nom_table."
+                    ADD pic BIGINT(6) unsigned NOT NULL sex;";
+
+    $wpdb->query( $sql );
+
+    $msg_update = __('Version 1.4: Add player profile picture', 'bad-tournament');
 
     return $msg_update;
 }

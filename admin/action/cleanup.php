@@ -25,6 +25,19 @@ if( !is_numeric( $_POST[ 'tournament_cleanup_select' ] ) ){
 
 
 
+    // Table bvg_players_double
+    $wp_table = $wpdb->prefix.'bvg_players_double';
+
+    $query = "DELETE FROM
+    ".$wp_table."
+
+    WHERE
+    tournament_id = ".$t_id;
+
+    $wpdb->query( $query );
+    $bvg_admin_msg .= __( 'Doubles removed for this tournament !', 'bad-tournament' ).'<br />';
+
+
     // Table bvg_players_tournament
     $wp_table = $wpdb->prefix.'bvg_players_tournament';
 

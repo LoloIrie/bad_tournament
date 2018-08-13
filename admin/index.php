@@ -6,8 +6,17 @@
  * Time: 14:14
  */
 
-
 if ( !defined( 'ABSPATH' ) ) die();
+
+require_once plugin_dir_path(__FILE__). 'badt_functions.php';
+
+if( defined('BADT_DEBUG_MODE') && BADT_DEBUG_MODE > 0 ){
+    /* DEBUG ACTIVATED
+    */
+    global $badt_debug_obj;
+    $badt_debug_obj = new badt_Bad_Debug;
+
+}
 
 $t_system = array(
     0 => '-',
@@ -27,9 +36,12 @@ global $wpdb;
 
 
 /* GET/SET CONTENT */
-include_once plugin_dir_path(__FILE__). 'db-get-content.php';
+require_once plugin_dir_path(__FILE__). 'db-get-content.php';
+/* Variables */
+
 
 /* ACTIONS */
+
 if( isset($_POST['form_action']) ){
     include plugin_dir_path(__FILE__). 'action/'.$_POST['form_action'].'.php';
 }else if( isset($_GET['t_select_id']) && is_numeric( $_GET['t_select_id'] ) ){
@@ -56,6 +68,10 @@ if( !isset( $_SESSION['t_id'] ) ){
         if( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] > 0 ){
             $_SESSION[ 'current_tournament' ][ 'club_restriction_name' ] = badt_db_get_clubs( $_SESSION[ 'current_tournament' ][ 'club_restriction' ] )[0]->name;
         }
+        $_SESSION[ 'current_tournament' ][ 'tournament_double' ] = false;
+        if( $_SESSION['current_tournament']['tournament_typ'] == 3 || $_SESSION['current_tournament']['tournament_typ'] == 4 || $_SESSION['current_tournament']['tournament_typ'] == 5 || $_SESSION['current_tournament']['tournament_typ'] == 7 ){
+            $_SESSION[ 'current_tournament' ][ 'tournament_double' ] = true;
+        }
     }else{
         $_SESSION['t_id'] = 1;
         $_SESSION['t_system'] = 1;
@@ -79,21 +95,26 @@ $clubs = badt_db_get_clubs();
 $cl_default_id = get_option( 'cl_default_id' );
 $all_players = badt_db_get_all_players( $club_restriction );
 $players = badt_db_get_players();
-$matches = badt_db_get_matches( $_SESSION['t_id'], $_SESSION['round'] );
+if( isset($_POST['view_round']) && is_numeric( $_POST[ 'view_round' ] ) ){
+    $matches = badt_db_get_matches( $_SESSION['t_id'], $_POST['view_round'] );
+}else{
+    $matches = badt_db_get_matches( $_SESSION['t_id'], $_SESSION['round'] );
+}
+
 $nb_matchs = badt_db_nb_matches( $_SESSION['t_id'], false, true );
 $couples = badt_db_get_couples();
+
+
 
 //echo '<pre>';
 //var_dump( $matches );
 
 /* Generate matches if required */
-if( empty($matches) || isset( $_POST['regenerate_matchs_now'] ) ){
+if( empty($matches) || isset( $_POST['regenerate_matchs_now'] ) || isset( $_POST['generate_matchs_now_noround'] ) ){
     //echo $query;
     //var_dump( $players );
     include_once plugin_dir_path(__FILE__). 'action/generate-matches.php';
 }
-
-
 
 /* HTML */
 $html = '';
@@ -122,3 +143,11 @@ include plugin_dir_path(__FILE__). 'index_html/footer.php';
 echo $html;
 
 
+if( defined('BADT_DEBUG_MODE') && BADT_DEBUG_MODE > 0 ){
+    /* DEBUG DISPLAYED
+    */
+    if( BADT_DEBUG_MODE == 1 ){
+        $badt_debug_obj -> display_debug();
+    }
+
+}

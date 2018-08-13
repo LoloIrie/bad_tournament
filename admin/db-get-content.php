@@ -203,11 +203,43 @@ function badt_db_nb_matches( $tournament_id = false, $round = false, $completed 
 }
 
 /* Get matches */
-function badt_db_get_matches( $tournament_id = false, $round = false, $match_id = false ){
+function badt_db_get_matches( $tournament_id = false, $round = false, $match_id = false, $player_id = false, $double = false ){
 
     global $wpdb;
 
-    if( $match_id ){
+    if( $double ){
+        $query = "SELECT
+            *
+
+            FROM
+            ".$wpdb->prefix."bvg_matches
+
+            WHERE
+            id = ".$match_id."
+
+            LIMIT
+            0,1
+            ";
+    }else if( $player_id ){
+        $query = "SELECT
+            *
+
+            FROM
+            ".$wpdb->prefix."bvg_matches
+
+            WHERE
+            player1_id = ".$player_id."
+            OR
+            player2_id = ".$player_id."
+            OR
+            player1_id_bis = ".$player_id."
+            OR
+            player2_id_bis = ".$player_id."
+
+            ORDER BY
+            round ASC
+            ";
+    }else if( $match_id ){
         $query = "SELECT
             *
     
@@ -258,8 +290,7 @@ function badt_db_get_matches( $tournament_id = false, $round = false, $match_id 
         }
     }
 
-
-
+    //echo $query;
 
     $matches = $wpdb->get_results( $query );
 
@@ -281,10 +312,26 @@ function badt_db_get_couples( $tournament_id = false ){
     ".$wpdb->prefix."bvg_players_double as pl_d
 
     WHERE
-    pl_d.tournament_id = ".$tournament_id;
+    pl_d.tournament_id = ".$tournament_id."
+
+    ORDER BY
+    pl_d.points_major DESC, pl_d.played ASC, pl_d.sets DESC, pl_d.sets_against ASC, pl_d.points DESC, pl_d.points_against ASC, pl_d.player_level_init DESC
+    ";
     //$wpdb->show_errors();
     //echo $query;
     $couples = $wpdb->get_results( $query, OBJECT_K  );
     //var_dump( $players );
     return $couples;
 }
+
+global $tournament_typ_array;
+$tournament_typ_array = array(
+    1 => __('Simple Men', 'bad-tournament'),
+    2 => __('Simple Women', 'bad-tournament'),
+    3 => __('Double Men', 'bad-tournament'),
+    4 => __('Double Women', 'bad-tournament'),
+    5 => __('Mixte', 'bad-tournament'),
+    6 => __('Simple Free', 'bad-tournament'),
+    7 => __('Double Free', 'bad-tournament')
+
+);

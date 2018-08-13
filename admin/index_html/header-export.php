@@ -20,6 +20,10 @@ $html .= '</li>';
 $html .= '<li class="nav_item'.( $ADMIN_VIEW == 'cleanup' ? ' active"' : '' ).'" id="nav_cleanup">';
 $html .= __('Reset tournament', 'bad-tournament');
 $html .= '</li>';
+
+$html .= '<li class="nav_item'.( $ADMIN_VIEW == 'settings' ? ' active"' : '' ).'" id="nav_settings">';
+$html .= __('Global settings', 'bad-tournament');
+$html .= '</li>';
 $html .= '</ul>';
 $html .= '</nav>';
 
@@ -29,4 +33,4 @@ if( !empty( $bvg_admin_msg ) ){
 }
 
 
-$html .= '<h1 id="bad_tournament_maintitle" class="subtournament_name">'.__( 'Export / Import / Reset', 'bad-tournament').'</h1>';
+$html .= '<h1 id="bad_tournament_maintitle" class="subtournament_name">'.__( 'Export / Import / Reset / Settings', 'bad-tournament').'</h1>';

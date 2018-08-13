@@ -2,8 +2,8 @@
 Contributors: loloirie
 Tags: tournament, club, shortcode, administration, badminton, tennis, table tennis
 Requires at least: 4.4
-Tested up to: 4.9
-Stable tag: 1.3
+Tested up to: 4.9.7
+Stable tag: 1.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 
@@ -89,8 +89,12 @@ But please, describe correctly your issue and be patient...
 
 == Changelog ==
 
+= 1.4 - *.2018 =
+* Debug options
+* Fix a lot of bugs for double tournaments
+* Add profile pictures for players
 
-= 1.3 - .2018 =
+= 1.3 - Not released
 * Allow to set fixed rounds for a tournament
 * Allow to update more matches in one step
 * Option to quickly reset a tournament
